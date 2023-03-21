@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
-const Account = require('./Accounts.model');
+// const Account = require('./Accounts.model');
 const loggers = require('../config/logger');
 const sequelize = require('../config/database');
-const { env } = require('../config/config');
+// const config = require('../config/config');
 
 const Address = sequelize.define(
   'Addresses',
@@ -14,10 +14,6 @@ const Address = sequelize.define(
     },
     AccountId: {
       type: DataTypes.UUID,
-      references: {
-        model: Account,
-        key: 'Id',
-      },
       allowNull: false,
     },
     City: {
@@ -46,26 +42,40 @@ const Address = sequelize.define(
   }
 );
 
-Address.belongsTo(Account, { foreignKey: 'AccountId' });
+// Address.belongsTo(Account, {
+//   foreignKey: 'AccountId',
+//   references: {
+//     model: Account,
+//     key: 'Id',
+//   },
+// });
 
-if (env !== 'production') {
-  // Development or test environment
-  Address.sync({ force: true })
-    .then(() => {
-      loggers.info('Address table created successfully');
-    })
-    .catch((err) => {
-      loggers.error('Error creating Address table:', err);
-    });
-} else {
-  // Production environment
-  Address.sync()
-    .then(() => {
-      loggers.info('Address table created successfully');
-    })
-    .catch((err) => {
-      loggers.error('Error creating Address table:', err);
-    });
-}
+// if (config.env !== 'production') {
+//   // Development or test environment
+//   Address.sync({ force: true })
+//     .then(() => {
+//       loggers.info('Address table created successfully');
+//     })
+//     .catch((err) => {
+//       loggers.error('Error creating Address table:', err);
+//     });
+// } else {
+//   // Production environment
+//   Address.sync()
+//     .then(() => {
+//       loggers.info('Address table created successfully');
+//     })
+//     .catch((err) => {
+//       loggers.error('Error creating Address table:', err);
+//     });
+// }
+
+Address.sync()
+  .then(() => {
+    loggers.info('Address table created successfully');
+  })
+  .catch((err) => {
+    loggers.error('Error creating Address table:', err);
+  });
 
 module.exports = Address;

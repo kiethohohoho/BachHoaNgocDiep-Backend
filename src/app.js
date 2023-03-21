@@ -1,10 +1,11 @@
 const express = require('express');
 const helmet = require('helmet');
 const xss = require('xss-clean');
-const mongoSanitize = require('express-mongo-sanitize');
+// const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
 const cors = require('cors');
 const passport = require('passport');
+const _ = require('lodash');
 const httpStatus = require('http-status');
 const config = require('./config/config');
 const morgan = require('./config/morgan');
@@ -32,7 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // sanitize request data
 app.use(xss());
-app.use(mongoSanitize());
+// app.use(mongoSanitize());
 
 // gzip compression
 app.use(compression());
@@ -44,6 +45,12 @@ app.options('*', cors());
 // jwt authentication
 app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
+
+// Convert json request body property names to camel case
+app.use((req, res, next) => {
+  req.body = _.mapKeys(req.body, (value, key) => key.toLowerCase());
+  next();
+});
 
 // limit repeated failed requests to auth endpoints
 if (config.env === 'production') {

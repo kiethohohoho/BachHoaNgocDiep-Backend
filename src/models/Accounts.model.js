@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 const loggers = require('../config/logger');
-const Address = require('./Address.model');
+// const Address = require('./Address.model');
 const sequelize = require('../config/database');
-const { env } = require('../config/config');
+// const config = require('../config/config');
 
 const Account = sequelize.define(
   'Accounts',
@@ -67,32 +67,40 @@ const Account = sequelize.define(
   }
 );
 
-Account.hasMany(Address, {
-  foreignKey: 'AccountId',
-  references: {
-    model: Address,
-    key: 'Id',
-  },
-});
+// Account.hasMany(Address, {
+//   foreignKey: 'AccountId',
+//   references: {
+//     model: Account,
+//     key: 'Id',
+//   },
+// });
 
-if (env !== 'production') {
-  // Development or test environment
-  Account.sync({ force: true })
-    .then(() => {
-      loggers.info('Account table created successfully');
-    })
-    .catch((err) => {
-      loggers.error('Error creating Account table:', err);
-    });
-} else {
-  // Production environment
-  Account.sync()
-    .then(() => {
-      loggers.info('Account table created successfully');
-    })
-    .catch((err) => {
-      loggers.error('Error creating Account table:', err);
-    });
-}
+// if (config.env !== 'production') {
+//   // Development or test environment
+//   Account.sync({ force: true })
+//     .then(() => {
+//       loggers.info('Account table created successfully');
+//     })
+//     .catch((err) => {
+//       loggers.error('Error creating Account table:', err);
+//     });
+// } else {
+//   // Production environment
+//   Account.sync()
+//     .then(() => {
+//       loggers.info('Account table created successfully');
+//     })
+//     .catch((err) => {
+//       loggers.error('Error creating Account table:', err);
+//     });
+// }
+
+Account.sync()
+  .then(() => {
+    loggers.info('Account table created successfully');
+  })
+  .catch((err) => {
+    loggers.error('Error creating Account table:', err);
+  });
 
 module.exports = Account;

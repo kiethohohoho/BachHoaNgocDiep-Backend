@@ -1,15 +1,26 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
+const sequelize = require('./config/database');
 const app = require('./app');
 const config = require('./config/config');
 const logger = require('./config/logger');
 
 let server;
-mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
-  // logger.info('Connected to MongoDB');
-  server = app.listen(config.port, () => {
-    // logger.info(`Listening to port ${config.port}`);
-  });
-});
+// mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
+//   logger.info('Connected to MongoDB');
+//   server = app.listen(config.port, () => {
+//     logger.info(`Listening to port ${config.port}`);
+//   });
+// });
+
+sequelize
+  .authenticate()
+  .then(() => {
+    logger.info('Thiết lập kết nối đến cơ sở dữ liệu BachHoaNgocDiep thành công.');
+    server = app.listen(config.port, () => {
+      logger.info(`Listening to port ${config.port}`);
+    });
+  })
+  .catch((error) => logger.error('Không thể kết nối đến cơ sở dữ liệu BachHoaNgocDiep:', error));
 
 const exitHandler = () => {
   if (server) {
