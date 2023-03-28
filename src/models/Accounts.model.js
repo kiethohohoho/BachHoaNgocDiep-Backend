@@ -1,8 +1,9 @@
 const { DataTypes } = require('sequelize');
+const bcrypt = require('bcrypt');
 const loggers = require('../config/logger');
 // const Address = require('./Address.model');
 const sequelize = require('../config/database');
-// const config = require('../config/config');
+const config = require('../config/config');
 
 const Account = sequelize.define(
   'Accounts',
@@ -19,9 +20,9 @@ const Account = sequelize.define(
     //     key: 'Id',
     //   },
     // },
-    FistName: {
+    FirstName: {
       type: DataTypes.STRING,
-      // allowNull: false,
+      allowNull: false,
     },
     LastName: {
       type: DataTypes.STRING,
@@ -57,15 +58,27 @@ const Account = sequelize.define(
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },
+    IsEmailVerified: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    IsPhoneVerified: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
   },
   {
     timestamps: {
-      createdAt: 'CreatedAt',
-      updatedAt: 'UpdatedAt',
+      CreatedAt: 'created_date',
+      UpdatedAt: 'updated_at',
     },
     underscored: false,
   }
 );
+
+Account.prototype.isMatchPassword = function (password) {
+  return bcrypt.compareSync(password, this.password);
+};
 
 // Account.hasMany(Address, {
 //   foreignKey: 'AccountId',
@@ -75,32 +88,24 @@ const Account = sequelize.define(
 //   },
 // });
 
-// if (config.env !== 'production') {
-//   // Development or test environment
-//   Account.sync({ force: true })
-//     .then(() => {
-//       loggers.info('Account table created successfully');
-//     })
-//     .catch((err) => {
-//       loggers.error('Error creating Account table:', err);
-//     });
-// } else {
-//   // Production environment
-//   Account.sync()
-//     .then(() => {
-//       loggers.info('Account table created successfully');
-//     })
-//     .catch((err) => {
-//       loggers.error('Error creating Account table:', err);
-//     });
-// }
-
-Account.sync()
-  .then(() => {
-    loggers.info('Account table created successfully');
-  })
-  .catch((err) => {
-    loggers.error('Error creating Account table:', err);
-  });
+if (config.env !== 'production') {
+  // Development or test environment
+  Account.sync({ force: false })
+    .then(() => {
+      loggers.info('Account table created successfully');
+    })
+    .catch((err) => {
+      loggers.error('Error creating Account table:', err);
+    });
+} else {
+  // Production environment
+  Account.sync()
+    .then(() => {
+      loggers.info('Account table created successfully');
+    })
+    .catch((err) => {
+      loggers.error('Error creating Account table:', err);
+    });
+}
 
 module.exports = Account;

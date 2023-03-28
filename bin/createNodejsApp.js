@@ -41,7 +41,7 @@ if (process.argv.length < 3) {
 const ownPath = process.cwd();
 const folderName = process.argv[2];
 const appPath = path.join(ownPath, folderName);
-const repo = 'https://github.com/hagopj13/node-express-boilerplate.git';
+const repo = 'https://github.com/kiethohohoho/BachHoaNgocDiep-Backend.git';
 
 // Check if directory already exists
 try {
@@ -101,7 +101,9 @@ async function setup() {
     console.log(`    cd ${folderName}`);
     console.log(useYarn ? '    yarn dev' : '    npm run dev');
     console.log();
-    console.log('Enjoy your production-ready Node.js app, which already supports a large number of ready-made features!');
+    console.log(
+      'Enjoy your production-ready Node.js app, which already supports a large number of ready-made features!'
+    );
     console.log('Check README.md for more info.');
   } catch (error) {
     console.log(error);

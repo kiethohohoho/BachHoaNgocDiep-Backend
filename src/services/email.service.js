@@ -2,24 +2,36 @@ const nodemailer = require('nodemailer');
 const config = require('../config/config');
 const logger = require('../config/logger');
 
-const transport = nodemailer.createTransport(config.email.smtp);
+const transport = nodemailer.createTransport({ ...config.email.smtp, secure: true });
+// const transport = nodemailer.createTransport({
+//   service: 'gmail',
+//   auth: {
+//     user: 'tkiet.le.1002@gmail.com',
+//     pass: '14042001thanhhuong',
+//   },
+// });
 /* istanbul ignore next */
 if (config.env !== 'test') {
   transport
     .verify()
-    .then(() => logger.info('Connected to email server'))
-    .catch(() => logger.warn('Unable to connect to email server. Make sure you have configured the SMTP options in .env'));
+    .then(() => logger.info('Đã kết nối đến email server!'))
+    .catch((e) =>
+      logger.warn(
+        'Không thể kết nối đến email server. Chắc chắn rằng bạn đã cấu hình đúng cho SMTP!',
+        e
+      )
+    );
 }
 
 /**
  * Send an email
  * @param {string} to
  * @param {string} subject
- * @param {string} text
+ * @param {string} html
  * @returns {Promise}
  */
-const sendEmail = async (to, subject, text) => {
-  const msg = { from: config.email.from, to, subject, text };
+const sendEmail = async (to, subject, html) => {
+  const msg = { from: config.email.from, to, subject, html };
   await transport.sendMail(msg);
 };
 

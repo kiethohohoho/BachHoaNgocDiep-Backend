@@ -5,8 +5,15 @@ const register = {
   body: Joi.object()
     .keys({
       email: Joi.string().required().email(),
-      password: Joi.string().required().custom(password),
       username: Joi.string().required(),
+      password: Joi.string().required().custom(password),
+      firstname: Joi.string().required(),
+      lastname: Joi.string().required(),
+      dateofbirth: Joi.date().required(),
+      gender: Joi.boolean().required(),
+      phonenumber: Joi.string()
+        .required()
+        .pattern(/^(03|05|07|08|09)+([0-9]{8})\b/),
     })
     .unknown(true),
 };
@@ -14,9 +21,12 @@ const register = {
 const login = {
   body: Joi.object()
     .keys({
-      email: Joi.string().required(),
-      password: Joi.string().required(),
+      phonenumber: Joi.string().pattern(/^(03|05|07|08|09)+([0-9]{8})\b/),
+      email: Joi.string().email(),
+      username: Joi.string(),
+      password: Joi.string().required().custom(password),
     })
+    .or('phonenumber', 'email', 'username')
     .unknown(true),
 };
 
@@ -58,9 +68,9 @@ const resetPassword = {
 };
 
 const verifyEmail = {
-  query: Joi.object()
+  params: Joi.object()
     .keys({
-      token: Joi.string().required(),
+      verificationToken: Joi.string().required(),
     })
     .unknown(true),
 };

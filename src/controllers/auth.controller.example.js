@@ -1,27 +1,16 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { authService, accountService, tokenService, emailService } = require('../services');
-// const logger = require('../config/logger');
+const { authService, userService, tokenService, emailService } = require('../services');
 
 const register = catchAsync(async (req, res) => {
-  try {
-    const account = await accountService.createAccount(req.body);
-    const { access, refresh } = await tokenService.generateAuthTokens(account);
-    await emailService.sendEmail(
-      account.Email,
-      'Xác thực email đăng ký toàn khoản Bách Hoá Ngọc Diệp',
-      `<p>Hãy click vào link này để xác thực email của bạn:</p><p><a href="http://localhost:3000/v1/auth/verify-email/${access.token}">http://localhost:3000/v1/auth/verify-email/${access.token}</a></p>`
-    );
-    res.status(httpStatus.CREATED).json({ account, access, refresh });
-  } catch (err) {
-    res
-      .status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR)
-      .json({ message: 'Lỗi đăng ký tài khoản!', detail: err.message || err });
-  }
+  const user = await userService.createUser(req.body);
+  const tokens = await tokenService.generateAuthTokens(user);
+  res.status(httpStatus.CREATED).send({ user, tokens });
 });
 
 const login = catchAsync(async (req, res) => {
-  const user = await authService.loginUserWithStuffsAndPassword(req.body);
+  const { email, password } = req.body;
+  const user = await authService.loginUserWithEmailAndPassword(email, password);
   const tokens = await tokenService.generateAuthTokens(user);
   res.send({ user, tokens });
 });
@@ -53,16 +42,9 @@ const sendVerificationEmail = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
-const verifyEmailAccount = catchAsync(async (req, res) => {
-  try {
-    const token = req.params.verificationToken;
-    await authService.verifyEmail(token);
-    res.status(httpStatus.OK).send('Xác thực email thành công!');
-  } catch (err) {
-    res
-      .status(err.statusCode || httpStatus.UNAUTHORIZED)
-      .json({ message: 'Xác thực email thất bại!', detail: err.message || err });
-  }
+const verifyEmail = catchAsync(async (req, res) => {
+  await authService.verifyEmail(req.query.token);
+  res.status(httpStatus.NO_CONTENT).send();
 });
 
 module.exports = {
@@ -73,5 +55,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   sendVerificationEmail,
-  verifyEmailAccount,
+  verifyEmail,
 };

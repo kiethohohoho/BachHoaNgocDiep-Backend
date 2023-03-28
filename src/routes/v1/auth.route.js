@@ -9,11 +9,27 @@ const router = express.Router();
 router.post('/register', validate(authValidation.register), authController.register);
 router.post('/login', validate(authValidation.login), authController.login);
 router.post('/logout', validate(authValidation.logout), authController.logout);
-router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens);
-router.post('/forgot-password', validate(authValidation.forgotPassword), authController.forgotPassword);
-router.post('/reset-password', validate(authValidation.resetPassword), authController.resetPassword);
+router.post(
+  '/refresh-tokens',
+  validate(authValidation.refreshTokens),
+  authController.refreshTokens
+);
+router.post(
+  '/forgot-password',
+  validate(authValidation.forgotPassword),
+  authController.forgotPassword
+);
+router.post(
+  '/reset-password',
+  validate(authValidation.resetPassword),
+  authController.resetPassword
+);
 router.post('/send-verification-email', auth(), authController.sendVerificationEmail);
-router.post('/verify-email', validate(authValidation.verifyEmail), authController.verifyEmail);
+router.get(
+  '/verify-email/:verificationToken',
+  validate(authValidation.verifyEmail),
+  authController.verifyEmailAccount
+);
 
 module.exports = router;
 
@@ -21,14 +37,14 @@ module.exports = router;
  * @swagger
  * tags:
  *   name: Auth
- *   description: Authentication
+ *   description: Xác thực
  */
 
 /**
  * @swagger
  * /auth/register:
  *   post:
- *     summary: Register as user
+ *     summary: Đăng ký tài khoản
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -37,28 +53,50 @@ module.exports = router;
  *           schema:
  *             type: object
  *             required:
- *               - name
+ *               - firstname
+ *               - lastname
+ *               - dateofbirth
+ *               - gender
+ *               - phonenumber
  *               - email
+ *               - username
  *               - password
  *             properties:
- *               name:
+ *               firstname:
  *                 type: string
+ *               lastname:
+ *                 type: string
+ *               dateofbirth:
+ *                 type: date
+ *               gender:
+ *                 type: boolean
+ *               phonenumber:
+ *                 type: string
+ *                 format: phone
+ *                 description: must be unique
  *               email:
  *                 type: string
  *                 format: email
  *                 description: must be unique
+ *               username:
+ *                 type: string
  *               password:
  *                 type: string
  *                 format: password
- *                 minLength: 8
+ *                 minLength: 6
  *                 description: At least one number and one letter
  *             example:
- *               name: fake name
- *               email: fake@example.com
- *               password: password1
+ *               firstname: Le
+ *               lastname: Kiet
+ *               dateofbirth: 10-02-2001
+ *               gender: true
+ *               phonenumber: "0347057544"
+ *               email: tkiet.le.1002@gmail.com
+ *               username: tkiet.le.1002
+ *               password: tkiet.le.1002
  *     responses:
- *       "201":
- *         description: Created
+ *       "200":
+ *         description: OK
  *         content:
  *           application/json:
  *             schema:
@@ -68,15 +106,13 @@ module.exports = router;
  *                   $ref: '#/components/schemas/User'
  *                 tokens:
  *                   $ref: '#/components/schemas/AuthTokens'
- *       "400":
- *         $ref: '#/components/responses/DuplicateEmail'
  */
 
 /**
  * @swagger
  * /auth/login:
  *   post:
- *     summary: Login
+ *     summary: Đăng nhập
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -95,8 +131,8 @@ module.exports = router;
  *                 type: string
  *                 format: password
  *             example:
- *               email: fake@example.com
- *               password: password1
+ *               email: tkiet.le.1002@gmail.com
+ *               password: tkiet.le.1002
  *     responses:
  *       "200":
  *         description: OK
@@ -124,7 +160,7 @@ module.exports = router;
  * @swagger
  * /auth/logout:
  *   post:
- *     summary: Logout
+ *     summary: Đăng xuất
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -150,7 +186,7 @@ module.exports = router;
  * @swagger
  * /auth/refresh-tokens:
  *   post:
- *     summary: Refresh auth tokens
+ *     summary: Refresh tokens
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -180,7 +216,7 @@ module.exports = router;
  * @swagger
  * /auth/forgot-password:
  *   post:
- *     summary: Forgot password
+ *     summary: Quên mật khẩu
  *     description: An email will be sent to reset password.
  *     tags: [Auth]
  *     requestBody:
@@ -208,7 +244,7 @@ module.exports = router;
  * @swagger
  * /auth/reset-password:
  *   post:
- *     summary: Reset password
+ *     summary: Đổi mật khẩu
  *     tags: [Auth]
  *     parameters:
  *       - in: query

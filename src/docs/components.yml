@@ -14,10 +14,14 @@ components:
           type: string
           enum: [user, admin]
       example:
-        id: 5ebac534954b54139806c112
-        email: fake@example.com
-        name: fake name
-        role: user
+        firstname: Le
+        lastname: Kiet
+        dateofbirth: 10-02-2001
+        gender: true
+        phonenumber: '0347057544'
+        email: tkiet.le.1002@gmail.com
+        username: tkiet.le.1002
+        password: tkiet.le.1002
 
     Token:
       type: object
