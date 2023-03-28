@@ -4,12 +4,9 @@
   "description": "Create a Node.js app for building production-ready RESTful APIs using Express, by running one command",
   "bin": "bin/createNodejsApp.js",
   "main": "src/index.js",
-  "repository": "https://github.com/hagopj13/node-express-boilerplate.git",
-  "author": "Hagop Jamkojian <hagopj13@gmail.com>",
+  "repository": "https://github.com/kiethohohoho/BachHoaNgocDiep-Backend.git",
+  "author": "Kiet Le <1951120099@sv.ut.edu.vn>",
   "license": "MIT",
-  "engines": {
-    "node": ">=10.0.0"
-  },
   "scripts": {
     "start": "pm2 start ecosystem.config.json --no-daemon",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
@@ -29,13 +26,13 @@
   "keywords": [
     "node",
     "node.js",
-    "boilerplate",
     "generator",
     "express",
     "rest",
     "api",
     "mongodb",
     "mongoose",
+    "sequelize",
     "es6",
     "es7",
     "es8",
@@ -64,7 +61,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "moment": "^2.24.0",
-    "mongoose": "^5.7.7",
+    "mongoose": "^7.0.3",
     "morgan": "^1.9.1",
     "mssql": "^9.1.1",
     "nodemailer": "^6.3.1",
