@@ -4,6 +4,7 @@ services:
   node-app:
     build: .
     image: node-app
+    container_name: node-app
     ports:
       - '3000:3000'
     depends_on:
@@ -13,9 +14,16 @@ services:
 
   db:
     image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mssql
+    user: root
     environment:
       SA_PASSWORD: 'b4chH04Ng0cD13p'
       ACCEPT_EULA: 'Y'
+    ports:
+      - '1433:1433'
+    restart: always
+    volumes:
+      - ./data:/var/opt/mssql/data
     networks:
       - node-network
 
