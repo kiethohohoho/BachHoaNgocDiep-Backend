@@ -1,17 +1,6 @@
 version: '3.7'
 
 services:
-  node-app:
-    build: .
-    image: node-app
-    container_name: node-app
-    ports:
-      - '3000:3000'
-    depends_on:
-      - db
-    networks:
-      - node-network
-
   db:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: mssql
@@ -24,6 +13,17 @@ services:
     restart: always
     volumes:
       - ./data:/var/opt/mssql/data
+    networks:
+      - node-network
+
+  node-app:
+    build: .
+    image: node-app
+    container_name: node-app
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
     networks:
       - node-network
 
