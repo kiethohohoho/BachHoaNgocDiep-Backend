@@ -1,17 +1,25 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { authService, accountService, tokenService, emailService } = require('../services');
-// const logger = require('../config/logger');
+const {
+  authService,
+  accountService,
+  tokenService,
+  emailService,
+  smsService,
+} = require('../services');
 
 const register = catchAsync(async (req, res) => {
   try {
     const account = await accountService.createAccount(req.body);
-    const { access, refresh } = await tokenService.generateAuthTokens(account);
-    await emailService.sendEmail(
-      account.Email,
-      'Xác thực email đăng ký toàn khoản Bách Hoá Ngọc Diệp',
-      `<p>Hãy click vào link này để xác thực email của bạn:</p><p><a href="http://localhost:3000/v1/auth/verify-email/${access.token}">http://localhost:3000/v1/auth/verify-email/${access.token}</a></p>`
-    );
+    const { access, refresh } = await tokenService.generateAuthTokens(account.Id);
+    await Promise.all([
+      smsService.sendOtpSms(account.PhoneNumber, Math.floor(100000 + Math.random() * 900000)),
+      emailService.sendEmail(
+        account.Email,
+        'Xác thực email đăng ký toàn khoản Bách Hoá Ngọc Diệp',
+        `<p>Hãy click vào link này để xác thực email của bạn:</p><p><a href="http://localhost:3000/v1/auth/verify-email/${access.token}">http://localhost:3000/v1/auth/verify-email/${access.token}</a></p>`
+      ),
+    ]);
     res.status(httpStatus.CREATED).json({ account, access, refresh });
   } catch (err) {
     res
@@ -22,7 +30,7 @@ const register = catchAsync(async (req, res) => {
 
 const login = catchAsync(async (req, res) => {
   const user = await authService.loginUserWithStuffsAndPassword(req.body);
-  const tokens = await tokenService.generateAuthTokens(user);
+  const tokens = await tokenService.generateAuthTokens(user.Id);
   res.send({ user, tokens });
 });
 

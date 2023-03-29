@@ -67,4 +67,10 @@ module.exports = {
     },
     from: envVars.EMAIL_FROM,
   },
+  twilio: {
+    sender: envVars.TWILIO_SENDER,
+    authToken: envVars.TWILIO_AUTH_TOKEN,
+    accountSID: envVars.ACCOUNT_SID,
+    verifySID: envVars.VERIFY_SID,
+  },
 };

@@ -90,7 +90,7 @@ Account.prototype.isMatchPassword = function (password) {
 
 if (config.env !== 'production') {
   // Development or test environment
-  Account.sync({ force: false })
+  Account.sync({ force: true })
     .then(() => {
       loggers.info('Account table created successfully');
     })
