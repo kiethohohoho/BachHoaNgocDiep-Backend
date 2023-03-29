@@ -1,6 +1,8 @@
 # Dependencies
 node_modules
 
+#husky
+.husky
 # yarn error logs
 yarn-error.log
 
