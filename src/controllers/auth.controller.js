@@ -7,6 +7,7 @@ const {
   emailService,
   smsService,
 } = require('../services');
+const config = require('../config/config');
 
 const register = catchAsync(async (req, res) => {
   try {
@@ -17,7 +18,11 @@ const register = catchAsync(async (req, res) => {
       emailService.sendEmail(
         account.Email,
         'Xác thực email đăng ký toàn khoản Bách Hoá Ngọc Diệp',
-        `<p>Hãy click vào link này để xác thực email của bạn:</p><p><a href="http://localhost:3000/v1/auth/verify-email/${access.token}">http://localhost:3000/v1/auth/verify-email/${access.token}</a></p>`
+        `<p>Hãy click vào link này để xác thực email của bạn:</p><p><a href="${
+          config.env !== 'production' ? 'http://localhost:3000' : 'https://be.bachhoangocdiep.com'
+        }/v1/auth/verify-email/${access.token}">${
+          config.env !== 'production' ? 'http://localhost:3000' : 'https://be.bachhoangocdiep.com'
+        }/v1/auth/verify-email/${access.token}</a></p>`
       ),
     ]);
     res.status(httpStatus.CREATED).json({ account, access, refresh });
@@ -73,6 +78,18 @@ const verifyEmailAccount = catchAsync(async (req, res) => {
   }
 });
 
+const verifyOtp = catchAsync(async (req, res) => {
+  try {
+    const { otp } = req.params;
+    await smsService.verifyOtp(otp);
+    res.status(httpStatus.OK).send('Xác thực email thành công!');
+  } catch (err) {
+    res
+      .status(err.statusCode || httpStatus.UNAUTHORIZED)
+      .json({ message: 'Xác thực email thất bại!', detail: err.message || err });
+  }
+});
+
 module.exports = {
   register,
   login,
@@ -82,4 +99,5 @@ module.exports = {
   resetPassword,
   sendVerificationEmail,
   verifyEmailAccount,
+  verifyOtp,
 };

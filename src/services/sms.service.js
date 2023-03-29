@@ -38,7 +38,7 @@ const verifyOtp = async (phoneNumber, code, channel = 'sms', locale = 'vi') => {
       .verificationChecks.create({ to: phoneNumber, code, channel, locale });
     return checkVerification;
   } catch (error) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Xác thực số điện thoại không thành công!');
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Xác thực OTP không thành công!');
   }
 };
 

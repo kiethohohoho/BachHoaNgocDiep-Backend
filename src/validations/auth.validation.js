@@ -75,6 +75,14 @@ const verifyEmail = {
     .unknown(true),
 };
 
+const otp = {
+  params: Joi.object()
+    .keys({
+      otp: Joi.string().required(),
+    })
+    .unknown(true),
+};
+
 module.exports = {
   register,
   login,
@@ -83,4 +91,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   verifyEmail,
+  otp,
 };

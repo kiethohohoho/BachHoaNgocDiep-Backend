@@ -1,31 +1,23 @@
-version: '3'
+version: '3.7'
 
 services:
   node-app:
     build: .
     image: node-app
-    environment:
-      - MONGODB_URL=mongodb://mongodb:27017/node-boilerplate
     ports:
       - '3000:3000'
     depends_on:
-      - mongodb
-    volumes:
-      - .:/usr/src/node-app
+      - db
     networks:
       - node-network
 
-  mongodb:
-    image: mongo:4.2.1-bionic
-    ports:
-      - '27017:27017'
-    volumes:
-      - dbdata:/data/db
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: 'b4chH04Ng0cD13p'
+      ACCEPT_EULA: 'Y'
     networks:
       - node-network
-
-volumes:
-  dbdata:
 
 networks:
   node-network:

@@ -30,6 +30,7 @@ router.get(
   validate(authValidation.verifyEmail),
   authController.verifyEmailAccount
 );
+router.get('/verify-otp/:otp', validate(authValidation.otp), authController.verifyOtp);
 
 module.exports = router;
 
