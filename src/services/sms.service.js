@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const twilio = require('twilio');
 const config = require('../config/config');
+const logger = require('../config/logger');
 const ApiError = require('../utils/ApiError');
 
 const client = twilio(config.twilio.accountSID, config.twilio.authToken);
@@ -14,11 +15,12 @@ const client = twilio(config.twilio.accountSID, config.twilio.authToken);
 const sendOtpSms = async (phoneNumber, otp) => {
   try {
     await client.messages.create({
-      body: `Mã OTP của bạn là ${otp}. Sử dụng mã này để xác thực số điện thoại của bạn với BachHoaNgocDiep shop. Không chia sẻ mã này cho bất cứ ai!`,
+      body: `Mã OTP của bạn là ${otp}. Sử dụng mã này để xác thực số điện thoại của bạn với shop Bách hoá Ngọc Diệp. Không chia sẻ mã này cho bất cứ ai!`,
       from: config.twilio.sender,
       to: `+84${phoneNumber.slice(1)}`,
     });
   } catch (error) {
+    logger.info(JSON.stringify(error));
     throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Gửi SMS không thành công!');
   }
 };

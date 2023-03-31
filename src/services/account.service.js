@@ -11,35 +11,22 @@ const logger = require('../config/logger');
  * @returns {Promise<Account>}
  */
 const createAccount = async (accountBody) => {
-  const {
-    email,
-    username,
-    password,
-    firstname = '',
-    lastname = '',
-    dateofbirth,
-    gender,
-    phonenumber,
-  } = accountBody;
+  const { password, firstname = '', lastname = '', email } = accountBody;
 
   try {
-    // Check if user already exists
-    const usernameExist = await Account.findOne({ where: { UserName: username } });
-    if (usernameExist) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Tài khoản này đã tồn tại!');
+    // Check if email already exists
+    if (email) {
+      const emailExist = await Account.findOne({ where: { Email: email } });
+      if (emailExist) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Email này đã tồn tại!');
+      }
     }
 
-    // Check if email already exists
-    const emailExist = await Account.findOne({ where: { Email: email } });
-    if (emailExist) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Email này đã tồn tại!');
-    }
-
-    // Check if email already exists
-    const phoneExist = await Account.findOne({ where: { PhoneNumber: phonenumber } });
-    if (phoneExist) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Số điện thoại này đã tồn tại!');
-    }
+    // Check if phone number already exists
+    // const phoneExist = await Account.findOne({ where: { PhoneNumber: phonenumber } });
+    // if (phoneExist) {
+    //   throw new ApiError(httpStatus.BAD_REQUEST, 'Số điện thoại này đã tồn tại!');
+    // }
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -49,20 +36,18 @@ const createAccount = async (accountBody) => {
       FirstName: firstname,
       LastName: lastname,
       FullName: `${firstname} ${lastname}`,
-      DateOfBirth: dateofbirth,
-      Gender: gender,
-      PhoneNumber: phonenumber,
       Email: email,
-      UserName: username,
+      UserName: email,
       Password: hashedPassword,
       IsAdmin: false,
       IsEmailVerified: false,
       IsPhoneVerified: false,
+      OTPPhoneVerified: `${Math.floor(100000 + Math.random() * 900000)}`,
     });
 
     return newAccount;
   } catch (err) {
-    logger.error('Error registering user', err);
+    logger.error('Lỗi tạo tài khoản!', err);
     throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, err);
   }
 };

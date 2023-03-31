@@ -25,12 +25,12 @@ router.post(
   authController.resetPassword
 );
 router.post('/send-verification-email', auth(), authController.sendVerificationEmail);
-router.get(
-  '/verify-email/:verificationToken',
+router.post(
+  '/verify-email',
   validate(authValidation.verifyEmail),
   authController.verifyEmailAccount
 );
-router.get('/verify-otp/:otp', validate(authValidation.otp), authController.verifyOtp);
+router.get('/verify-otp/:otp', validate(authValidation.otp), auth(), authController.verifyOtp);
 
 module.exports = router;
 
@@ -56,31 +56,17 @@ module.exports = router;
  *             required:
  *               - firstname
  *               - lastname
- *               - dateofbirth
- *               - gender
- *               - phonenumber
  *               - email
- *               - username
  *               - password
  *             properties:
  *               firstname:
  *                 type: string
  *               lastname:
  *                 type: string
- *               dateofbirth:
- *                 type: date
- *               gender:
- *                 type: boolean
- *               phonenumber:
- *                 type: string
- *                 format: phone
- *                 description: must be unique
  *               email:
  *                 type: string
- *                 format: email
+ *                 format: mail
  *                 description: must be unique
- *               username:
- *                 type: string
  *               password:
  *                 type: string
  *                 format: password
@@ -89,11 +75,7 @@ module.exports = router;
  *             example:
  *               firstname: Le
  *               lastname: Kiet
- *               dateofbirth: 10-02-2001
- *               gender: true
- *               phonenumber: "0347057544"
- *               email: tkiet.le.1002@gmail.com
- *               username: tkiet.le.1002
+ *               email: "tkiet.le.2001@gmail.com"
  *               password: tkiet.le.1002
  *     responses:
  *       "200":
@@ -306,23 +288,23 @@ module.exports = router;
  *   post:
  *     summary: verify email
  *     tags: [Auth]
- *     parameters:
- *       - in: query
- *         name: token
- *         required: true
- *         schema:
- *           type: string
- *         description: The verify email token
- *     responses:
- *       "204":
- *         description: No content
- *       "401":
- *         description: verify email failed
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - code
+ *             properties:
+ *               code:
+ *                 type: string
+ *                 minLength: 6
  *             example:
- *               code: 401
- *               message: verify email failed
+ *               code: "123456"
+ *     responses:
+ *       "200":
+ *         description: No content
  */

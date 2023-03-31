@@ -7,24 +7,28 @@ const {
   emailService,
   smsService,
 } = require('../services');
-const config = require('../config/config');
 
 const register = catchAsync(async (req, res) => {
   try {
     const account = await accountService.createAccount(req.body);
     const { access, refresh } = await tokenService.generateAuthTokens(account.Id);
-    await Promise.all([
-      smsService.sendOtpSms(account.PhoneNumber, Math.floor(100000 + Math.random() * 900000)),
-      emailService.sendEmail(
-        account.Email,
-        'Xác thực email đăng ký toàn khoản Bách Hoá Ngọc Diệp',
-        `<p>Hãy click vào link này để xác thực email của bạn:</p><p><a href="${
-          config.env !== 'production' ? 'http://localhost:3000' : 'https://be.bachhoangocdiep.com'
-        }/v1/auth/verify-email/${access.token}">${
-          config.env !== 'production' ? 'http://localhost:3000' : 'https://be.bachhoangocdiep.com'
-        }/v1/auth/verify-email/${access.token}</a></p>`
-      ),
-    ]);
+    // await Promise.all([
+    //   smsService.sendOtpSms(account.PhoneNumber, Math.floor(100000 + Math.random() * 900000)),
+    //   emailService.sendEmail(
+    //     account.Email,
+    //     'Xác thực email đăng ký toàn khoản Bách Hoá Ngọc Diệp',
+    //     `<p>Hãy click vào link này để xác thực email của bạn:</p><p><a href="${
+    //       config.env !== 'production' ? 'http://localhost:3000' : 'https://be.bachhoangocdiep.com'
+    //     }/v1/auth/verify-email/${access.token}">${
+    //       config.env !== 'production' ? 'http://localhost:3000' : 'https://be.bachhoangocdiep.com'
+    //     }/v1/auth/verify-email/${access.token}</a></p>`
+    //   ),
+    // ]);
+    await emailService.sendEmail(
+      account.Email,
+      'Xác thực email đăng ký toàn khoản Bách Hoá Ngọc Diệp',
+      `<h3>Mã xác thực của bạn là:</h3> ${account.OTPPhoneVerified}`
+    );
     res.status(httpStatus.CREATED).json({ account, access, refresh });
   } catch (err) {
     res
@@ -68,9 +72,18 @@ const sendVerificationEmail = catchAsync(async (req, res) => {
 
 const verifyEmailAccount = catchAsync(async (req, res) => {
   try {
-    const token = req.params.verificationToken;
-    await authService.verifyEmail(token);
-    res.status(httpStatus.OK).send('Xác thực email thành công!');
+    const { code } = req.body;
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+    // const
+    await authService.verifyEmail({ token, code });
+    res.status(httpStatus.OK).json({
+      IsVerified: true,
+      message: 'Xác thực email thành công!',
+    });
   } catch (err) {
     res
       .status(err.statusCode || httpStatus.UNAUTHORIZED)

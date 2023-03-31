@@ -13,43 +13,11 @@ const Verification = sequelize.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    FirstName: {
+    EmailCode: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
-    LastName: {
+    Otp: {
       type: DataTypes.STRING,
-      allowNull: false,
-    },
-    FullName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    DateOfBirth: {
-      type: DataTypes.DATE,
-    },
-    Gender: {
-      type: DataTypes.BOOLEAN,
-    },
-    PhoneNumber: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    Email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    UserName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    Password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    IsAdmin: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
     },
     IsEmailVerified: {
       type: DataTypes.BOOLEAN,

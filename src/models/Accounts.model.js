@@ -40,7 +40,6 @@ const Account = sequelize.define(
     },
     PhoneNumber: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     Email: {
       type: DataTypes.STRING,
@@ -48,7 +47,6 @@ const Account = sequelize.define(
     },
     UserName: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     Password: {
       type: DataTypes.STRING,
@@ -61,6 +59,9 @@ const Account = sequelize.define(
     IsEmailVerified: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+    },
+    OTPPhoneVerified: {
+      type: DataTypes.STRING,
     },
     IsPhoneVerified: {
       type: DataTypes.BOOLEAN,
@@ -90,7 +91,7 @@ Account.prototype.isMatchPassword = function (password) {
 
 if (config.env !== 'production') {
   // Development or test environment
-  Account.sync({ force: true })
+  Account.sync({ force: false })
     .then(() => {
       loggers.info('Account table created successfully');
     })

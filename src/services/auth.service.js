@@ -85,9 +85,10 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
 /**
  * Verify email
  * @param {string} token
+ * @param {string} code
  * @returns {Promise}
  */
-const verifyEmail = async (token) => {
+const verifyEmail = async ({ token, code }) => {
   try {
     const payload = jwt.verify(token, config.jwt.secret);
     const account = await Account.findOne({
@@ -99,6 +100,11 @@ const verifyEmail = async (token) => {
     if (!account) {
       throw new ApiError(httpStatus.NOT_FOUND, 'Tài khoản không tồn tại!');
     }
+
+    if (account.OTPPhoneVerified !== code) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Mã xác thực không đúng!');
+    }
+
     await Account.update(
       { IsEmailVerified: true },
       {
