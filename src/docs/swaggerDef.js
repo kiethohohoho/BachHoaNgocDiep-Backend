@@ -13,7 +13,9 @@ const swaggerDef = {
   },
   servers: [
     {
-      url: `http://localhost:${config.port}/v1`,
+      url: `${
+        config.env !== 'production' ? 'http://localhost:3000' : 'https://be.bachhoangocdiep.com'
+      }/v1`,
     },
   ],
 };
