@@ -19,12 +19,12 @@ const register = {
 const login = {
   body: Joi.object()
     .keys({
-      phonenumber: Joi.string().pattern(/^(03|05|07|08|09)+([0-9]{8})\b/),
-      email: Joi.string().email(),
-      username: Joi.string(),
+      // phonenumber: Joi.string().pattern(/^(03|05|07|08|09)+([0-9]{8})\b/),
+      email: Joi.string().required().email(),
+      // username: Joi.string(),
       password: Joi.string().required().custom(password),
     })
-    .or('phonenumber', 'email', 'username')
+    // .or('phonenumber', 'email', 'username')
     .unknown(true),
 };
 

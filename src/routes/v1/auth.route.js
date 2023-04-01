@@ -113,6 +113,8 @@ module.exports = router;
  *               password:
  *                 type: string
  *                 format: password
+ *                 minLength: 6
+ *                 description: At least one number and one letter
  *             example:
  *               email: tkiet.le.1002@gmail.com
  *               password: tkiet.le.1002

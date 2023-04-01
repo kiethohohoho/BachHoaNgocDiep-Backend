@@ -1,13 +1,14 @@
 const httpStatus = require('http-status');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const tokenService = require('./token.service');
 const accountService = require('./account.service');
 const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
 const config = require('../config/config');
-// const logger = require('../config/logger');
 const { Account } = require('../models');
+const logger = require('../config/logger');
 
 /**
  * Login with username and password
@@ -15,12 +16,20 @@ const { Account } = require('../models');
  * @returns {Promise<User>}
  */
 const loginUserWithStuffsAndPassword = async (loginBody) => {
-  const { phonenumber, email, username, password } = loginBody;
-  const user = await accountService.getUserByStuffs({ phonenumber, email, username });
-  if (!user || !(await user.isMatchPassword(password))) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Sai tài khoản hoặc mật khẩu!');
+  const { email, password } = loginBody;
+  const account = await accountService.getUserByStuffs({ email });
+  if (account) {
+    bcrypt.compare(password, account.Password, (err, result) => {
+      if (err) {
+        logger.info('huhuhuhuhuhuhuhuhu');
+        throw new ApiError(httpStatus.UNAUTHORIZED, 'Sai tài khoản hoặc mật khẩu!');
+      } else if (result === false) {
+        logger.info('hic hic hic hic');
+        throw new ApiError(httpStatus.UNAUTHORIZED, 'Sai tài khoản hoặc mật khẩu!');
+      }
+    });
+    return account;
   }
-  return user;
 };
 
 /**

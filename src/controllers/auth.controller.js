@@ -7,6 +7,7 @@ const {
   emailService,
   smsService,
 } = require('../services');
+// const logger = require('../config/logger');
 
 const register = catchAsync(async (req, res) => {
   try {
@@ -29,18 +30,18 @@ const register = catchAsync(async (req, res) => {
       'Xác thực email đăng ký toàn khoản Bách Hoá Ngọc Diệp',
       `<h3>Mã xác thực của bạn là:</h3> ${account.OTPPhoneVerified}`
     );
-    res.status(httpStatus.CREATED).json({ account, access, refresh });
+    res.status(httpStatus.CREATED).json({ user: account, access, refresh, success: true });
   } catch (err) {
     res
       .status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR)
-      .json({ message: 'Lỗi đăng ký tài khoản!', detail: err.message || err });
+      .json({ message: 'Lỗi đăng ký tài khoản!', detail: err.message || err, success: false });
   }
 });
 
 const login = catchAsync(async (req, res) => {
-  const user = await authService.loginUserWithStuffsAndPassword(req.body);
-  const tokens = await tokenService.generateAuthTokens(user.Id);
-  res.send({ user, tokens });
+  const account = await authService.loginUserWithStuffsAndPassword(req.body);
+  const tokens = await tokenService.generateAuthTokens(account.Id);
+  res.send({ user: account, tokens, success: true });
 });
 
 const logout = catchAsync(async (req, res) => {
