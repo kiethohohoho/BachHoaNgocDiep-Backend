@@ -35,10 +35,11 @@ const Address = sequelize.define(
   },
   {
     timestamps: {
-      createdAt: 'CreatedAt',
-      updatedAt: 'UpdatedAt',
+      CreatedAt: 'created_date',
+      UpdatedAt: 'updated_at',
     },
     underscored: false,
+    paranoid: true,
   }
 );
 

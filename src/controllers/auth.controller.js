@@ -84,6 +84,7 @@ const verifyEmailAccount = catchAsync(async (req, res) => {
     res.status(httpStatus.OK).json({
       IsVerified: true,
       message: 'Xác thực email thành công!',
+      success: true,
     });
   } catch (err) {
     res

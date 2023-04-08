@@ -74,6 +74,7 @@ const Account = sequelize.define(
       UpdatedAt: 'updated_at',
     },
     underscored: false,
+    paranoid: true,
   }
 );
 

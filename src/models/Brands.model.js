@@ -2,29 +2,28 @@ const { DataTypes } = require('sequelize');
 const loggers = require('../config/logger');
 const sequelize = require('../config/database');
 
-const OrderDetail = sequelize.define(
-  'OrderDetails',
+const Brand = sequelize.define(
+  'Brands',
   {
-    id: {
+    Id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    productId: {
+    CategoryGroupId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
+    CategoryId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
+    BrandName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    orderId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    tenantID: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    quantity: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    Description: {
+      type: DataTypes.TEXT('long'),
     },
   },
   {
@@ -37,12 +36,12 @@ const OrderDetail = sequelize.define(
   }
 );
 
-OrderDetail.sync({ force: true })
+Brand.sync({ force: false })
   .then(() => {
-    loggers.info('OrderDetail table created successfully');
+    loggers.info('Brand table created successfully');
   })
   .catch((err) => {
-    loggers.error('Error creating OrderDetail table:', err);
+    loggers.error('Error creating Brand table:', err);
   });
 
-module.exports = OrderDetail;
+module.exports = Brand;
