@@ -14,7 +14,7 @@ const Category = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
     },
-    CategoryName: {
+    Name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -26,6 +26,7 @@ const Category = sequelize.define(
     timestamps: {
       CreatedAt: 'created_date',
       UpdatedAt: 'updated_at',
+      DeletedAt: 'deleted_at',
     },
     underscored: false,
     paranoid: true,

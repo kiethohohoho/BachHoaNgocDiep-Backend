@@ -1,6 +1,5 @@
 const httpStatus = require('http-status');
 const bcrypt = require('bcrypt');
-const { Op } = require('sequelize');
 const { Account, User } = require('../models');
 const ApiError = require('../utils/ApiError');
 const logger = require('../config/logger');
@@ -86,15 +85,17 @@ const getAccountById = async (id) => {
 
 /**
  * Get user by email
- * @param {{phonenumber:string, email:string, username:string}} stuffs
- * @returns {Promise<User>}
+ * @param {string} email
+ * @returns {Promise<Account>}
  */
-const getUserByStuffs = async ({ phonenumber = '', email = '', username = '' }) => {
-  return Account.findOne({
-    where: {
-      [Op.or]: [{ UserName: username }, { Email: email }, { PhoneNumber: phonenumber }],
-    },
+const getUserByEmail = async (email = '') => {
+  const account = await Account.findOne({
+    where: { Email: email },
   });
+  if (!account) {
+    throw new ApiError(httpStatus.BAD_REQUEST, `Không tìm thấy email ${email}`);
+  }
+  return account;
 };
 
 /**
@@ -135,7 +136,7 @@ module.exports = {
   queryUsers,
   getUserById,
   getAccountById,
-  getUserByStuffs,
+  getUserByEmail,
   updateAccountById,
   deleteUserById,
 };

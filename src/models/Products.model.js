@@ -15,15 +15,12 @@ const Product = sequelize.define(
     },
     BrandId: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
     },
     CategoryId: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
     },
     CategoryGroupId: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
     },
     Name: {
       type: DataTypes.STRING,
@@ -36,11 +33,22 @@ const Product = sequelize.define(
       type: DataTypes.DECIMAL,
       allowNull: false,
     },
+    Rate: {
+      type: DataTypes.DECIMAL,
+    },
+    Quantity: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    Status: {
+      type: DataTypes.BOOLEAN,
+    },
   },
   {
     timestamps: {
       CreatedAt: 'created_date',
       UpdatedAt: 'updated_at',
+      DeletedAt: 'deleted_at',
     },
     underscored: false,
     paranoid: true,

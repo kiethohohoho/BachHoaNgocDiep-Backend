@@ -12,7 +12,7 @@ const CategoryGroup = sequelize.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    CategoryGroupName: {
+    Name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -24,6 +24,7 @@ const CategoryGroup = sequelize.define(
     timestamps: {
       CreatedAt: 'created_date',
       UpdatedAt: 'updated_at',
+      DeletedAt: 'deleted_at',
     },
     underscored: false,
     paranoid: true,

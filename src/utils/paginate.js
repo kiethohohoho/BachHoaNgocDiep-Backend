@@ -1,75 +1,67 @@
 const { Op } = require('sequelize');
+const _ = require('lodash');
+const sequelize = require('../config/database');
 
 const paginate = async (model, query) => {
-  const { search, filter, sort, order, page = 1, limit = 10 } = query;
+  const { search = '', filter = {}, sort = '', order = '', page = 1, limit = 10 } = query;
 
-  // Build the order clause for the sort and order parameters
-  const orderClause = [];
+  const orderField = order.split(',');
+  const sortField = sort.split(',');
+
+  const _order = sort
+    ? sortField.map((sField, idx) => [sField, orderField[idx].toUpperCase()])
+    : [];
+
+  const _s = search
+    ? {
+        [Op.or]: [
+          {
+            Name: sequelize.where(
+              sequelize.fn('LOWER', sequelize.col('Name')),
+              'LIKE',
+              `%${search.toLowerCase()}%`
+            ),
+            Description: sequelize.where(
+              sequelize.fn('LOWER', sequelize.col('Description')),
+              'LIKE',
+              `%${search.toLowerCase()}%`
+            ),
+          },
+        ],
+      }
+    : {};
+
+  const _f = _.mapValues(filter, (f) => {
+    const temp = _.mapValues(f, (e) => +e);
+    return _.mapKeys(temp, (value, key) => Op[key]);
+  });
+
+  const where = {
+    ..._f,
+    ..._s,
+  };
 
   // Calculate the offset based on the page and limit parameters
   const offset = (page - 1) * limit;
 
-  // Build the where clause for the search and filter parameters
-  let whereClause = {};
-  if (filter) {
-    const filters = Object.entries(filter || {}).map((val) => {
-      const fieldName = val[0];
-      const operator = Object.keys(val[1])[0];
-      const value = Object.values(val[1])[0];
-      return { fieldName, operator, value };
-    });
-    whereClause = filters.reduce((where, fil) => {
-      const { fieldName, operator, value } = fil;
-      if (where[Op.and] === undefined) {
-        // eslint-disable-next-line no-param-reassign
-        where[Op.and] = [];
-      }
-      // eslint-disable-next-line no-param-reassign
-      where[Op.and].push({ [fieldName]: { [Op[operator]]: value } });
-      return where;
-    }, {});
-  }
-
-  if (search) {
-    whereClause[Op.or] = [
-      { Name: { [Op.iLike]: `%${search}%` } },
-      { Description: { [Op.iLike]: `%${search}%` } },
-    ];
-  }
-
-  if (sort) {
-    const sortFields = sort.split(',');
-    const sortOrders = (order || '').split(',');
-    sortFields.forEach((field, index) => {
-      orderClause.push([field.trim(), sortOrders[index] === 'desc' ? 'DESC' : 'ASC']);
-    });
-  }
-  console.log({
-    where: whereClause,
-    order: orderClause,
-    offset,
-    limit,
-  });
-
   // Query the database with the where, order, offset, and limit clauses
   const { count, rows } = await model.findAndCountAll({
-    where: whereClause,
-    order: orderClause,
+    where,
+    order: _order,
     offset,
     limit,
   });
-
   // Calculate the total number of pages based on the count and limit parameters
-  const totalPages = Math.ceil(count / limit);
+  const TotalPages = Math.ceil(count / limit);
 
   // Return the paginated results along with the total count and number of pages
   return {
-    data: rows,
-    pagination: {
-      totalCount: count,
-      totalPages,
-      currentPage: page,
-      limit,
+    Data: rows,
+    Pagination: {
+      TotalCount: count,
+      TotalPages,
+      CurrentPage: page,
+      Limit: limit,
     },
   };
 };

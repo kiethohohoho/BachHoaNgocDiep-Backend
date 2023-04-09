@@ -18,7 +18,7 @@ const Brand = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
     },
-    BrandName: {
+    Name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -30,6 +30,7 @@ const Brand = sequelize.define(
     timestamps: {
       CreatedAt: 'created_date',
       UpdatedAt: 'updated_at',
+      DeletedAt: 'deleted_at',
     },
     underscored: false,
     paranoid: true,

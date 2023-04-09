@@ -13,7 +13,7 @@ const getProducts = {
     .unknown(true),
 };
 
-const getProductById = {
+const getOrDeleteProductById = {
   params: Joi.object()
     .keys({
       productId: Joi.string().required(),
@@ -21,13 +21,28 @@ const getProductById = {
     .unknown(true),
 };
 
+const updateProductById = {
+  params: Joi.object()
+    .keys({
+      productId: Joi.string().required(),
+    })
+    .unknown(true),
+  body: Joi.object().keys({
+    brandid: Joi.string(),
+    categoryid: Joi.string(),
+    categorygroupid: Joi.string(),
+    name: Joi.string(),
+    description: Joi.string(),
+    price: Joi.number(),
+  }),
+};
+
 const createProduct = {
   body: Joi.object()
     .keys({
-      brandId: Joi.string().required(),
-      categoryId: Joi.string().required(),
-      categoryGroupId: Joi.string().required(),
-      couponId: Joi.string(),
+      brandid: Joi.string().required(),
+      categoryid: Joi.string().required(),
+      categorygroupid: Joi.string().required(),
       name: Joi.string().required(),
       price: Joi.number().required(),
       description: Joi.string(),
@@ -37,6 +52,7 @@ const createProduct = {
 
 module.exports = {
   getProducts,
-  getProductById,
+  getOrDeleteProductById,
+  updateProductById,
   createProduct,
 };

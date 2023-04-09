@@ -1,17 +1,37 @@
 const express = require('express');
 const validate = require('../../middlewares/validate');
-// const { productValidation } = require('../../validations');
 const { productValidation } = require('../../validations');
 const { productController } = require('../../controllers');
+const auth = require('../../middlewares/auth');
 
 const router = express.Router();
 
 router
   .route('/products')
-  .get(validate(productValidation.getProducts), productController.getProducts)
-  .post(validate(productValidation.createProduct), productController.createProduct);
+  .get(auth('getProducts'), validate(productValidation.getProducts), productController.getProducts)
+  .post(
+    auth('manageProducts'),
+    validate(productValidation.createProduct),
+    productController.createProduct
+  );
 
-router.route('/products/:productId').get(validate(productValidation.getProductById));
+router
+  .route('/products/:productId')
+  .get(
+    auth('getProducts'),
+    validate(productValidation.getOrDeleteProductById),
+    productController.getProductById
+  )
+  .put(
+    auth('manageProducts'),
+    validate(productValidation.updateProductById),
+    productController.updateProductById
+  )
+  .delete(
+    auth('manageProducts'),
+    validate(productValidation.getOrDeleteProductById),
+    productController.deleteProductById
+  );
 
 /**
  * @swagger
