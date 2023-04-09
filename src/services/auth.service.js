@@ -8,7 +8,6 @@ const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
 const config = require('../config/config');
 const { Account } = require('../models');
-const logger = require('../config/logger');
 
 /**
  * Login with username and password
@@ -17,15 +16,13 @@ const logger = require('../config/logger');
  */
 const loginUserWithStuffsAndPassword = async (loginBody) => {
   const { email, password } = loginBody;
-  const account = await accountService.getUserByStuffs({ email });
+  const account = await accountService.getUserByEmail(email);
   if (account) {
     bcrypt.compare(password, account.Password, (err, result) => {
       if (err) {
-        logger.info('huhuhuhuhuhuhuhuhu');
-        throw new ApiError(httpStatus.UNAUTHORIZED, 'Sai tài khoản hoặc mật khẩu!');
+        throw new ApiError(httpStatus.UNAUTHORIZED, 'Sai mật khẩu!');
       } else if (result === false) {
-        logger.info('hic hic hic hic');
-        throw new ApiError(httpStatus.UNAUTHORIZED, 'Sai tài khoản hoặc mật khẩu!');
+        throw new ApiError(httpStatus.UNAUTHORIZED, 'Sai mật khẩu!');
       }
     });
     return account;

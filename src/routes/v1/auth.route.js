@@ -75,7 +75,7 @@ module.exports = router;
  *             example:
  *               firstname: Le
  *               lastname: Kiet
- *               email: "tkiet.le.2001@gmail.com"
+ *               email: "tkiet.le.1002@gmail.com"
  *               password: tkiet.le.1002
  *     responses:
  *       "200":

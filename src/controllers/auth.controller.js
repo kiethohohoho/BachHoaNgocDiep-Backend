@@ -39,9 +39,15 @@ const register = catchAsync(async (req, res) => {
 });
 
 const login = catchAsync(async (req, res) => {
-  const account = await authService.loginUserWithStuffsAndPassword(req.body);
-  const tokens = await tokenService.generateAuthTokens(account.Id);
-  res.send({ user: account, tokens, success: true });
+  try {
+    const account = await authService.loginUserWithStuffsAndPassword(req.body);
+    const tokens = await tokenService.generateAuthTokens(account.Id);
+    res.send({ user: account, tokens, success: true });
+  } catch (err) {
+    res
+      .status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR)
+      .json({ message: 'Lỗi đăng nhập tài khoản!', detail: err.message || err, success: false });
+  }
 });
 
 const logout = catchAsync(async (req, res) => {

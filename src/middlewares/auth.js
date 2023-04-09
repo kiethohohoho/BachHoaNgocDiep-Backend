@@ -3,19 +3,19 @@ const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const { roleRights } = require('../config/roles');
 
-const verifyCallback = (req, resolve, reject, requiredRights) => async (err, user, info) => {
-  if (err || info || !user) {
-    return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
+const verifyCallback = (req, resolve, reject, requiredRights) => async (err, account, info) => {
+  if (err || info || !account) {
+    return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Bạn chưa đăng nhập!'));
   }
-  req.user = user;
+  req.user = account;
 
   if (requiredRights.length) {
-    const userRights = roleRights.get(user.role);
+    const userRights = roleRights.get(account.IsAdmin ? 'admin' : 'user');
     const hasRequiredRights = requiredRights.every((requiredRight) =>
       userRights.includes(requiredRight)
     );
-    if (!hasRequiredRights && req.params.userId !== user.id) {
-      return reject(new ApiError(httpStatus.FORBIDDEN, 'Forbidden'));
+    if (!hasRequiredRights && req.params.userId !== account.Id) {
+      return reject(new ApiError(httpStatus.FORBIDDEN, 'Bạn bị cấm thực hiện yêu cầu này!'));
     }
   }
 
