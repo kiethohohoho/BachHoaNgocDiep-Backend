@@ -125,13 +125,10 @@ router
  *           schema:
  *             type: object
  *             required:
- *               - brandid
  *               - name
  *               - price
  *               - quantity
  *             properties:
- *               brandid:
- *                 type: string
  *               categoryid:
  *                 type: string
  *               categorygroupid:
@@ -149,7 +146,6 @@ router
  *                 format: integer
  *                 min: 0
  *             example:
- *               brandid: "1"
  *               categoryid: "1"
  *               categorygroupid: "1"
  *               name: Sữa tiệt trùng ColosBaby
@@ -220,8 +216,6 @@ router
  *           schema:
  *             type: object
  *             properties:
- *               brandid:
- *                 type: string
  *               categoryid:
  *                 type: string
  *               categorygroupid:
@@ -244,7 +238,6 @@ router
  *                 format: integer
  *                 min: 0
  *             example:
- *               brandid: "1"
  *               categoryid: "1"
  *               categorygroupid: "1"
  *               name: Sữa tiệt trùng ColosBaby

@@ -1,56 +1,56 @@
 const express = require('express');
 const validate = require('../../middlewares/validate');
-const { categoryValidation } = require('../../validations');
-const { categoryController } = require('../../controllers');
+const { categoryGroupValidation } = require('../../validations');
+const { categoryGroupController } = require('../../controllers');
 const auth = require('../../middlewares/auth');
 
 const router = express.Router();
 
 router
-  .route('/categories')
+  .route('/categoryGroups')
   .get(
-    auth('getCategories'),
-    validate(categoryValidation.getCategories),
-    categoryController.getCategories
+    auth('getCategoryGroups'),
+    validate(categoryGroupValidation.getCategoryGroups),
+    categoryGroupController.getCategoryGroups
   )
   .post(
-    auth('manageCategories'),
-    validate(categoryValidation.createCategory),
-    categoryController.createCategory
+    auth('manageCategoryGroups'),
+    validate(categoryGroupValidation.createCategoryGroup),
+    categoryGroupController.createCategoryGroup
   );
 
 router
-  .route('/categories/:categoryId')
+  .route('/categoryGroups/:categoryGroupId')
   .get(
-    auth('getCategories'),
-    validate(categoryValidation.getOrDeleteCategoryById),
-    categoryController.getCategoryById
+    auth('getCategoryGroups'),
+    validate(categoryGroupValidation.getOrDeleteCategoryGroupById),
+    categoryGroupController.getCategoryGroupById
   )
   .patch(
-    auth('manageCategories'),
-    validate(categoryValidation.updateCategoryById),
-    categoryController.updateCategoryById
+    auth('manageCategoryGroups'),
+    validate(categoryGroupValidation.updateCategoryGroupById),
+    categoryGroupController.updateCategoryGroupById
   )
   .delete(
-    auth('manageCategories'),
-    validate(categoryValidation.getOrDeleteCategoryById),
-    categoryController.deleteCategoryById
+    auth('manageCategoryGroups'),
+    validate(categoryGroupValidation.getOrDeleteCategoryGroupById),
+    categoryGroupController.deleteCategoryGroupById
   );
 
 /**
  * @swagger
  * tags:
- *   name: Categories
- *   description: Danh mục
+ *   name: CategoryGroups
+ *   description: Nhóm danh mục
  */
 
 /**
  * @swagger
- * /categories:
+ * /categoryGroups:
  *   get:
- *     summary: Lấy danh sách danh mục (search, sort, filter, pagination)
- *     description: Cho phép search, sort, multi filter, phân trang /categories?search=a&sort=Price,Name&order=asc,desc&filter[Price][gt]=1&filter[Name][eq]=abc&page=1&limit=20.
- *     tags: [Categories]
+ *     summary: Lấy danh sách nhóm danh mục (search, sort, filter, pagination)
+ *     description: Cho phép search, sort, multi filter, phân trang /categoryGroups?search=a&sort=Price,Name&order=asc,desc&filter[Price][gt]=1&filter[Name][eq]=abc&page=1&limit=20.
+ *     tags: [CategoryGroups]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -99,7 +99,7 @@ router
  *                 Data:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Category'
+ *                     $ref: '#/components/schemas/CategoryGroup'
  *                 Pagination:
  *                   type: object
  *                   properties:
@@ -121,9 +121,9 @@ router
  *         $ref: '#/components/responses/Forbidden'
  *
  *   post:
- *     summary: Tạo mới một danh mục
+ *     summary: Tạo mới một nhóm danh mục
  *     description: Tạo trước Nhóm danh mục và Danh mục sản phẩm (nếu cần)
- *     tags: [Categories]
+ *     tags: [CategoryGroups]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -137,8 +137,6 @@ router
  *               - price
  *               - quantity
  *             properties:
- *               categorygroupid:
- *                 type: string
  *               name:
  *                 type: string
  *               description:
@@ -153,16 +151,16 @@ router
  *                 min: 0
  *             example:
  *               categorygroupid: "1"
- *               name: Nhóm danh mục 1
+ *               name: Sữa tiệt trùng ColosBaby
  *               price: 80.9
  *               quantity: 36
  *     responses:
  *       "201":
- *         description: Tạo danh mục thành công
+ *         description: Tạo nhóm danh mục thành công
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Category'
+ *                $ref: '#/components/schemas/CategoryGroup'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
@@ -173,27 +171,27 @@ router
 
 /**
  * @swagger
- * /categories/{categoryId}:
+ * /categoryGroups/{categoryGroupId}:
  *   get:
- *     summary: Lấy thông tin một danh mục
+ *     summary: Lấy thông tin một nhóm danh mục
  *     description: Bao gồm cả thông tin Nhóm danh mục và Danh mục sản phẩm (nếu có)
- *     tags: [Categories]
+ *     tags: [CategoryGroups]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: categoryId
+ *         name: categoryGroupId
  *         required: true
  *         schema:
  *           type: string
- *         description: Category Id
+ *         description: CategoryGroup Id
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Category'
+ *                $ref: '#/components/schemas/CategoryGroup'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -202,18 +200,18 @@ router
  *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
- *     summary: Cập nhật một danh mục
- *     description: Cập nhật thông tin của một danh mục
- *     tags: [Categories]
+ *     summary: Cập nhật một nhóm danh mục
+ *     description: Cập nhật thông tin của một nhóm danh mục
+ *     tags: [CategoryGroups]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: categoryId
+ *         name: categoryGroupId
  *         required: true
  *         schema:
  *           type: string
- *         description: Category Id
+ *         description: CategoryGroup Id
  *     requestBody:
  *       required: true
  *       content:
@@ -242,7 +240,7 @@ router
  *                 min: 0
  *             example:
  *               categorygroupid: "1"
- *               name: Danh mục 1
+ *               name: Sữa tiệt trùng ColosBaby
  *               description: Sữa ngon vạn người mê
  *               price: 80.9
  *               rate: 4.5
@@ -253,7 +251,7 @@ router
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Category'
+ *                $ref: '#/components/schemas/CategoryGroup'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
@@ -264,18 +262,18 @@ router
  *         $ref: '#/components/responses/NotFound'
  *
  *   delete:
- *     summary: Xoá một danh mục
- *     description: Thao tác này chỉ "xoá mềm" một danh mục, vẫn có thể khôi phục sau khi xoá.
- *     tags: [Categories]
+ *     summary: Xoá một nhóm danh mục
+ *     description: Thao tác này chỉ "xoá mềm" một nhóm danh mục, vẫn có thể khôi phục sau khi xoá.
+ *     tags: [CategoryGroups]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: categoryId
+ *         name: categoryGroupId
  *         required: true
  *         schema:
  *           type: string
- *         description: Category Id
+ *         description: CategoryGroup Id
  *     responses:
  *       "200":
  *         description: No content

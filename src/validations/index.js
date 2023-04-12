@@ -3,3 +3,4 @@ module.exports.userValidation = require('./user.validation');
 module.exports.productValidation = require('./product.validation');
 module.exports.brandValidation = require('./brand.validation');
 module.exports.categoryValidation = require('./category.validation');
+module.exports.categoryGroupValidation = require('./categoryGroup.validation');
