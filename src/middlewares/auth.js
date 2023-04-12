@@ -10,12 +10,16 @@ const verifyCallback = (req, resolve, reject, requiredRights) => async (err, acc
   req.user = account;
 
   if (requiredRights.length) {
-    const userRights = roleRights.get(account.IsAdmin ? 'admin' : 'user');
-    const hasRequiredRights = requiredRights.every((requiredRight) =>
-      userRights.includes(requiredRight)
-    );
-    if (!hasRequiredRights && req.params.userId !== account.Id) {
-      return reject(new ApiError(httpStatus.FORBIDDEN, 'Bạn bị cấm thực hiện yêu cầu này!'));
+    if (!account.dataValues.IsAdmin) {
+      const userRights = roleRights.get('user');
+
+      const hasRequiredRights = requiredRights.every((requiredRight) =>
+        userRights.includes(requiredRight)
+      );
+
+      if (!hasRequiredRights && req.params.userId !== account.Id) {
+        return reject(new ApiError(httpStatus.FORBIDDEN, 'Bạn bị cấm thực hiện yêu cầu này!'));
+      }
     }
   }
 

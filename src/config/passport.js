@@ -14,7 +14,7 @@ const jwtVerify = async (payload, done) => {
         Id: payload.sub,
       },
     });
-    // Check if record doesn't exist in db
+
     if (!account) {
       return done(null, false);
     }

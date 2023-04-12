@@ -51,6 +51,41 @@ components:
         message:
           type: string
 
+    Product:
+      type: object
+      properties:
+        Id:
+          type: string
+        BrandId:
+          type: string
+        CategoryId:
+          type: string
+        CategoryGroupId:
+          type: string
+        Name:
+          type: string
+        Description:
+          type: string
+        Price:
+          type: string
+        Rate:
+          type: number
+        Quantity:
+          type: number
+        Status:
+          type: tring
+          enum: [Init, Verify, Shipping, Done]
+      example:
+        Id: 00000000-0000-0000-0000-000000000000
+        BrandId: 00000000-0000-0000-0000-000000000000
+        CategoryId: 00000000-0000-0000-0000-000000000000
+        CategoryGroupId: 00000000-0000-0000-0000-000000000000
+        Name: Demo
+        Description: Demo
+        Price: 10.5
+        Rate: 4.3
+        Quantity: 10
+        Status: true
   responses:
     DuplicateEmail:
       description: Email already taken

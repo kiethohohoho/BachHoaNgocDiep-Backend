@@ -34,18 +34,22 @@ const updateProductById = {
     name: Joi.string(),
     description: Joi.string(),
     price: Joi.number(),
+    rate: Joi.number().min(0).max(5),
+    quantity: Joi.number().min(0).required(),
   }),
 };
 
 const createProduct = {
   body: Joi.object()
     .keys({
-      brandid: Joi.string().required(),
-      categoryid: Joi.string().required(),
-      categorygroupid: Joi.string().required(),
-      name: Joi.string().required(),
-      price: Joi.number().required(),
+      brandid: Joi.string(),
+      categoryid: Joi.string(),
+      categorygroupid: Joi.string(),
+      name: Joi.string(),
       description: Joi.string(),
+      price: Joi.number(),
+      rate: Joi.number().min(0).max(5),
+      quantity: Joi.number().min(0),
     })
     .unknown(true),
 };

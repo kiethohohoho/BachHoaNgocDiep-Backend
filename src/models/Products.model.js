@@ -30,18 +30,16 @@ const Product = sequelize.define(
       type: DataTypes.TEXT('long'),
     },
     Price: {
-      type: DataTypes.DECIMAL,
+      type: DataTypes.DECIMAL(10, 3),
       allowNull: false,
     },
     Rate: {
-      type: DataTypes.DECIMAL,
+      type: DataTypes.DECIMAL(10, 3),
     },
     Quantity: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       defaultValue: 0,
-    },
-    Status: {
-      type: DataTypes.BOOLEAN,
     },
   },
   {

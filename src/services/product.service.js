@@ -37,7 +37,7 @@ const queryProductById = async (productId) => {
  * @returns {Promise<SaveResult>}
  */
 const saveProduct = async (product, body) => {
-  const { brandid, categoryid, categorygroupid, name, description, price } = body;
+  const { brandid, categoryid, categorygroupid, name, description, price, rate, quantity } = body;
   if (brandid) {
     product.BrandId = brandid;
   }
@@ -55,6 +55,12 @@ const saveProduct = async (product, body) => {
   }
   if (price) {
     product.Price = price;
+  }
+  if (rate) {
+    product.Rate = rate;
+  }
+  if (quantity) {
+    product.Quantity = quantity;
   }
   await product.save();
 };
@@ -74,7 +80,7 @@ const destroyProduct = async (product) => {
  * @returns {Promise<CreateResult>}
  */
 const createOneProduct = async (body) => {
-  const { brandid, categoryid, categorygroupid, name, description, price } = body;
+  const { brandid, categoryid, categorygroupid, name, description, price, rate, quantity } = body;
 
   // await Brand.create({
   //   Id: brandid,
@@ -92,6 +98,8 @@ const createOneProduct = async (body) => {
     Name: name,
     Description: description,
     Price: price,
+    Rate: rate || 0,
+    Quantity: quantity || 0,
   });
   return newProduct;
 };

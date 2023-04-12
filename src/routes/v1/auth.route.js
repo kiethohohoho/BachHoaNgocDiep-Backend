@@ -27,6 +27,7 @@ router.post(
 router.post('/send-verification-email', auth(), authController.sendVerificationEmail);
 router.post(
   '/verify-email',
+  auth('verifyEmail'),
   validate(authValidation.verifyEmail),
   authController.verifyEmailAccount
 );
@@ -116,8 +117,8 @@ module.exports = router;
  *                 minLength: 6
  *                 description: At least one number and one letter
  *             example:
- *               email: tkiet.le.1002@gmail.com
- *               password: tkiet.le.1002
+ *               email: admin@gmail.com
+ *               password: admin2001@gmail.com
  *     responses:
  *       "200":
  *         description: OK
