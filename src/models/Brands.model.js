@@ -1,6 +1,8 @@
 const { DataTypes } = require('sequelize');
 const loggers = require('../config/logger');
 const sequelize = require('../config/database');
+const Category = require('./Categories.model');
+const CategoryGroup = require('./CategoryGroups.model');
 
 const Brand = sequelize.define(
   'Brands',
@@ -36,6 +38,15 @@ const Brand = sequelize.define(
     paranoid: true,
   }
 );
+
+Brand.belongsTo(Category, {
+  foreignKey: 'CategoryId',
+  targetKey: 'Id',
+});
+Brand.belongsTo(CategoryGroup, {
+  foreignKey: 'CategoryGroupId',
+  targetKey: 'Id',
+});
 
 Brand.sync({ force: false })
   .then(() => {
