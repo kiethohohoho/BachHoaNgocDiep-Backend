@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const loggers = require('../config/logger');
 const sequelize = require('../config/database');
+const CategoryGroup = require('./CategoryGroups.model');
 
 const Category = sequelize.define(
   'Categories',
@@ -32,6 +33,11 @@ const Category = sequelize.define(
     paranoid: true,
   }
 );
+
+Category.belongsTo(CategoryGroup, {
+  foreignKey: 'CategoryGroupId',
+  targetKey: 'Id',
+});
 
 Category.sync({ force: false })
   .then(() => {
