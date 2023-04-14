@@ -1,52 +1,57 @@
 const express = require('express');
+const multer = require('multer');
 const validate = require('../../middlewares/validate');
-const { productValidation } = require('../../validations');
-const { productController } = require('../../controllers');
+const { imageValidation } = require('../../validations');
+const { imageController } = require('../../controllers');
 const auth = require('../../middlewares/auth');
 
 const router = express.Router();
+const upload = multer();
 
 router
-  .route('/products')
-  .get(auth('getProducts'), validate(productValidation.getProducts), productController.getProducts)
+  .route('/images')
+  .get(auth('getImages'), validate(imageValidation.getImages), imageController.getImages)
   .post(
-    auth('manageProducts'),
-    validate(productValidation.createProduct),
-    productController.createProduct
+    auth('uploadImages'),
+    upload.array('images'),
+    validate(imageValidation.uploadImage),
+    imageController.uploadImage
   );
 
+router.get(
+  '/images/:productId',
+  auth('getImages'),
+  validate(imageValidation.getImagesByProductIdy),
+  imageController.getImagesByProductId
+);
+
 router
-  .route('/products/:productId')
-  .get(
-    auth('getProducts'),
-    validate(productValidation.getOrDeleteProductById),
-    productController.getProductById
-  )
+  .route('/images/:imageId')
   .patch(
-    auth('manageProducts'),
-    validate(productValidation.updateProductById),
-    productController.updateProductById
+    auth('manageImages'),
+    validate(imageValidation.updateImageById),
+    imageController.updateImageById
   )
   .delete(
-    auth('manageProducts'),
-    validate(productValidation.getOrDeleteProductById),
-    productController.deleteProductById
+    auth('manageImages'),
+    validate(imageValidation.getOrDeleteImageById),
+    imageController.deleteImageById
   );
 
 /**
  * @swagger
  * tags:
- *   name: Products
- *   description: Sản phẩm
+ *   name: Images
+ *   description: Hình ảnh
  */
 
 /**
  * @swagger
- * /products:
+ * /images:
  *   get:
- *     summary: Lấy danh sách sản phẩm (search, sort, filter, pagination)
- *     description: Cho phép search, sort, multi filter, phân trang /products?search=a&sort=Price,Name&order=asc,desc&filter[Price][gt]=1&filter[Name][eq]=abc&page=1&limit=20.
- *     tags: [Products]
+ *     summary: Lấy danh sách hình ảnh (search, sort, filter, pagination)
+ *     description: Cho phép search, sort, multi filter, phân trang /images?search=a&sort=Price,Name&order=asc,desc&filter[Price][gt]=1&filter[Name][eq]=abc&page=1&limit=20.
+ *     tags: [Images]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -95,7 +100,7 @@ router
  *                 Data:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Product'
+ *                     $ref: '#/components/schemas/Image'
  *                 Pagination:
  *                   type: object
  *                   properties:
@@ -117,9 +122,9 @@ router
  *         $ref: '#/components/responses/Forbidden'
  *
  *   post:
- *     summary: Tạo mới một sản phẩm
- *     description: Tạo trước Nhóm danh mục, Danh mục và Thương hiệu sản phẩm (nếu cần), upload ảnh cho sản phẩm
- *     tags: [Products]
+ *     summary: Upload mới một hình ảnh
+ *     description: Upload trước Nhóm danh mục và Danh mục sản phẩm (nếu cần)
+ *     tags: [Images]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -129,13 +134,10 @@ router
  *           schema:
  *             type: object
  *             required:
- *               - brandid
  *               - name
  *               - price
  *               - quantity
  *             properties:
- *               brandid:
- *                 type: string
  *               categoryid:
  *                 type: string
  *               categorygroupid:
@@ -153,7 +155,6 @@ router
  *                 format: integer
  *                 min: 0
  *             example:
- *               brandid: "1"
  *               categoryid: "1"
  *               categorygroupid: "1"
  *               name: Sữa tiệt trùng ColosBaby
@@ -161,11 +162,11 @@ router
  *               quantity: 36
  *     responses:
  *       "201":
- *         description: Tạo sản phẩm thành công
+ *         description: Upload hình ảnh thành công
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Product'
+ *                $ref: '#/components/schemas/Image'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
@@ -176,11 +177,11 @@ router
 
 /**
  * @swagger
- * /products/{productId}:
+ * /images/{productId}:
  *   get:
- *     summary: Lấy thông tin một sản phẩm
- *     description: Bao gồm cả thông tin Nhóm danh mục, Danh mục và Thương hiệu sản phẩm (nếu có)
- *     tags: [Products]
+ *     summary: Lấy danh sách hình ảnh theo productId
+ *     description: Lấy danh sách hình ảnh theo productId
+ *     tags: [Images]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -196,7 +197,7 @@ router
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Product'
+ *                $ref: '#/components/schemas/Image'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -205,18 +206,18 @@ router
  *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
- *     summary: Cập nhật một sản phẩm
- *     description: Cập nhật thông tin của một sản phẩm
- *     tags: [Products]
+ *     summary: Cập nhật thông tin hình ảnh
+ *     description: Cập nhật thông tin của một hình ảnh
+ *     tags: [Images]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: productId
+ *         name: imageId
  *         required: true
  *         schema:
  *           type: string
- *         description: Product Id
+ *         description: Image Id
  *     requestBody:
  *       required: true
  *       content:
@@ -224,8 +225,6 @@ router
  *           schema:
  *             type: object
  *             properties:
- *               brandid:
- *                 type: string
  *               categoryid:
  *                 type: string
  *               categorygroupid:
@@ -248,7 +247,6 @@ router
  *                 format: integer
  *                 min: 0
  *             example:
- *               brandid: "1"
  *               categoryid: "1"
  *               categorygroupid: "1"
  *               name: Sữa tiệt trùng ColosBaby
@@ -262,7 +260,7 @@ router
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Product'
+ *                $ref: '#/components/schemas/Image'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
@@ -273,18 +271,18 @@ router
  *         $ref: '#/components/responses/NotFound'
  *
  *   delete:
- *     summary: Xoá một sản phẩm
- *     description: Thao tác này chỉ "xoá mềm" một sản phẩm, vẫn có thể khôi phục sau khi xoá.
- *     tags: [Products]
+ *     summary: Xoá một hình ảnh
+ *     description: Thao tác này chỉ "xoá mềm" một hình ảnh, vẫn có thể khôi phục sau khi xoá.
+ *     tags: [Images]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: productId
+ *         name: imageId
  *         required: true
  *         schema:
  *           type: string
- *         description: Product Id
+ *         description: Image Id
  *     responses:
  *       "200":
  *         description: No content

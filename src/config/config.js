@@ -73,4 +73,9 @@ module.exports = {
     accountSID: envVars.ACCOUNT_SID,
     verifySID: envVars.VERIFY_SID,
   },
+  cloudinary: {
+    cloudName: envVars.CLOUD_NAME,
+    apiKey: envVars.API_KEY,
+    apiSecret: envVars.API_SECRET,
+  },
 };

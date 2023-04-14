@@ -6,3 +6,4 @@ module.exports.Product = require('./Products.model');
 module.exports.Brand = require('./Brands.model');
 module.exports.Category = require('./Categories.model');
 module.exports.CategoryGroup = require('./CategoryGroups.model');
+module.exports.Image = require('./Image.model');

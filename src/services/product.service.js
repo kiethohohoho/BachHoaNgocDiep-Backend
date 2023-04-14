@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
-const { Product, Brand, Category, CategoryGroup } = require('../models');
+const { Product, Brand, Category, CategoryGroup, Image } = require('../models');
 const ApiError = require('../utils/ApiError');
 const paginate = require('../utils/paginate');
 // const logger = require('../config/logger');
@@ -80,16 +80,15 @@ const destroyProduct = async (product) => {
  * @returns {Promise<CreateResult>}
  */
 const createOneProduct = async (body) => {
-  const { brandid, categoryid, categorygroupid, name, description, price, rate, quantity } = body;
+  const { brandid, categoryid, categorygroupid, name, description, price, rate, quantity, images } =
+    body;
 
-  // await Brand.create({
-  //   Id: brandid,
-  //   CategoryId: categoryid,
-  //   CategoryGroupId: categorygroupid,
-  //   Name: 'test',
-  // });
-  // await Category.create({ Id: categoryid, CategoryGroupId: categorygroupid, Name: 'test' });
-  // await CategoryGroup.create({ Id: categorygroupid, Name: 'test' });
+  if (name && brandid) {
+    const existingProduct = await Product.findOne({ where: { Name: name, BrandId: brandid } });
+    if (existingProduct) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Tên này đã tồn tại!');
+    }
+  }
 
   const newProduct = await Product.create({
     BrandId: brandid,
@@ -101,6 +100,18 @@ const createOneProduct = async (body) => {
     Rate: rate || 0,
     Quantity: quantity || 0,
   });
+  await Promise.all(
+    images.map((imgId) =>
+      Image.update(
+        { ProductId: newProduct.Id },
+        {
+          where: {
+            Id: imgId,
+          },
+        }
+      )
+    )
+  );
   return newProduct;
 };
 

@@ -5,6 +5,7 @@ const brandRoute = require('./brand.route');
 const categoryRoute = require('./category.route');
 const categoryGroupRoute = require('./categoryGroup.route');
 const docsRoute = require('./docs.route');
+const imageRoute = require('./image.route');
 // const config = require('../../config/config');
 
 const router = express.Router();
@@ -29,6 +30,10 @@ const defaultRoutes = [
   {
     path: '/',
     route: categoryGroupRoute,
+  },
+  {
+    path: '/',
+    route: imageRoute,
   },
   // {
   //   path: '/users',
