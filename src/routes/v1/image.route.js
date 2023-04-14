@@ -204,7 +204,11 @@ router
  *         $ref: '#/components/responses/Forbidden'
  *       "404":
  *         $ref: '#/components/responses/NotFound'
- *
+ */
+
+/**
+ * @swagger
+ * /images/{imageId}:
  *   patch:
  *     summary: Cập nhật thông tin hình ảnh
  *     description: Cập nhật thông tin của một hình ảnh
