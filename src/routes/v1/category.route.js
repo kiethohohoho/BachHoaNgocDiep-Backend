@@ -134,8 +134,6 @@ router
  *             type: object
  *             required:
  *               - name
- *               - price
- *               - quantity
  *             properties:
  *               categorygroupid:
  *                 type: string
@@ -218,26 +216,10 @@ router
  *                 type: string
  *               description:
  *                 type: string
- *               price:
- *                 type: number
- *                 format: decimal
- *                 min: 0
- *               rate:
- *                 type: number
- *                 format: decimal
- *                 min: 0
- *                 max: 5
- *               quantity:
- *                 type: number
- *                 format: integer
- *                 min: 0
  *             example:
  *               categorygroupid: "1"
- *               name: Danh mục 1
- *               description: Sữa ngon vạn người mê
- *               price: 80.9
- *               rate: 4.5
- *               quantity: 36
+ *               name: Sữa tiệt trùng ColosBaby
+ *               description: Sữa tiệt trùng ColosBaby
  *     responses:
  *       "200":
  *         description: OK
