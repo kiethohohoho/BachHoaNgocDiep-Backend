@@ -20,12 +20,15 @@ router
   );
 
 router
-  .route('/categories/:categoryId')
+  .route('/categories/:categoryGroupId')
   .get(
     auth('getCategories'),
-    validate(categoryValidation.getOrDeleteCategoryById),
-    categoryController.getCategoryById
-  )
+    validate(categoryValidation.getCategoryByCategoryGroupId),
+    categoryController.getCategoryByCategoryGroupId
+  );
+
+router
+  .route('/categories/:categoryId')
   .patch(
     auth('manageCategories'),
     validate(categoryValidation.updateCategoryById),
@@ -33,7 +36,7 @@ router
   )
   .delete(
     auth('manageCategories'),
-    validate(categoryValidation.getOrDeleteCategoryById),
+    validate(categoryValidation.deleteCategoryById),
     categoryController.deleteCategoryById
   );
 
@@ -164,18 +167,18 @@ router
  * @swagger
  * /categories/{categoryId}:
  *   get:
- *     summary: Lấy thông tin một danh mục
- *     description: Bao gồm cả thông tin Nhóm danh mục và Danh mục sản phẩm (nếu có)
+ *     summary: Lấy danh sách danh mục theo nhóm danh mục Id
+ *     description: Lấy danh sách danh mục theo nhóm danh mục Id
  *     tags: [Categories]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: categoryId
+ *         name: categoryGroupId
  *         required: true
  *         schema:
  *           type: string
- *         description: Category Id
+ *         description: categoryGroup Id
  *     responses:
  *       "200":
  *         description: OK

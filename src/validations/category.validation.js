@@ -13,7 +13,15 @@ const getCategories = {
     .unknown(true),
 };
 
-const getOrDeleteCategoryById = {
+const getCategoryByCategoryGroupId = {
+  params: Joi.object()
+    .keys({
+      categoryGroupId: Joi.string().required(),
+    })
+    .unknown(true),
+};
+
+const deleteCategoryById = {
   params: Joi.object()
     .keys({
       categoryId: Joi.string().required(),
@@ -46,7 +54,8 @@ const createCategory = {
 
 module.exports = {
   getCategories,
-  getOrDeleteCategoryById,
+  getCategoryByCategoryGroupId,
+  deleteCategoryById,
   updateCategoryById,
   createCategory,
 };

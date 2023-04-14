@@ -31,6 +31,19 @@ const queryCategoryById = async (categoryId) => {
 };
 
 /**
+ * Query for one category by Id
+ * @param {string} categoryGroupId - CategoryGroupId
+ * @returns {Promise<QueryResult>}
+ */
+const queryCategoryByCategoryGroupId = async (categoryGroupId) => {
+  const categories = await Category.findAll({ where: { CategoryGroupId: categoryGroupId } });
+  if (!categories) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Danh mục không tồn tại!');
+  }
+  return categories;
+};
+
+/**
  * Change record value and save
  * @param {Category} category - category record
  * @param {Object} body - Request body
@@ -87,6 +100,7 @@ const createOneCategory = async (body) => {
 module.exports = {
   queryCategories,
   queryCategoryById,
+  queryCategoryByCategoryGroupId,
   saveCategory,
   destroyCategory,
   createOneCategory,

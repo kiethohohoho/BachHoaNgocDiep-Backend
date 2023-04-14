@@ -42,7 +42,7 @@ const updateImageById = {
 };
 
 const uploadImage = {
-  files: Joi.array().items(Joi.any()),
+  files: Joi.array().min(1).required(),
 };
 
 module.exports = {

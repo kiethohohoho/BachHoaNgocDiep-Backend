@@ -50,7 +50,7 @@ const createProduct = {
       price: Joi.number(),
       rate: Joi.number().min(0).max(5),
       quantity: Joi.number().min(0),
-      images: Joi.array().items(Joi.any()),
+      images: Joi.array().min(1),
     })
     .unknown(true),
 };

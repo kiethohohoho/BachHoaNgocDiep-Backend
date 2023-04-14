@@ -127,39 +127,17 @@ router
  *     tags: [Images]
  *     security:
  *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - name
- *               - price
- *               - quantity
- *             properties:
- *               categoryid:
- *                 type: string
- *               categorygroupid:
- *                 type: string
- *               name:
- *                 type: string
- *               description:
- *                 type: string
- *               price:
- *                 type: number
- *                 format: decimal
- *                 min: 0
- *               quantity:
- *                 type: number
- *                 format: integer
- *                 min: 0
- *             example:
- *               categoryid: "1"
- *               categorygroupid: "1"
- *               name: Sữa tiệt trùng ColosBaby
- *               price: 80.9
- *               quantity: 36
+ *     consumes:
+ *       - multipart/form-data
+ *     parameters:
+ *       - in: formData
+ *         name: images
+ *         description: The image file(s) to upload
+ *         required: true
+ *         type: string
+ *         isArray: true
+ *     produces:
+ *       - application/json
  *     responses:
  *       "201":
  *         description: Upload hình ảnh thành công
