@@ -121,8 +121,8 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   post:
- *     summary: Tạo mới một giỏ hàng
- *     description: Tạo trước Nhóm danh mục và Danh mục sản phẩm (nếu cần)
+ *     summary: Thêm vào giỏ hàng
+ *     description: Thêm vào giỏ hàng
  *     tags: [Carts]
  *     security:
  *       - bearerAuth: []
@@ -133,35 +133,15 @@ module.exports = router;
  *           schema:
  *             type: object
  *             required:
- *               - name
- *               - price
- *               - quantity
+ *               - productid
  *             properties:
- *               categoryid:
+ *               productid:
  *                 type: string
- *               categorygroupid:
- *                 type: string
- *               name:
- *                 type: string
- *               description:
- *                 type: string
- *               price:
- *                 type: number
- *                 format: decimal
- *                 min: 0
- *               quantity:
- *                 type: number
- *                 format: integer
- *                 min: 0
  *             example:
- *               categoryid: "1"
- *               categorygroupid: "1"
- *               name: Sữa tiệt trùng ColosBaby
- *               price: 80.9
- *               quantity: 36
+ *               productid: "1"
  *     responses:
  *       "201":
- *         description: Tạo giỏ hàng thành công
+ *         description: Thêm vào giỏ hàng thành công
  *         content:
  *           application/json:
  *             schema:
