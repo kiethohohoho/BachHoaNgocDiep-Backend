@@ -36,7 +36,7 @@ const queryImageById = async (imageId) => {
  * @returns {Promise<QueryResult>}
  */
 const queryImagesByProductId = async (productId) => {
-  const images = await Image.findAll({ where: { ProductId: productId }, include: [Product] });
+  const images = await Image.findAll({ where: { ProductId: productId } });
   if (!images) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Hình ảnh không tồn tại!');
   }
