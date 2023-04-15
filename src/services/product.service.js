@@ -100,13 +100,14 @@ const createOneProduct = async (body) => {
     Rate: rate || 0,
     Quantity: quantity || 0,
   });
+
   await Promise.all(
-    images.map((imgId) =>
+    images.map((img) =>
       Image.update(
         { ProductId: newProduct.Id },
         {
           where: {
-            Id: imgId,
+            Id: img.Id,
           },
         }
       )
