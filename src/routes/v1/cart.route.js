@@ -126,11 +126,15 @@ module.exports = router;
  *             type: object
  *             required:
  *               - productid
+ *               - quantity
  *             properties:
  *               productid:
  *                 type: string
+ *               quantity:
+ *                 type: string
  *             example:
  *               productid: "1"
+ *               quantity: "5"
  *     responses:
  *       "201":
  *         description: Thêm vào giỏ hàng thành công
