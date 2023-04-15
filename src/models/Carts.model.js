@@ -8,7 +8,6 @@ const Cart = sequelize.define(
     AccountId: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
-      primaryKey: true,
     },
     ProductId: {
       type: DataTypes.STRING,

@@ -99,6 +99,8 @@ const createOneCart = async (body) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Sản phẩm không tồn tại!');
   }
 
+  console.log(quantity);
+
   const [cart, created] = await Cart.findOrCreate({
     where: {
       AccountId: user.Id,
