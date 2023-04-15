@@ -14,7 +14,7 @@ const queryCarts = async (query) => {
   const carts = await paginate(Cart, {
     ...query,
     filter: {
-      Account: {
+      AccountId: {
         eq: query.user.Id,
       },
     },
