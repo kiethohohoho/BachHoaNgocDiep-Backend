@@ -5,7 +5,7 @@ const sequelize = require('../config/database');
 const Order = sequelize.define(
   'Orders',
   {
-    id: {
+    Id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,

@@ -24,7 +24,7 @@ const getCategories = catchAsync(async (req, res) => {
 
 const getCategoryById = async (req, res) => {
   try {
-    const category = await queryCategoryById(req.params.categoryGroupId);
+    const category = await queryCategoryById(req.params.categoryId);
     return res.status(httpStatus.OK).json({ category, success: true });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({

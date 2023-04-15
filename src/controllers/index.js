@@ -5,3 +5,4 @@ module.exports.brandController = require('./brand.controller');
 module.exports.categoryController = require('./category.controller');
 module.exports.categoryGroupController = require('./categoryGroup.controller');
 module.exports.imageController = require('./image.controller');
+module.exports.cartController = require('./cart.controller');

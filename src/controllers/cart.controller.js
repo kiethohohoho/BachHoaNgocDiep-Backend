@@ -1,18 +1,18 @@
 const httpStatus = require('http-status');
 const {
-  queryBrands,
-  queryBrandById,
-  createOneBrand,
-  saveBrand,
-  destroyBrand,
-  queryBrandsByCategoryId,
-} = require('../services/brand.service');
+  queryCarts,
+  queryCartById,
+  createOneCart,
+  saveCart,
+  destroyCart,
+  queryCartsByCategoryId,
+} = require('../services/cart.service');
 const catchAsync = require('../utils/catchAsync');
 
-const getBrands = catchAsync(async (req, res) => {
+const getCarts = catchAsync(async (req, res) => {
   try {
-    const Brands = await queryBrands(req.query);
-    res.status(httpStatus.OK).json({ Brands, success: true });
+    const Carts = await queryCarts(req.query);
+    res.status(httpStatus.OK).json({ Carts, success: true });
   } catch (error) {
     res.status(error.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
       message: 'Lỗi lấy danh sách thương hiệu!',
@@ -22,10 +22,10 @@ const getBrands = catchAsync(async (req, res) => {
   }
 });
 
-const getBrandById = async (req, res) => {
+const getCartById = async (req, res) => {
   try {
-    const brand = await queryBrandById(req.params.brandId);
-    return res.status(httpStatus.OK).json({ brand, success: true });
+    const cart = await queryCartById(req.params.cartId);
+    return res.status(httpStatus.OK).json({ cart, success: true });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
       message: 'Lỗi tìm thương hiệu!',
@@ -35,10 +35,10 @@ const getBrandById = async (req, res) => {
   }
 };
 
-const getBrandsByCategoryId = async (req, res) => {
+const getCartsByAccountId = async (req, res) => {
   try {
-    const brands = await queryBrandsByCategoryId(req.params.categoryId);
-    return res.status(httpStatus.OK).json({ brands, success: true });
+    const carts = await queryCartsByCategoryId(req.params.accountId);
+    return res.status(httpStatus.OK).json({ carts, success: true });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
       message: 'Lỗi tìm thương hiệu!',
@@ -48,10 +48,10 @@ const getBrandsByCategoryId = async (req, res) => {
   }
 };
 
-const updateBrandById = async (req, res) => {
+const updateCartById = async (req, res) => {
   try {
-    const brand = await queryBrandById(req.params.brandId);
-    await saveBrand(brand, req.body);
+    const cart = await queryCartById(req.params.cartId);
+    await saveCart(cart, req.body);
 
     return res.status(httpStatus.OK).json({ message: 'Cập nhật thành công!', success: true });
   } catch (err) {
@@ -63,10 +63,10 @@ const updateBrandById = async (req, res) => {
   }
 };
 
-const deleteBrandById = async (req, res) => {
+const deleteCartById = async (req, res) => {
   try {
-    const brand = await queryBrandById(req.params.brandId);
-    await destroyBrand(brand);
+    const cart = await queryCartById(req.params.cartId);
+    await destroyCart(cart);
 
     return res.status(httpStatus.OK).json({ message: 'Xoá thành công!', success: true });
   } catch (err) {
@@ -78,13 +78,13 @@ const deleteBrandById = async (req, res) => {
   }
 };
 
-const createBrand = catchAsync(async (req, res) => {
+const createCart = catchAsync(async (req, res) => {
   try {
-    const createdBrand = await createOneBrand(req.body);
-    if (createdBrand) {
+    const createdCart = await createOneCart(req.body);
+    if (createdCart) {
       res
         .status(httpStatus.OK)
-        .json({ message: 'Tạo thương hiệu thành công!', success: true, ...createdBrand });
+        .json({ message: 'Tạo thương hiệu thành công!', success: true, ...createdCart });
     }
   } catch (error) {
     res.status(error.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
@@ -96,10 +96,10 @@ const createBrand = catchAsync(async (req, res) => {
 });
 
 module.exports = {
-  getBrands,
-  getBrandById,
-  getBrandsByCategoryId,
-  updateBrandById,
-  deleteBrandById,
-  createBrand,
+  getCarts,
+  getCartById,
+  getCartsByAccountId,
+  updateCartById,
+  deleteCartById,
+  createCart,
 };
