@@ -11,7 +11,7 @@ const catchAsync = require('../utils/catchAsync');
 
 const getCarts = catchAsync(async (req, res) => {
   try {
-    const Carts = await queryCarts(req.query);
+    const Carts = await queryCarts({ ...req.query, user: req.user });
     res.status(httpStatus.OK).json({ Carts, success: true });
   } catch (error) {
     res.status(error.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
