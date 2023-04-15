@@ -84,7 +84,7 @@ const destroyCart = async (cart) => {
  * @returns {Promise<CreateResult>}
  */
 const createOneCart = async (body) => {
-  const { productid, user } = body;
+  const { productid, quantity, user } = body;
 
   const product = await Product.findByPk(productid);
 
@@ -100,15 +100,15 @@ const createOneCart = async (body) => {
     defaults: {
       AccountId: user.Id,
       ProductId: productid,
-      Quantity: 1,
-      SubTotal: 1 * product.Price,
+      Quantity: quantity,
+      SubTotal: quantity * product.Price,
     },
   });
 
   if (created) {
     await cart.update({
-      Quantity: cart.Quantity + 1,
-      SubTotal: cart.SubTotal + (cart.Quantity + 1) * product.Price,
+      Quantity: cart.Quantity + quantity,
+      SubTotal: cart.SubTotal + quantity * product.Price,
     });
   }
 

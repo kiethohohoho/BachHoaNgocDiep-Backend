@@ -47,6 +47,7 @@ const createCart = {
   body: Joi.object()
     .keys({
       productid: Joi.string().required(),
+      quantity: Joi.string().min(1).required(),
     })
     .unknown(true),
 };
