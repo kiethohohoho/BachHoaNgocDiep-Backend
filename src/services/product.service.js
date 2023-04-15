@@ -96,6 +96,7 @@ const createOneProduct = async (body) => {
     CategoryGroupId: categorygroupid,
     Name: name,
     Description: description,
+    ImageURL: images[0].OriginalImageUrl,
     Price: price,
     Rate: rate || 0,
     Quantity: quantity || 0,

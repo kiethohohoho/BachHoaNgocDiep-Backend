@@ -46,10 +46,8 @@ const updateCartById = {
 const createCart = {
   body: Joi.object()
     .keys({
-      categoryid: Joi.string(),
-      categorygroupid: Joi.string(),
-      name: Joi.string(),
-      description: Joi.string(),
+      productid: Joi.string().required(),
+      quantity: Joi.string().required(),
     })
     .unknown(true),
 };

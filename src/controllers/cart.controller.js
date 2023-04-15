@@ -15,7 +15,7 @@ const getCarts = catchAsync(async (req, res) => {
     res.status(httpStatus.OK).json({ Carts, success: true });
   } catch (error) {
     res.status(error.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
-      message: 'Lỗi lấy danh sách thương hiệu!',
+      message: 'Lỗi lấy danh sách giỏ hàng!',
       detail: error.message || error,
       success: false,
     });
@@ -28,7 +28,7 @@ const getCartById = async (req, res) => {
     return res.status(httpStatus.OK).json({ cart, success: true });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
-      message: 'Lỗi tìm thương hiệu!',
+      message: 'Lỗi tìm giỏ hàng!',
       detail: err.message || err,
       success: false,
     });
@@ -41,7 +41,7 @@ const getCartsByAccountId = async (req, res) => {
     return res.status(httpStatus.OK).json({ carts, success: true });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
-      message: 'Lỗi tìm thương hiệu!',
+      message: 'Lỗi tìm giỏ hàng!',
       detail: err.message || err,
       success: false,
     });
@@ -56,7 +56,7 @@ const updateCartById = async (req, res) => {
     return res.status(httpStatus.OK).json({ message: 'Cập nhật thành công!', success: true });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
-      message: 'Lỗi tìm thương hiệu!',
+      message: 'Lỗi tìm giỏ hàng!',
       detail: err.message || err,
       success: false,
     });
@@ -71,7 +71,7 @@ const deleteCartById = async (req, res) => {
     return res.status(httpStatus.OK).json({ message: 'Xoá thành công!', success: true });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
-      message: 'Lỗi xoá thương hiệu!',
+      message: 'Lỗi xoá giỏ hàng!',
       detail: err.message || err,
       success: false,
     });
@@ -80,15 +80,15 @@ const deleteCartById = async (req, res) => {
 
 const createCart = catchAsync(async (req, res) => {
   try {
-    const createdCart = await createOneCart(req.body);
+    const createdCart = await createOneCart({ ...req.body, user: req.user });
     if (createdCart) {
       res
         .status(httpStatus.OK)
-        .json({ message: 'Tạo thương hiệu thành công!', success: true, ...createdCart });
+        .json({ message: 'Tạo giỏ hàng thành công!', success: true, ...createdCart });
     }
   } catch (error) {
     res.status(error.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
-      message: 'Lỗi tạo thương hiệu!',
+      message: 'Lỗi tạo giỏ hàng!',
       detail: error.message || error,
       success: false,
     });

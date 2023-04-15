@@ -154,6 +154,8 @@ router
  *                 type: number
  *                 format: integer
  *                 min: 0
+ *               images:
+ *                 type: array
  *             example:
  *               brandid: "1"
  *               categoryid: "1"
@@ -161,6 +163,7 @@ router
  *               name: Sữa tiệt trùng ColosBaby
  *               price: 80.9
  *               quantity: 36
+ *               images: [{}]
  *     responses:
  *       "201":
  *         description: Tạo sản phẩm thành công

@@ -25,7 +25,7 @@ const queryCartById = async (cartId) => {
     include: [Product],
   });
   if (!cart) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Thương hiệu không tồn tại!');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Giỏ hàng không tồn tại!');
   }
   return cart;
 };
@@ -41,7 +41,7 @@ const queryCartsByAccountId = async (accountId) => {
     include: [Product],
   });
   if (!carts) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Thương hiệu không tồn tại!');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Giỏ hàng không tồn tại!');
   }
   return carts;
 };
@@ -84,24 +84,35 @@ const destroyCart = async (cart) => {
  * @returns {Promise<CreateResult>}
  */
 const createOneCart = async (body) => {
-  const { categoryid, categorygroupid, name, description } = body;
+  const { productid, quantity, user } = body;
 
-  // await Cart.create({
-  //   Id: cartid,
-  //   CategoryId: categoryid,
-  //   CategoryGroupId: categorygroupid,
-  //   Name: 'test',
-  // });
-  // await Category.create({ Id: categoryid, CategoryGroupId: categorygroupid, Name: 'test' });
-  // await CategoryGroup.create({ Id: categorygroupid, Name: 'test' });
+  const product = await Product.findByPk(productid);
 
-  const newCart = await Cart.create({
-    CategoryId: categoryid,
-    CategoryGroupId: categorygroupid,
-    Name: name,
-    Description: description,
+  if (!product) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Sản phẩm không tồn tại!');
+  }
+
+  const [cart, created] = await Cart.findOrCreate({
+    where: {
+      AccountId: user.Id,
+      ProductId: productid,
+    },
+    defaults: {
+      AccountId: user.Id,
+      ProductId: productid,
+      Quantity: quantity,
+      SubTotal: quantity * product.Price,
+    },
   });
-  return newCart;
+
+  if (created) {
+    await cart.update({
+      Quantity: cart.Quantity + quantity,
+      SubTotal: cart.SubTotal + quantity * product.Price,
+    });
+  }
+
+  return cart;
 };
 
 module.exports = {
