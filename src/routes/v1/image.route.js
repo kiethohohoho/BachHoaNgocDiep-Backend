@@ -13,7 +13,7 @@ router
   .get(auth('getImages'), validate(imageValidation.getImages), imageController.getImages)
   .post(
     auth('uploadImages'),
-    upload.array('images'),
+    upload.array('image'),
     validate(imageValidation.uploadImage),
     imageController.uploadImage
   );
@@ -122,20 +122,22 @@ router
  *         $ref: '#/components/responses/Forbidden'
  *
  *   post:
- *     summary: Upload mới một hình ảnh
- *     description: Upload trước Nhóm danh mục và Danh mục sản phẩm (nếu cần)
+ *     summary: Upload file
+ *     description: Upload file
  *     tags: [Images]
  *     security:
  *       - bearerAuth: []
- *     consumes:
- *       - multipart/form-data
- *     parameters:
- *       - in: formData
- *         name: images
- *         description: The image file(s) to upload
- *         required: true
- *         type: string
- *         isArray: true
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               image:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
  *     produces:
  *       - application/json
  *     responses:
