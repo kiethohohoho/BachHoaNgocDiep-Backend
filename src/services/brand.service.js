@@ -36,7 +36,10 @@ const queryBrandById = async (brandId) => {
  * @returns {Promise<QueryResult>}
  */
 const queryBrandsByCategoryId = async (categoryId) => {
-  const brands = await Brand.findAll({ where: { CategoryId: categoryId } });
+  const brands = await Brand.findAll({
+    where: { CategoryId: categoryId },
+    include: [Category, CategoryGroup],
+  });
   if (!brands) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Thương hiệu không tồn tại!');
   }

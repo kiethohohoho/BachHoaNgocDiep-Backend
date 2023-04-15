@@ -18,15 +18,13 @@ router
     imageController.uploadImage
   );
 
-router.get(
-  '/images/:productId',
-  auth('getImages'),
-  validate(imageValidation.getImagesByProductIdy),
-  imageController.getImagesByProductId
-);
-
 router
   .route('/images/:imageId')
+  .get(
+    auth('getImages'),
+    validate(imageValidation.getOrDeleteImageById),
+    imageController.getImagesById
+  )
   .patch(
     auth('manageImages'),
     validate(imageValidation.updateImageById),
@@ -37,6 +35,14 @@ router
     validate(imageValidation.getOrDeleteImageById),
     imageController.deleteImageById
   );
+
+router.get(
+  '/images/product/:productId',
+  auth('getImages'),
+  validate(imageValidation.getImagesByProductIdy),
+  imageController.getImagesByProductId
+);
+module.exports = router;
 
 /**
  * @swagger
@@ -157,20 +163,20 @@ router
 
 /**
  * @swagger
- * /images/{productId}:
+ * /images/{imageId}:
  *   get:
- *     summary: Lấy danh sách hình ảnh theo productId
- *     description: Lấy danh sách hình ảnh theo productId
+ *     summary: Lấy thông tin một hình ảnh
+ *     description: Bao gồm cả thông tin sản phẩm (nếu có)
  *     tags: [Images]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: productId
+ *         name: imageId
  *         required: true
  *         schema:
  *           type: string
- *         description: Product Id
+ *         description: Image Id
  *     responses:
  *       "200":
  *         description: OK
@@ -184,11 +190,7 @@ router
  *         $ref: '#/components/responses/Forbidden'
  *       "404":
  *         $ref: '#/components/responses/NotFound'
- */
-
-/**
- * @swagger
- * /images/{imageId}:
+ *
  *   patch:
  *     summary: Cập nhật thông tin hình ảnh
  *     description: Cập nhật thông tin của một hình ảnh
@@ -274,7 +276,35 @@ router
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
+ */
+
+/**
+ * @swagger
+ * /images/product/{productId}:
+ *   get:
+ *     summary: Lấy danh sách hình ảnh theo productId
+ *     description: Lấy danh sách hình ảnh theo productId
+ *     tags: [Images]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Product Id
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: '#/components/schemas/Image'
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
+ *       "403":
+ *         $ref: '#/components/responses/Forbidden'
  *       "404":
  *         $ref: '#/components/responses/NotFound'
  */
-module.exports = router;

@@ -36,7 +36,10 @@ const queryCategoryById = async (categoryId) => {
  * @returns {Promise<QueryResult>}
  */
 const queryCategoriesByCategoryGroupId = async (categoryGroupId) => {
-  const categories = await Category.findAll({ where: { CategoryGroupId: categoryGroupId } });
+  const categories = await Category.findAll({
+    where: { CategoryGroupId: categoryGroupId },
+    include: [CategoryGroup],
+  });
   if (!categories) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Danh mục không tồn tại!');
   }

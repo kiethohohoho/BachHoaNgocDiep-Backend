@@ -119,6 +119,8 @@ router
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
+ *       "404":
+ *         $ref: '#/components/responses/NotFound'
  *
  *   post:
  *     summary: Tạo mới một nhóm danh mục
@@ -245,7 +247,31 @@ router
  *         description: CategoryGroup Id
  *     responses:
  *       "200":
- *         description: No content
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 Data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/CategoryGroup'
+ *                 Pagination:
+ *                   type: object
+ *                   properties:
+ *                     TotalCount:
+ *                       type: integer
+ *                       example: 1
+ *                     TotalPages:
+ *                       type: integer
+ *                       example: 1
+ *                     CurrentPage:
+ *                       type: integer
+ *                       example: 1
+ *                     Limit:
+ *                       type: integer
+ *                       example: 10
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":

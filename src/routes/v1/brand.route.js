@@ -283,8 +283,8 @@ module.exports = router;
  * @swagger
  * /brands/category/:categoryId:
  *   get:
- *     summary: Lấy danh sách danh mục theo categoryId
- *     description: Lấy danh sách danh mục theo categoryId
+ *     summary: Lấy danh sách thương hiệu theo categoryId
+ *     description: Lấy danh sách thương hiệu theo categoryId
  *     tags: [Brands]
  *     security:
  *       - bearerAuth: []
@@ -301,7 +301,27 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Category'
+ *               type: object
+ *               properties:
+ *                 Data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Brand'
+ *                 Pagination:
+ *                   type: object
+ *                   properties:
+ *                     TotalCount:
+ *                       type: integer
+ *                       example: 1
+ *                     TotalPages:
+ *                       type: integer
+ *                       example: 1
+ *                     CurrentPage:
+ *                       type: integer
+ *                       example: 1
+ *                     Limit:
+ *                       type: integer
+ *                       example: 10
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":

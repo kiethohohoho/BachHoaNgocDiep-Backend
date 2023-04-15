@@ -24,6 +24,19 @@ const getImages = catchAsync(async (req, res) => {
   }
 });
 
+const getImagesById = async (req, res) => {
+  try {
+    const image = await queryImageById(req.params.productId);
+    return res.status(httpStatus.OK).json({ image, success: true });
+  } catch (err) {
+    res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
+      message: 'Lỗi tìm hình ảnh!',
+      detail: err.message || err,
+      success: false,
+    });
+  }
+};
+
 const getImagesByProductId = async (req, res) => {
   try {
     const image = await queryImagesByProductId(req.params.productId);
@@ -127,6 +140,7 @@ const uploadImage = catchAsync(async (req, res) => {
 
 module.exports = {
   getImages,
+  getImagesById,
   getImagesByProductId,
   updateImageById,
   deleteImageById,

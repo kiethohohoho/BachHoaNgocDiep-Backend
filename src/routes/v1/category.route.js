@@ -161,7 +161,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Category'
+ *               $ref: '#/components/schemas/Category'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
@@ -192,7 +192,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Category'
+ *               $ref: '#/components/schemas/Category'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -236,7 +236,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Category'
+ *               $ref: '#/components/schemas/Category'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
@@ -292,7 +292,27 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Category'
+ *               type: object
+ *               properties:
+ *                 Data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Category'
+ *                 Pagination:
+ *                   type: object
+ *                   properties:
+ *                     TotalCount:
+ *                       type: integer
+ *                       example: 1
+ *                     TotalPages:
+ *                       type: integer
+ *                       example: 1
+ *                     CurrentPage:
+ *                       type: integer
+ *                       example: 1
+ *                     Limit:
+ *                       type: integer
+ *                       example: 10
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":

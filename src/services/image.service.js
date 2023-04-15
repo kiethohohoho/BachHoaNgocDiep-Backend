@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
-const { Image, Category, CategoryGroup } = require('../models');
+const { Image, Product } = require('../models');
 const ApiError = require('../utils/ApiError');
 const paginate = require('../utils/paginate');
 // const logger = require('../config/logger');
@@ -22,7 +22,7 @@ const queryImages = async (query) => {
  */
 const queryImageById = async (imageId) => {
   const image = await Image.findByPk(imageId, {
-    include: [Category, CategoryGroup],
+    include: [Product],
   });
   if (!image) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Hình ảnh không tồn tại!');
@@ -36,7 +36,7 @@ const queryImageById = async (imageId) => {
  * @returns {Promise<QueryResult>}
  */
 const queryImagesByProductId = async (productId) => {
-  const images = await Image.findAll({ where: { ProductId: productId } });
+  const images = await Image.findAll({ where: { ProductId: productId }, include: [Product] });
   if (!images) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Hình ảnh không tồn tại!');
   }
