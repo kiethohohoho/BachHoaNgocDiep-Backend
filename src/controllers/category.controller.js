@@ -5,7 +5,7 @@ const {
   createOneCategory,
   saveCategory,
   destroyCategory,
-  queryCategoryByCategoryGroupId,
+  queryCategoriesByCategoryGroupId,
 } = require('../services/category.service');
 const catchAsync = require('../utils/catchAsync');
 
@@ -22,9 +22,22 @@ const getCategories = catchAsync(async (req, res) => {
   }
 });
 
+const getCategoryById = async (req, res) => {
+  try {
+    const category = await queryCategoryById(req.params.categoryGroupId);
+    return res.status(httpStatus.OK).json({ category, success: true });
+  } catch (err) {
+    res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
+      message: 'Lỗi tìm danh mục!',
+      detail: err.message || err,
+      success: false,
+    });
+  }
+};
+
 const getCategoryByCategoryGroupId = async (req, res) => {
   try {
-    const category = await queryCategoryByCategoryGroupId(req.params.categoryGroupId);
+    const category = await queryCategoriesByCategoryGroupId(req.params.categoryGroupId);
     return res.status(httpStatus.OK).json({ category, success: true });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
@@ -84,6 +97,7 @@ const createCategory = catchAsync(async (req, res) => {
 
 module.exports = {
   getCategories,
+  getCategoryById,
   getCategoryByCategoryGroupId,
   updateCategoryById,
   deleteCategoryById,

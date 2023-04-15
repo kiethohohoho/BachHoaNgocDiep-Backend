@@ -15,7 +15,10 @@ const createAccount = async (accountBody) => {
   try {
     // Check if email already exists
     if (email) {
-      const emailExist = await Account.findOne({ where: { Email: email } });
+      const emailExist = await Account.findOne({
+        where: { Email: email },
+        attributes: { exclude: ['UserName', 'Password'] },
+      });
       if (emailExist) {
         throw new ApiError(httpStatus.BAD_REQUEST, 'Email này đã tồn tại!');
       }
@@ -91,6 +94,7 @@ const getAccountById = async (id) => {
 const getUserByEmail = async (email = '') => {
   const account = await Account.findOne({
     where: { Email: email },
+    attributes: { exclude: ['UserName', 'Password'] },
   });
   if (!account) {
     throw new ApiError(httpStatus.BAD_REQUEST, `Không tìm thấy email ${email}`);

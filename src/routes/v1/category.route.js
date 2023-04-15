@@ -20,15 +20,12 @@ router
   );
 
 router
-  .route('/categories/:categoryGroupId')
+  .route('/categories/:categoryId')
   .get(
     auth('getCategories'),
-    validate(categoryValidation.getCategoryByCategoryGroupId),
-    categoryController.getCategoryByCategoryGroupId
-  );
-
-router
-  .route('/categories/:categoryId')
+    validate(categoryValidation.getOrDeleteCategoryById),
+    categoryController.getCategoryById
+  )
   .patch(
     auth('manageCategories'),
     validate(categoryValidation.updateCategoryById),
@@ -36,9 +33,19 @@ router
   )
   .delete(
     auth('manageCategories'),
-    validate(categoryValidation.deleteCategoryById),
+    validate(categoryValidation.getOrDeleteCategoryById),
     categoryController.deleteCategoryById
   );
+
+router
+  .route('/categories/categoryGroup/:categoryGroupId')
+  .get(
+    auth('getCategories'),
+    validate(categoryValidation.getCategoryByCategoryGroupId),
+    categoryController.getCategoryByCategoryGroupId
+  );
+
+module.exports = router;
 
 /**
  * @swagger
@@ -167,18 +174,18 @@ router
  * @swagger
  * /categories/{categoryId}:
  *   get:
- *     summary: Lấy danh sách danh mục theo nhóm danh mục Id
- *     description: Lấy danh sách danh mục theo nhóm danh mục Id
+ *     summary: Lấy thông tin một danh mục theo Id
+ *     description: Lấy thông tin một danh mục theo Id
  *     tags: [Categories]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: categoryGroupId
+ *         name: categoryId
  *         required: true
  *         schema:
  *           type: string
- *         description: categoryGroup Id
+ *         description: category Id
  *     responses:
  *       "200":
  *         description: OK
@@ -262,4 +269,34 @@ router
  *       "404":
  *         $ref: '#/components/responses/NotFound'
  */
-module.exports = router;
+
+/**
+ * @swagger
+ * /categories/categoryGroup/:categoryGroupId:
+ *   get:
+ *     summary: Lấy danh sách danh mục theo categoryGroupId
+ *     description: Lấy danh sách danh mục theo categoryGroupId
+ *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: categoryGroupId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: categoryGroup Id
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: '#/components/schemas/Category'
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
+ *       "403":
+ *         $ref: '#/components/responses/Forbidden'
+ *       "404":
+ *         $ref: '#/components/responses/NotFound'
+ */

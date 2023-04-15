@@ -29,6 +29,16 @@ router
     brandController.deleteBrandById
   );
 
+router
+  .route('/brands/category/:categoryId')
+  .get(
+    auth('getBrands'),
+    validate(brandValidation.getBrandsByCategoryId),
+    brandController.getBrandsByCategoryId
+  );
+
+module.exports = router;
+
 /**
  * @swagger
  * tags:
@@ -268,4 +278,34 @@ router
  *       "404":
  *         $ref: '#/components/responses/NotFound'
  */
-module.exports = router;
+
+/**
+ * @swagger
+ * /brands/category/:categoryId:
+ *   get:
+ *     summary: Lấy danh sách danh mục theo categoryId
+ *     description: Lấy danh sách danh mục theo categoryId
+ *     tags: [Brands]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: categoryId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: category Id
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: '#/components/schemas/Category'
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
+ *       "403":
+ *         $ref: '#/components/responses/Forbidden'
+ *       "404":
+ *         $ref: '#/components/responses/NotFound'
+ */

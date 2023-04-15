@@ -5,6 +5,7 @@ const {
   createOneBrand,
   saveBrand,
   destroyBrand,
+  queryBrandsByCategoryId,
 } = require('../services/brand.service');
 const catchAsync = require('../utils/catchAsync');
 
@@ -25,6 +26,19 @@ const getBrandById = async (req, res) => {
   try {
     const brand = await queryBrandById(req.params.brandId);
     return res.status(httpStatus.OK).json({ brand, success: true });
+  } catch (err) {
+    res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
+      message: 'Lỗi tìm thương hiệu!',
+      detail: err.message || err,
+      success: false,
+    });
+  }
+};
+
+const getBrandsByCategoryId = async (req, res) => {
+  try {
+    const brands = await queryBrandsByCategoryId(req.params.brandId);
+    return res.status(httpStatus.OK).json({ brands, success: true });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
       message: 'Lỗi tìm thương hiệu!',
@@ -84,6 +98,7 @@ const createBrand = catchAsync(async (req, res) => {
 module.exports = {
   getBrands,
   getBrandById,
+  getBrandsByCategoryId,
   updateBrandById,
   deleteBrandById,
   createBrand,

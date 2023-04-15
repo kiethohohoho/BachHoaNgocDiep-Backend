@@ -21,6 +21,14 @@ const getOrDeleteBrandById = {
     .unknown(true),
 };
 
+const getBrandsByCategoryId = {
+  params: Joi.object()
+    .keys({
+      categoryId: Joi.string().required(),
+    })
+    .unknown(true),
+};
+
 const updateBrandById = {
   params: Joi.object()
     .keys({
@@ -49,6 +57,7 @@ const createBrand = {
 module.exports = {
   getBrands,
   getOrDeleteBrandById,
+  getBrandsByCategoryId,
   updateBrandById,
   createBrand,
 };

@@ -17,7 +17,7 @@ const queryCategories = async (query) => {
 
 /**
  * Query for one category by Id
- * @param {Object} params - Request params
+ * @param {string} categoryId - categoryId
  * @returns {Promise<QueryResult>}
  */
 const queryCategoryById = async (categoryId) => {
@@ -35,7 +35,7 @@ const queryCategoryById = async (categoryId) => {
  * @param {string} categoryGroupId - CategoryGroupId
  * @returns {Promise<QueryResult>}
  */
-const queryCategoryByCategoryGroupId = async (categoryGroupId) => {
+const queryCategoriesByCategoryGroupId = async (categoryGroupId) => {
   const categories = await Category.findAll({ where: { CategoryGroupId: categoryGroupId } });
   if (!categories) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Danh mục không tồn tại!');
@@ -80,15 +80,6 @@ const destroyCategory = async (category) => {
 const createOneCategory = async (body) => {
   const { categorygroupid, name, description } = body;
 
-  // await Category.create({
-  //   Id: categoryid,
-  //   CategoryId: categoryid,
-  //   CategoryGroupId: categorygroupid,
-  //   Name: 'test',
-  // });
-  // await Category.create({ Id: categoryid, CategoryGroupId: categorygroupid, Name: 'test' });
-  // await CategoryGroup.create({ Id: categorygroupid, Name: 'test' });
-
   const newCategory = await Category.create({
     CategoryGroupId: categorygroupid,
     Name: name,
@@ -100,7 +91,7 @@ const createOneCategory = async (body) => {
 module.exports = {
   queryCategories,
   queryCategoryById,
-  queryCategoryByCategoryGroupId,
+  queryCategoriesByCategoryGroupId,
   saveCategory,
   destroyCategory,
   createOneCategory,

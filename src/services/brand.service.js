@@ -17,7 +17,7 @@ const queryBrands = async (query) => {
 
 /**
  * Query for one brand by Id
- * @param {Object} params - Request params
+ * @param {string} brandId - brandId
  * @returns {Promise<QueryResult>}
  */
 const queryBrandById = async (brandId) => {
@@ -28,6 +28,19 @@ const queryBrandById = async (brandId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Thương hiệu không tồn tại!');
   }
   return brand;
+};
+
+/**
+ * Query for all brand by categoryId
+ * @param {string} categoryId - categoryId
+ * @returns {Promise<QueryResult>}
+ */
+const queryBrandsByCategoryId = async (categoryId) => {
+  const brands = await Brand.findAll({ where: { CategoryId: categoryId } });
+  if (!brands) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Thương hiệu không tồn tại!');
+  }
+  return brands;
 };
 
 /**
@@ -88,4 +101,11 @@ const createOneBrand = async (body) => {
   return newBrand;
 };
 
-module.exports = { queryBrands, queryBrandById, saveBrand, destroyBrand, createOneBrand };
+module.exports = {
+  queryBrands,
+  queryBrandById,
+  queryBrandsByCategoryId,
+  saveBrand,
+  destroyBrand,
+  createOneBrand,
+};
