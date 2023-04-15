@@ -8,7 +8,7 @@ const router = express.Router();
 
 router
   .route('/carts')
-  .get(auth('getCarts'), validate(cartValidation.getCarts), cartController.getCarts)
+  .get(auth('getCarts'), cartController.getCarts)
   .post(auth('manageCarts'), validate(cartValidation.createCart), cartController.createCart);
 
 router
@@ -24,12 +24,6 @@ router
     validate(cartValidation.getOrDeleteCartById),
     cartController.deleteCartById
   );
-
-router.route('/carts/account/:accountId').get(
-  auth('getCarts'),
-  // validate(cartValidation.getCartsByAccountId),
-  cartController.getCartsByAccountId
-);
 
 module.exports = router;
 

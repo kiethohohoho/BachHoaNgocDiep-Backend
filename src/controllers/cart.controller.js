@@ -84,11 +84,11 @@ const createCart = catchAsync(async (req, res) => {
     if (createdCart) {
       res
         .status(httpStatus.OK)
-        .json({ message: 'Tạo giỏ hàng thành công!', success: true, ...createdCart });
+        .json({ message: 'Thêm vào giỏ hàng thành công!', success: true, ...createdCart });
     }
   } catch (error) {
     res.status(error.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
-      message: 'Lỗi tạo giỏ hàng!',
+      message: 'Lỗi thêm vào giỏ hàng!',
       detail: error.message || error,
       success: false,
     });
