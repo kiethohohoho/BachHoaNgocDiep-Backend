@@ -203,8 +203,6 @@ router
  *         $ref: '#/components/responses/Forbidden'
  *       "404":
  *         $ref: '#/components/responses/NotFound'
- *       "404":
- *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
  *     summary: Cập nhật một sản phẩm
