@@ -25,13 +25,11 @@ router
     cartController.deleteCartById
   );
 
-router
-  .route('/carts/account/:accountId')
-  .get(
-    auth('getCarts'),
-    validate(cartValidation.getCartsByAccountId),
-    cartController.getCartsByAccountId
-  );
+router.route('/carts/account/:accountId').get(
+  auth('getCarts'),
+  // validate(cartValidation.getCartsByAccountId),
+  cartController.getCartsByAccountId
+);
 
 module.exports = router;
 
