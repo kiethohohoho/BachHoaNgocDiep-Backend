@@ -38,7 +38,7 @@ module.exports = router;
  * @swagger
  * /carts:
  *   get:
- *     summary: Lấy danh sách giỏ hàng (search, sort, filter, pagination)
+ *     summary: Lấy danh sách sản phẩm trong giỏ hàng (search, sort, filter, pagination)
  *     description: Cho phép search, sort, multi filter, phân trang /carts?search=a&sort=Price,Name&order=asc,desc&filter[Price][gt]=1&filter[Name][eq]=abc&page=1&limit=20.
  *     tags: [Carts]
  *     security:
