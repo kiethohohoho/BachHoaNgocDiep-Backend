@@ -82,7 +82,7 @@ const deleteImageById = async (req, res) => {
 
 const uploadImage = catchAsync(async (req, res) => {
   try {
-    const imageIds = [];
+    const imageList = [];
     await Promise.all(
       req.files.map((file, index) =>
         cloudinary.uploader
@@ -115,12 +115,12 @@ const uploadImage = catchAsync(async (req, res) => {
                   crop: 'fill',
                 }),
               }).then((a) => {
-                imageIds.push(a.Id);
-                if (imageIds.length === req.files.length) {
+                imageList.push(a);
+                if (imageList.length === req.files.length) {
                   res.status(httpStatus.OK).json({
                     message: 'Upload hình ảnh thành công!',
                     success: true,
-                    images: imageIds,
+                    images: imageList,
                   });
                 }
               });
