@@ -17,7 +17,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /users:
+ * /users/profile:
  *   get:
  *     summary: Get user profile.
  *     description: Get user profile.
