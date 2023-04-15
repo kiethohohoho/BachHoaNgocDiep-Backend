@@ -26,7 +26,7 @@ const getImages = catchAsync(async (req, res) => {
 
 const getImagesById = async (req, res) => {
   try {
-    const image = await queryImageById(req.params.productId);
+    const image = await queryImageById(req.params.imageId);
     return res.status(httpStatus.OK).json({ image, success: true });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
