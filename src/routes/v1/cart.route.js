@@ -131,10 +131,10 @@ module.exports = router;
  *               productid:
  *                 type: string
  *               quantity:
- *                 type: string
+ *                 type: number
  *             example:
  *               productid: "1"
- *               quantity: "5"
+ *               quantity: 5
  *     responses:
  *       "201":
  *         description: Thêm vào giỏ hàng thành công
