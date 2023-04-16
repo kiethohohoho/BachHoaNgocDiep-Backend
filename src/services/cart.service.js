@@ -11,14 +11,18 @@ const paginate = require('../utils/paginate');
  * @returns {Promise<QueryResult>}
  */
 const queryCarts = async (query) => {
-  const carts = await paginate(Cart, {
-    ...query,
-    filter: {
-      AccountId: {
-        eq: query.user.Id,
+  const carts = await paginate(
+    Cart,
+    {
+      ...query,
+      filter: {
+        AccountId: {
+          eq: query.user.Id,
+        },
       },
     },
-  });
+    [{ model: Product }]
+  );
   return carts;
 };
 

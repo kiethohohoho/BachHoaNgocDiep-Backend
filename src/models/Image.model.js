@@ -57,12 +57,6 @@ Image.belongsTo(Product, {
   targetKey: 'Id',
 });
 
-// Image.prototype.getUrlWithCloudinary = function () {
-//   return `https://res.cloudinary.com/${cloudinary.config().cloud_name}/image/upload/${
-//     this.CloudinaryPublicId
-//   }`;
-// };
-
 Image.sync({ force: false })
   .then(() => {
     loggers.info('Image table created successfully');

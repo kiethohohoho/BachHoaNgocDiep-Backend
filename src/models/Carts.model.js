@@ -1,16 +1,23 @@
 const { DataTypes } = require('sequelize');
 const loggers = require('../config/logger');
 const sequelize = require('../config/database');
+const Account = require('./Accounts.model');
+const Product = require('./Products.model');
 
 const Cart = sequelize.define(
   'Carts',
   {
-    AccountId: {
+    Id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
+    AccountId: {
+      type: DataTypes.UUID,
+      allowNull: false,
     },
     ProductId: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     Quantity: {
@@ -32,6 +39,15 @@ const Cart = sequelize.define(
     paranoid: true,
   }
 );
+
+Cart.belongsTo(Account, {
+  foreignKey: 'AccountId',
+  targetKey: 'Id',
+});
+Cart.belongsTo(Product, {
+  foreignKey: 'ProductId',
+  targetKey: 'Id',
+});
 
 Cart.sync({ force: false })
   .then(() => {

@@ -2,7 +2,7 @@ const { Op } = require('sequelize');
 const _ = require('lodash');
 const sequelize = require('../config/database');
 
-const paginate = async (model, query) => {
+const paginate = async (model, query, populateOptions = []) => {
   const { search = '', filter = {}, sort = '', order = '', page = 1, limit = 10 } = query;
 
   const orderField = order.split(',');
@@ -50,6 +50,7 @@ const paginate = async (model, query) => {
     order: _order,
     offset,
     limit,
+    include: populateOptions,
   });
   // Calculate the total number of pages based on the count and limit parameters
   const TotalPages = Math.ceil(count / limit);
