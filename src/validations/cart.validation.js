@@ -36,10 +36,8 @@ const updateCartById = {
     })
     .unknown(true),
   body: Joi.object().keys({
-    categoryid: Joi.string(),
-    categorygroupid: Joi.string(),
-    name: Joi.string(),
-    description: Joi.string(),
+    productid: Joi.string(),
+    quantity: Joi.number(),
   }),
 };
 

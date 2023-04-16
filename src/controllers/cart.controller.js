@@ -85,13 +85,10 @@ const deleteCartById = async (req, res) => {
 const createCart = catchAsync(async (req, res) => {
   try {
     await createOneCart({ ...req.body, user: req.user });
-    // if (createdCart) {
     res.status(httpStatus.OK).json({
       message: 'Thêm vào giỏ hàng thành công!',
       success: true,
-      // ...createdCart,
     });
-    // }
   } catch (error) {
     res.status(error.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
       message: 'Lỗi thêm vào giỏ hàng!',

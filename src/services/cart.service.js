@@ -64,18 +64,16 @@ const queryCartsByAccountId = async (accountId) => {
  * @returns {Promise<SaveResult>}
  */
 const saveCart = async (cart, body) => {
-  const { categoryid, categorygroupid, name, description } = body;
-  if (categoryid) {
-    cart.CategoryId = categoryid;
+  const { productid, quantity } = body;
+  // if (accountid) {
+  //   cart.AccountId = accountid;
+  // }
+  if (productid) {
+    cart.ProductId = productid;
   }
-  if (categorygroupid) {
-    cart.CategoryGroupId = categorygroupid;
-  }
-  if (name) {
-    cart.Name = name;
-  }
-  if (description) {
-    cart.Description = description;
+  if (quantity) {
+    cart.Quantity = quantity;
+    cart.SubTotal = quantity * cart.Product.Price;
   }
   await cart.save();
 };

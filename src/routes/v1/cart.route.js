@@ -202,19 +202,13 @@ module.exports = router;
  *           schema:
  *             type: object
  *             properties:
- *               categoryid:
+ *               productid:
  *                 type: string
- *               categorygroupid:
- *                 type: string
- *               name:
- *                 type: string
- *               description:
- *                 type: string
+ *               quantity:
+ *                 type: number
  *             example:
- *               categoryid: "1"
- *               categorygroupid: "1"
- *               name: Sữa tiệt trùng ColosBaby
- *               description: Sữa tiệt trùng ColosBaby
+ *               productid: "00000000-0000-0000-0000-000000000000"
+ *               quantity: 1
  *     responses:
  *       "200":
  *         description: OK
@@ -247,57 +241,6 @@ module.exports = router;
  *     responses:
  *       "200":
  *         description: No content
- *       "401":
- *         $ref: '#/components/responses/Unauthorized'
- *       "403":
- *         $ref: '#/components/responses/Forbidden'
- *       "404":
- *         $ref: '#/components/responses/NotFound'
- */
-
-/**
- * @swagger
- * /carts/category/:categoryId:
- *   get:
- *     summary: Lấy danh sách giỏ hàng theo categoryId
- *     description: Lấy danh sách giỏ hàng theo categoryId
- *     tags: [Carts]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: categoryId
- *         required: true
- *         schema:
- *           type: string
- *         description: category Id
- *     responses:
- *       "200":
- *         description: OK
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 Data:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/Cart'
- *                 Pagination:
- *                   type: object
- *                   properties:
- *                     TotalCount:
- *                       type: integer
- *                       example: 1
- *                     TotalPages:
- *                       type: integer
- *                       example: 1
- *                     CurrentPage:
- *                       type: integer
- *                       example: 1
- *                     Limit:
- *                       type: integer
- *                       example: 10
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
