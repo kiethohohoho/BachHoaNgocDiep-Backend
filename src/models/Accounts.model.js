@@ -11,13 +11,6 @@ const Account = sequelize.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    // AvatarId: {
-    //   type: DataTypes.UUID,
-    //   references: {
-    //     model: 'File',
-    //     key: 'Id',
-    //   },
-    // },
     FirstName: {
       type: DataTypes.STRING,
       allowNull: false,

@@ -215,35 +215,13 @@ module.exports = router;
  *           schema:
  *             type: object
  *             properties:
- *               categoryid:
+ *               ProductId:
  *                 type: string
- *               categorygroupid:
+ *               FileName:
  *                 type: string
- *               name:
- *                 type: string
- *               description:
- *                 type: string
- *               price:
- *                 type: number
- *                 format: decimal
- *                 min: 0
- *               rate:
- *                 type: number
- *                 format: decimal
- *                 min: 0
- *                 max: 5
- *               quantity:
- *                 type: number
- *                 format: integer
- *                 min: 0
  *             example:
- *               categoryid: "1"
- *               categorygroupid: "1"
- *               name: Sữa tiệt trùng ColosBaby
- *               description: Sữa ngon vạn người mê
- *               price: 80.9
- *               rate: 4.5
- *               quantity: 36
+ *               ProductId: "1"
+ *               FileName: "hihihi"
  *     responses:
  *       "200":
  *         description: OK

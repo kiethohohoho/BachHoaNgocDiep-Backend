@@ -138,8 +138,6 @@ module.exports = router;
  *             type: object
  *             required:
  *               - name
- *               - price
- *               - quantity
  *             properties:
  *               categoryid:
  *                 type: string
@@ -149,20 +147,9 @@ module.exports = router;
  *                 type: string
  *               description:
  *                 type: string
- *               price:
- *                 type: number
- *                 format: decimal
- *                 min: 0
- *               quantity:
- *                 type: number
- *                 format: integer
- *                 min: 0
  *             example:
- *               categoryid: "1"
- *               categorygroupid: "1"
  *               name: Sữa tiệt trùng ColosBaby
- *               price: 80.9
- *               quantity: 36
+ *               description: Sữa tiệt trùng ColosBaby
  *     responses:
  *       "201":
  *         description: Tạo thương hiệu thành công

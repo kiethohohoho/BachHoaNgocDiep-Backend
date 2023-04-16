@@ -114,7 +114,7 @@ const createOneProduct = async (body) => {
       )
     )
   );
-  return newProduct;
+  return newProduct.get({ plain: true });
 };
 
 module.exports = { queryProducts, queryProductById, saveProduct, destroyProduct, createOneProduct };

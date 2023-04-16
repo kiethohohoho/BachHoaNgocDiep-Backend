@@ -99,27 +99,25 @@ const createOneCart = async (body) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Sản phẩm không tồn tại!');
   }
 
-  const [cart, created] = await Cart.findOrCreate({
+  const cart = await Cart.findOne({
     where: {
       AccountId: user.Id,
       ProductId: productid,
     },
-    defaults: {
-      // AccountId: user.Id,
-      // ProductId: productid,
-      Quantity: quantity,
-      SubTotal: quantity * product.Price,
-    },
   });
 
-  if (created) {
-    await cart.update({
-      Quantity: cart.Quantity + quantity,
-      SubTotal: cart.SubTotal + quantity * product.Price,
+  if (!cart) {
+    await Cart.create({
+      AccountId: user.Id,
+      ProductId: productid,
+      Quantity: quantity,
+      SubTotal: quantity * product.Price,
     });
+  } else {
+    cart.Quantity += quantity;
+    cart.SubTotal = cart.SubTotal * 1 + quantity * product.Price;
+    await cart.save();
   }
-
-  return cart;
 };
 
 module.exports = {

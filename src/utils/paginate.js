@@ -32,7 +32,7 @@ const paginate = async (model, query) => {
     : {};
 
   const _f = _.mapValues(filter, (f) => {
-    const temp = _.mapValues(f, (e) => +e);
+    const temp = _.mapValues(f, (e) => (e.length === 36 ? e : +e));
     return _.mapKeys(temp, (value, key) => Op[key]);
   });
 

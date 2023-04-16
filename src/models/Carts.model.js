@@ -18,7 +18,7 @@ const Cart = sequelize.define(
       allowNull: false,
     },
     SubTotal: {
-      type: DataTypes.DECIMAL(10, 3),
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
   },
@@ -33,7 +33,7 @@ const Cart = sequelize.define(
   }
 );
 
-Cart.sync({ force: true })
+Cart.sync({ force: false })
   .then(() => {
     loggers.info('Cart table created successfully');
   })

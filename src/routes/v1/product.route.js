@@ -148,7 +148,7 @@ router
  *                 type: string
  *               price:
  *                 type: number
- *                 format: decimal
+ *                 format: bigint
  *                 min: 0
  *               quantity:
  *                 type: number
@@ -161,7 +161,7 @@ router
  *               categoryid: "1"
  *               categorygroupid: "1"
  *               name: Sữa tiệt trùng ColosBaby
- *               price: 80.9
+ *               price: 80000
  *               quantity: 36
  *               images: [{}]
  *     responses:
@@ -243,7 +243,7 @@ router
  *                 type: string
  *               price:
  *                 type: number
- *                 format: decimal
+ *                 format: bigint
  *                 min: 0
  *               rate:
  *                 type: number
@@ -260,7 +260,7 @@ router
  *               categorygroupid: "1"
  *               name: Sữa tiệt trùng ColosBaby
  *               description: Sữa ngon vạn người mê
- *               price: 80.9
+ *               price: 800000
  *               rate: 4.5
  *               quantity: 36
  *     responses:

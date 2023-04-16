@@ -41,8 +41,10 @@ const register = catchAsync(async (req, res) => {
 const login = catchAsync(async (req, res) => {
   try {
     const account = await authService.loginUserWithStuffsAndPassword(req.body);
-    const tokens = await tokenService.generateAuthTokens(account.Id);
-    res.send({ user: account, tokens, success: true });
+    if (account) {
+      const tokens = await tokenService.generateAuthTokens(account.Id);
+      res.status(httpStatus.OK).json({ user: account, tokens, success: true });
+    }
   } catch (err) {
     res
       .status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR)

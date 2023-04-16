@@ -94,7 +94,7 @@ const getAccountById = async (id) => {
 const getUserByEmail = async (email = '') => {
   const account = await Account.findOne({
     where: { Email: email },
-    attributes: { exclude: ['UserName', 'Password'] },
+    // attributes: { exclude: ['UserName', 'Password'] },
   });
   if (!account) {
     throw new ApiError(httpStatus.BAD_REQUEST, `Không tìm thấy email ${email}`);

@@ -33,7 +33,7 @@ const Product = sequelize.define(
       type: DataTypes.TEXT('long'),
     },
     Price: {
-      type: DataTypes.DECIMAL(10, 3),
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
     Rate: {
@@ -69,7 +69,7 @@ Product.belongsTo(CategoryGroup, {
   targetKey: 'Id',
 });
 
-Product.sync({ force: true })
+Product.sync({ force: false })
   .then(() => {
     loggers.info('Product table created successfully');
   })

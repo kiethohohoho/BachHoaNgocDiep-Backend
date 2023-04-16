@@ -18,14 +18,15 @@ const loginUserWithStuffsAndPassword = async (loginBody) => {
   const { email, password } = loginBody;
   const account = await accountService.getUserByEmail(email);
   if (account) {
-    bcrypt.compare(password, account.Password, (err, result) => {
-      if (err) {
-        throw new ApiError(httpStatus.UNAUTHORIZED, 'Sai mật khẩu!');
-      } else if (result === false) {
-        throw new ApiError(httpStatus.UNAUTHORIZED, 'Sai mật khẩu!');
-      }
-    });
-    return account;
+    const isMatch = bcrypt.compareSync(password, account.Password);
+    if (!isMatch) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Sai mật khẩu!');
+    } else {
+      const plainAccount = account.get({ plain: true });
+      delete plainAccount.UserName;
+      delete plainAccount.Password;
+      return plainAccount;
+    }
   }
 };
 
