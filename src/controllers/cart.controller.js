@@ -12,7 +12,11 @@ const catchAsync = require('../utils/catchAsync');
 const getCarts = catchAsync(async (req, res) => {
   try {
     const Carts = await queryCarts({ ...req.query, user: req.user });
-    res.status(httpStatus.OK).json({ Carts, success: true });
+    res.status(httpStatus.OK).json({
+      ...Carts,
+      Total: Carts.Data.reduce((acc, cart) => acc + cart.SubTotal * 1, 0),
+      success: true,
+    });
   } catch (error) {
     res.status(error.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
       message: 'Lỗi lấy danh sách giỏ hàng!',
