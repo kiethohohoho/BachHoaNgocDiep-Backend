@@ -13,8 +13,9 @@ const getCarts = catchAsync(async (req, res) => {
   try {
     const Carts = await queryCarts({ ...req.query, user: req.user });
     res.status(httpStatus.OK).json({
+      TotalPrice: Carts.Data.reduce((acc, cart) => acc + cart.SubTotal * 1, 0),
+      TotalQuantity: Carts.Data.reduce((acc, cart) => acc + cart.Quantity, 0),
       ...Carts,
-      Total: Carts.Data.reduce((acc, cart) => acc + cart.SubTotal * 1, 0),
       success: true,
     });
   } catch (error) {
