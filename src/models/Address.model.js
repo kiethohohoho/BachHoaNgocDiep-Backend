@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 // const Account = require('./Accounts.model');
 const loggers = require('../config/logger');
 const sequelize = require('../config/database');
+const Account = require('./Accounts.model');
 // const config = require('../config/config');
 
 const Address = sequelize.define(
@@ -16,21 +17,25 @@ const Address = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
     },
-    City: {
+    Name: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    IsDefault: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    City: {
+      type: DataTypes.STRING,
     },
     District: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     Ward: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
-    StayingAddress: {
+    Street: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
   },
   {
@@ -44,35 +49,12 @@ const Address = sequelize.define(
   }
 );
 
-// Address.belongsTo(Account, {
-//   foreignKey: 'AccountId',
-//   references: {
-//     model: Account,
-//     key: 'Id',
-//   },
-// });
+Address.belongsTo(Account, {
+  foreignKey: 'AccountId',
+  targetKey: 'Id',
+});
 
-// if (config.env !== 'production') {
-//   // Development or test environment
-//   Address.sync({ force: true })
-//     .then(() => {
-//       loggers.info('Address table created successfully');
-//     })
-//     .catch((err) => {
-//       loggers.error('Error creating Address table:', err);
-//     });
-// } else {
-//   // Production environment
-//   Address.sync()
-//     .then(() => {
-//       loggers.info('Address table created successfully');
-//     })
-//     .catch((err) => {
-//       loggers.error('Error creating Address table:', err);
-//     });
-// }
-
-Address.sync()
+Address.sync({ force: false })
   .then(() => {
     loggers.info('Address table created successfully');
   })

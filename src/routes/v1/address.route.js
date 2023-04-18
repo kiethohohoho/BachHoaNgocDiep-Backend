@@ -1,46 +1,52 @@
 const express = require('express');
 const validate = require('../../middlewares/validate');
-const { cartValidation } = require('../../validations');
-const { cartController } = require('../../controllers');
+const { addressValidation } = require('../../validations');
+const { addressController } = require('../../controllers');
 const auth = require('../../middlewares/auth');
 
 const router = express.Router();
 
 router
-  .route('/carts')
-  .get(auth('getCarts'), validate(cartValidation.getCarts), cartController.getCarts)
-  .post(auth('manageCarts'), validate(cartValidation.createCart), cartController.createCart);
-
-router
-  .route('/carts/:cartId')
-  .get(auth('getCarts'), validate(cartValidation.getOrDeleteCartById), cartController.getCartById)
-  .patch(
-    auth('manageCarts'),
-    validate(cartValidation.updateCartById),
-    cartController.updateCartById
-  )
-  .delete(
-    auth('manageCarts'),
-    validate(cartValidation.getOrDeleteCartById),
-    cartController.deleteCartById
+  .route('/addresss')
+  .get(auth('getAddresss'), validate(addressValidation.getAddresss), addressController.getAddresss)
+  .post(
+    auth('manageAddresss'),
+    validate(addressValidation.createAddress),
+    addressController.createAddress
   );
 
-module.exports = router;
+router
+  .route('/addresss/:addressId')
+  .get(
+    auth('getAddresss'),
+    validate(addressValidation.getOrDeleteAddressById),
+    addressController.getAddressById
+  )
+  .patch(
+    auth('manageAddresss'),
+    validate(addressValidation.updateAddressById),
+    addressController.updateAddressById
+  )
+  .delete(
+    auth('manageAddresss'),
+    validate(addressValidation.getOrDeleteAddressById),
+    addressController.deleteAddressById
+  );
 
 /**
  * @swagger
  * tags:
- *   name: Carts
- *   description: Giỏ hàng
+ *   name: Addresss
+ *   description: Địa chỉ
  */
 
 /**
  * @swagger
- * /carts:
+ * /addresss:
  *   get:
- *     summary: Lấy danh sách sản phẩm trong giỏ hàng (search, sort, filter, pagination)
- *     description: Cho phép search, sort, multi filter, phân trang /carts?search=a&sort=Price,Name&order=asc,desc&filter[Price][gt]=1&filter[Name][eq]=abc&page=1&limit=20.
- *     tags: [Carts]
+ *     summary: Lấy danh sách địa chỉ (search, sort, filter, pagination)
+ *     description: Cho phép search, sort, multi filter, phân trang /addresss?search=a&sort=Price,Name&order=asc,desc&filter[Price][gt]=1&filter[Name][eq]=abc&page=1&limit=20.
+ *     tags: [Addresss]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -89,7 +95,7 @@ module.exports = router;
  *                 Data:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Cart'
+ *                     $ref: '#/components/schemas/Address'
  *                 Pagination:
  *                   type: object
  *                   properties:
@@ -113,9 +119,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   post:
- *     summary: Thêm vào giỏ hàng
- *     description: Thêm vào giỏ hàng
- *     tags: [Carts]
+ *     summary: Tạo mới một địa chỉ
+ *     description: Tạo trước Nhóm danh mục, Danh mục và Thương hiệu địa chỉ (nếu cần), upload ảnh cho địa chỉ
+ *     tags: [Addresss]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -125,23 +131,39 @@ module.exports = router;
  *           schema:
  *             type: object
  *             required:
- *               - productid
- *               - quantity
+ *               - name
+ *               - isdefault
+ *               - city
+ *               - district
+ *               - ward
+ *               - street
  *             properties:
- *               productid:
+ *               name:
  *                 type: string
- *               quantity:
- *                 type: number
+ *               isdefault:
+ *                 type: string
+ *               city:
+ *                 type: string
+ *               district:
+ *                 type: string
+ *               ward:
+ *                 type: string
+ *               street:
+ *                 type: string
  *             example:
- *               productid: "1"
- *               quantity: 5
+ *               name: "text"
+ *               isdefault: "text"
+ *               city: "text"
+ *               district: "text"
+ *               ward: "text"
+ *               street: "text"
  *     responses:
  *       "201":
- *         description: Thêm vào giỏ hàng thành công
+ *         description: Tạo địa chỉ thành công
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Cart'
+ *                $ref: '#/components/schemas/Address'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
@@ -154,27 +176,27 @@ module.exports = router;
 
 /**
  * @swagger
- * /carts/{cartId}:
+ * /addresss/{addressId}:
  *   get:
- *     summary: Lấy thông tin một giỏ hàng
- *     description: Bao gồm cả thông tin Nhóm danh mục và Danh mục sản phẩm (nếu có)
- *     tags: [Carts]
+ *     summary: Lấy thông tin một địa chỉ
+ *     description: Bao gồm cả thông tin Nhóm danh mục, Danh mục và Thương hiệu địa chỉ (nếu có)
+ *     tags: [Addresss]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: cartId
+ *         name: addressId
  *         required: true
  *         schema:
  *           type: string
- *         description: Cart Id
+ *         description: Address Id
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Cart'
+ *                $ref: '#/components/schemas/Address'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -183,18 +205,18 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
- *     summary: Cập nhật một giỏ hàng
- *     description: Cập nhật thông tin của một giỏ hàng
- *     tags: [Carts]
+ *     summary: Cập nhật một địa chỉ
+ *     description: Cập nhật thông tin của một địa chỉ
+ *     tags: [Addresss]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: cartId
+ *         name: addressId
  *         required: true
  *         schema:
  *           type: string
- *         description: Cart Id
+ *         description: Address Id
  *     requestBody:
  *       required: true
  *       content:
@@ -202,20 +224,32 @@ module.exports = router;
  *           schema:
  *             type: object
  *             properties:
- *               productid:
+ *               name:
  *                 type: string
- *               quantity:
- *                 type: number
+ *               isdefault:
+ *                 type: string
+ *               city:
+ *                 type: string
+ *               district:
+ *                 type: string
+ *               ward:
+ *                 type: string
+ *               street:
+ *                 type: string
  *             example:
- *               productid: "00000000-0000-0000-0000-000000000000"
- *               quantity: 1
+ *               name: "text"
+ *               isdefault: "text"
+ *               city: "text"
+ *               district: "text"
+ *               ward: "text"
+ *               street: "text"
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Cart'
+ *                $ref: '#/components/schemas/Address'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
@@ -226,18 +260,18 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   delete:
- *     summary: Xoá một giỏ hàng
- *     description: Thao tác này chỉ "xoá mềm" một giỏ hàng, vẫn có thể khôi phục sau khi xoá.
- *     tags: [Carts]
+ *     summary: Xoá một địa chỉ
+ *     description: Thao tác này chỉ "xoá mềm" một địa chỉ, vẫn có thể khôi phục sau khi xoá.
+ *     tags: [Addresss]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: cartId
+ *         name: addressId
  *         required: true
  *         schema:
  *           type: string
- *         description: Cart Id
+ *         description: Address Id
  *     responses:
  *       "200":
  *         description: No content
@@ -248,3 +282,4 @@ module.exports = router;
  *       "404":
  *         $ref: '#/components/responses/NotFound'
  */
+module.exports = router;

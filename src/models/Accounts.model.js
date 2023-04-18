@@ -43,6 +43,11 @@ const Account = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    AccumulatedPoints: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
     IsAdmin: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
