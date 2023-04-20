@@ -4,7 +4,7 @@ const userController = require('../../controllers/user.controller');
 
 const router = express.Router();
 
-router.route('/users/profile').get(auth('getProfile'), userController.getUserProfile);
+router.route('/profile').get(auth('getProfile'), userController.getUserProfile);
 
 module.exports = router;
 

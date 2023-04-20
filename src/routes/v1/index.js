@@ -8,6 +8,7 @@ const docsRoute = require('./docs.route');
 const imageRoute = require('./image.route');
 const userRoute = require('./user.route');
 const cartRoute = require('./cart.route');
+const addressRoute = require('./address.route');
 // const config = require('../../config/config');
 
 const router = express.Router();
@@ -18,32 +19,36 @@ const defaultRoutes = [
     route: authRoute,
   },
   {
-    path: '/',
+    path: '/products',
     route: productRoute,
   },
   {
-    path: '/',
+    path: '/brands',
     route: brandRoute,
   },
   {
-    path: '/',
+    path: '/categories',
     route: categoryRoute,
   },
   {
-    path: '/',
+    path: '/categoryGroups',
     route: categoryGroupRoute,
   },
   {
-    path: '/',
+    path: '/images',
     route: imageRoute,
   },
   {
-    path: '/',
+    path: '/users',
     route: userRoute,
   },
   {
-    path: '/',
+    path: '/carts',
     route: cartRoute,
+  },
+  {
+    path: '/addresses',
+    route: addressRoute,
   },
 ];
 

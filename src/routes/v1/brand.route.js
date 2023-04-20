@@ -7,12 +7,12 @@ const auth = require('../../middlewares/auth');
 const router = express.Router();
 
 router
-  .route('/brands')
+  .route('/')
   .get(auth('getBrands'), validate(brandValidation.getBrands), brandController.getBrands)
   .post(auth('manageBrands'), validate(brandValidation.createBrand), brandController.createBrand);
 
 router
-  .route('/brands/:brandId')
+  .route('/:brandId')
   .get(
     auth('getBrands'),
     validate(brandValidation.getOrDeleteBrandById),

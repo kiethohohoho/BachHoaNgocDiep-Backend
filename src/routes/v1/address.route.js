@@ -7,7 +7,7 @@ const auth = require('../../middlewares/auth');
 const router = express.Router();
 
 router
-  .route('/addresss')
+  .route('/')
   .get(auth('getAddresss'), validate(addressValidation.getAddresss), addressController.getAddresss)
   .post(
     auth('manageAddresss'),
@@ -16,7 +16,7 @@ router
   );
 
 router
-  .route('/addresss/:addressId')
+  .route('/:addressId')
   .get(
     auth('getAddresss'),
     validate(addressValidation.getOrDeleteAddressById),
@@ -42,10 +42,10 @@ router
 
 /**
  * @swagger
- * /addresss:
+ * /addresses:
  *   get:
  *     summary: Lấy danh sách địa chỉ (search, sort, filter, pagination)
- *     description: Cho phép search, sort, multi filter, phân trang /addresss?search=a&sort=Price,Name&order=asc,desc&filter[Price][gt]=1&filter[Name][eq]=abc&page=1&limit=20.
+ *     description: Cho phép search, sort, multi filter, phân trang /addresses?search=a&sort=Price,Name&order=asc,desc&filter[Price][gt]=1&filter[Name][eq]=abc&page=1&limit=20.
  *     tags: [Addresss]
  *     security:
  *       - bearerAuth: []
@@ -176,7 +176,7 @@ router
 
 /**
  * @swagger
- * /addresss/{addressId}:
+ * /addresses/{addressId}:
  *   get:
  *     summary: Lấy thông tin một địa chỉ
  *     description: Bao gồm cả thông tin Nhóm danh mục, Danh mục và Thương hiệu địa chỉ (nếu có)

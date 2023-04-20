@@ -7,12 +7,12 @@ const auth = require('../../middlewares/auth');
 const router = express.Router();
 
 router
-  .route('/carts')
+  .route('/')
   .get(auth('getCarts'), validate(cartValidation.getCarts), cartController.getCarts)
   .post(auth('manageCarts'), validate(cartValidation.createCart), cartController.createCart);
 
 router
-  .route('/carts/:cartId')
+  .route('/:cartId')
   .get(auth('getCarts'), validate(cartValidation.getOrDeleteCartById), cartController.getCartById)
   .patch(
     auth('manageCarts'),

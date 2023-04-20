@@ -9,7 +9,7 @@ const router = express.Router();
 const upload = multer();
 
 router
-  .route('/images')
+  .route('/')
   .get(auth('getImages'), validate(imageValidation.getImages), imageController.getImages)
   .post(
     auth('uploadImages'),
@@ -19,7 +19,7 @@ router
   );
 
 router
-  .route('/images/:imageId')
+  .route('/:imageId')
   .get(
     auth('getImages'),
     validate(imageValidation.getOrDeleteImageById),

@@ -7,7 +7,7 @@ const auth = require('../../middlewares/auth');
 const router = express.Router();
 
 router
-  .route('/categories')
+  .route('/')
   .get(
     auth('getCategories'),
     validate(categoryValidation.getCategories),
@@ -20,7 +20,7 @@ router
   );
 
 router
-  .route('/categories/:categoryId')
+  .route('/:categoryId')
   .get(
     auth('getCategories'),
     validate(categoryValidation.getOrDeleteCategoryById),

@@ -7,7 +7,7 @@ const auth = require('../../middlewares/auth');
 const router = express.Router();
 
 router
-  .route('/products')
+  .route('/')
   .get(auth('getProducts'), validate(productValidation.getProducts), productController.getProducts)
   .post(
     auth('manageProducts'),
@@ -16,7 +16,7 @@ router
   );
 
 router
-  .route('/products/:productId')
+  .route('/:productId')
   .get(
     auth('getProducts'),
     validate(productValidation.getOrDeleteProductById),

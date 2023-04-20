@@ -6,12 +6,12 @@ const paginate = require('../utils/paginate');
 // const logger = require('../config/logger');
 
 /**
- * Query for addresss
+ * Query for addresses
  * @param {Object} query - Request query
  * @returns {Promise<QueryResult>}
  */
 const queryAddresss = async (query) => {
-  const addresss = await paginate(Address, {
+  const addresses = await paginate(Address, {
     ...query,
     filter: {
       AccountId: {
@@ -19,7 +19,7 @@ const queryAddresss = async (query) => {
       },
     },
   });
-  return addresss;
+  return addresses;
 };
 
 /**

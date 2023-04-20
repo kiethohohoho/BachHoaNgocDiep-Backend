@@ -7,7 +7,7 @@ const auth = require('../../middlewares/auth');
 const router = express.Router();
 
 router
-  .route('/categoryGroups')
+  .route('/')
   .get(
     auth('getCategoryGroups'),
     validate(categoryGroupValidation.getCategoryGroups),
@@ -20,7 +20,7 @@ router
   );
 
 router
-  .route('/categoryGroups/:categoryGroupId')
+  .route('/:categoryGroupId')
   .get(
     auth('getCategoryGroups'),
     validate(categoryGroupValidation.getOrDeleteCategoryGroupById),
