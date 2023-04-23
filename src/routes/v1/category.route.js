@@ -38,7 +38,7 @@ router
   );
 
 router
-  .route('/categories/categoryGroup/:categoryGroupId')
+  .route('/categoryGroup/:categoryGroupId')
   .get(
     auth('getCategories'),
     validate(categoryValidation.getCategoryByCategoryGroupId),

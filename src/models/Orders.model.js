@@ -10,11 +10,11 @@ const Order = sequelize.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    customerID: {
+    AccountID: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
     },
-    shipperID: {
+    AddressId: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
     },
@@ -30,7 +30,7 @@ const Order = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    totalAmount: {
+    TotalAmount: {
       type: DataTypes.STRING,
       allowNull: false,
     },

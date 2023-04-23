@@ -37,7 +37,7 @@ router
   );
 
 router.get(
-  '/images/product/:productId',
+  '/product/:productId',
   auth('getImages'),
   validate(imageValidation.getImagesByProductIdy),
   imageController.getImagesByProductId

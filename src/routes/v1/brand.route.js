@@ -30,7 +30,7 @@ router
   );
 
 router
-  .route('/brands/category/:categoryId')
+  .route('/category/:categoryId')
   .get(
     auth('getBrands'),
     validate(brandValidation.getBrandsByCategoryId),
