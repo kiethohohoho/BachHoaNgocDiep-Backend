@@ -10,45 +10,51 @@ const Order = sequelize.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    AccountID: {
+    AccountId: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
     },
-    AddressId: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-    },
-    deliveryAddressID: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-    },
-    tenantID: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-    },
-    notes: {
+    FullAddress: {
       type: DataTypes.STRING,
+      allowNull: false,
+    },
+    PhoneNumber: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    Notes: {
+      type: DataTypes.TEXT('long'),
       allowNull: false,
     },
     TotalAmount: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    // OrderDate: {
-    //   type: DataTypes.STRING,
-    //   allowNull: false,
-    // },
-    // DeliveryDate: {
-    //   type: DataTypes.UUID,
-    //   defaultValue: DataTypes.UUIDV4,
-    //   primaryKey: true,
-    // },
+    StatusCode: {
+      type: DataTypes.SMALLINT,
+      allowNull: false,
+    },
+    // 1 - 2 - 3 - 4
+    Status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 1,
+    },
+    // Đang kiểm tra - Đang chuẩn bị - Đang giao hàng - Đã giao hàng
+    DeliveryDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: '',
+    },
   },
   {
-    timestamps: true,
-    createdAt: 'createDate',
-    updatedAt: 'updateDate',
-    indexes: [],
+    timestamps: {
+      CreatedAt: 'created_date',
+      UpdatedAt: 'updated_at',
+      DeletedAt: 'deleted_at',
+    },
+    underscored: false,
+    paranoid: true,
   }
 );
 

@@ -81,7 +81,17 @@ const destroyAddress = async (address) => {
  * @returns {Promise<CreateResult>}
  */
 const createOneAddress = async (body) => {
-  const { name, isdefault = false, city = '', district = '', ward = '', street = '', user } = body;
+  const {
+    name,
+    isdefault = false,
+    city = '',
+    district = '',
+    ward = '',
+    street = '',
+    receivername = '',
+    receiverphonenumber = '',
+    user,
+  } = body;
 
   const address = await Address.findOne({
     where: {
@@ -99,6 +109,8 @@ const createOneAddress = async (body) => {
       District: district,
       Ward: ward,
       Street: street,
+      ReceiverName: receivername,
+      ReceiverPhoneNumber: receiverphonenumber,
     });
   } else {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Tên này đã tồn tại!');

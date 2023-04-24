@@ -1,31 +1,48 @@
 const { DataTypes } = require('sequelize');
 const loggers = require('../config/logger');
 const sequelize = require('../config/database');
+const { Account } = require('.');
 
 const Payment = sequelize.define(
   'Payments',
   {
-    id: {
+    Id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    tenantID: {
+    AccountId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
+    CardNumber: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+    },
+    OwnerName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    name: {
+    BankName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
   },
   {
-    timestamps: true,
-    createdAt: 'createDate',
-    updatedAt: 'updateDate',
-    indexes: [],
+    timestamps: {
+      CreatedAt: 'created_date',
+      UpdatedAt: 'updated_at',
+      DeletedAt: 'deleted_at',
+    },
+    underscored: false,
+    paranoid: true,
   }
 );
+
+Payment.belongsTo(Account, {
+  foreignKey: 'AccountId',
+  targetKey: 'Id',
+});
 
 Payment.sync({ force: true })
   .then(() => {

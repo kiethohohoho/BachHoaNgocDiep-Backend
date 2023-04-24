@@ -41,11 +41,13 @@ const createAddress = {
   body: Joi.object()
     .keys({
       name: Joi.string().required(),
-      isdefault: Joi.string(),
-      city: Joi.string(),
-      district: Joi.string(),
-      ward: Joi.string(),
-      street: Joi.string(),
+      isdefault: Joi.string().required(),
+      city: Joi.string().required(),
+      district: Joi.string().required(),
+      ward: Joi.string().required(),
+      street: Joi.string().required(),
+      receivername: Joi.string(),
+      receiverphonenumber: Joi.string().required(),
     })
     .unknown(true),
 };

@@ -37,6 +37,14 @@ const Address = sequelize.define(
     Street: {
       type: DataTypes.STRING,
     },
+    ReceiverName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    ReceiverPhoneNumber: {
+      type: DataTypes.STRING(11),
+      allowNull: false,
+    },
   },
   {
     timestamps: {
@@ -54,7 +62,7 @@ Address.belongsTo(Account, {
   targetKey: 'Id',
 });
 
-Address.sync({ force: false })
+Address.sync({ force: true })
   .then(() => {
     loggers.info('Address table created successfully');
   })

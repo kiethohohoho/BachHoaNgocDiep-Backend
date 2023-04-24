@@ -137,11 +137,13 @@ router
  *               - district
  *               - ward
  *               - street
+ *               - receivername
+ *               - receiverphonenumber
  *             properties:
  *               name:
  *                 type: string
  *               isdefault:
- *                 type: string
+ *                 type: boolean
  *               city:
  *                 type: string
  *               district:
@@ -150,13 +152,19 @@ router
  *                 type: string
  *               street:
  *                 type: string
+ *               receivername:
+ *                 type: string
+ *               receiverphonenumber:
+ *                 type: string
  *             example:
  *               name: "text"
- *               isdefault: "text"
+ *               isdefault: false
  *               city: "text"
  *               district: "text"
  *               ward: "text"
  *               street: "text"
+ *               receivername: "Lan ABC"
+ *               receiverphonenumber: "0123456789"
  *     responses:
  *       "201":
  *         description: Tạo địa chỉ thành công
@@ -227,7 +235,7 @@ router
  *               name:
  *                 type: string
  *               isdefault:
- *                 type: string
+ *                 type: boolean
  *               city:
  *                 type: string
  *               district:
@@ -238,7 +246,7 @@ router
  *                 type: string
  *             example:
  *               name: "text"
- *               isdefault: "text"
+ *               isdefault: false
  *               city: "text"
  *               district: "text"
  *               ward: "text"
