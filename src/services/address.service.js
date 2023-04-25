@@ -108,7 +108,7 @@ const createOneAddress = async (body) => {
 
   if (!address) {
     if (isdefault) {
-      Address.update(
+      await Address.update(
         { IsDefault: false },
         {
           where: {
