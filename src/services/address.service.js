@@ -107,7 +107,7 @@ const createOneAddress = async (body) => {
   });
 
   if (!address) {
-    await Address.create({
+    const newAddress = await Address.create({
       AccountId: user.Id,
       Name: name,
       IsDefault: isdefault,
@@ -118,10 +118,9 @@ const createOneAddress = async (body) => {
       ReceiverName: receivername || user.FullName,
       ReceiverPhoneNumber: receiverphonenumber,
     });
-  } else {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Tên này đã tồn tại!');
+    return newAddress.get({ plain: true });
   }
-  return address.get({ plain: true });
+  throw new ApiError(httpStatus.BAD_REQUEST, 'Tên này đã tồn tại!');
 };
 
 module.exports = { queryAddresss, queryAddressById, saveAddress, destroyAddress, createOneAddress };
