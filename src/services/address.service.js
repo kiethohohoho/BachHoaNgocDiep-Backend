@@ -44,7 +44,7 @@ const queryAddressById = async (addressId) => {
  * @returns {Promise<SaveResult>}
  */
 const saveAddress = async (address, body) => {
-  const { name, isdefault, city, district, ward, street } = body;
+  const { name, isdefault, city, district, ward, street, receivername, receiverphonenumber } = body;
   if (name) {
     address.Name = name;
   }
@@ -62,6 +62,12 @@ const saveAddress = async (address, body) => {
   }
   if (street) {
     address.Street = street;
+  }
+  if (receivername) {
+    address.ReceiverName = receivername;
+  }
+  if (receiverphonenumber) {
+    address.ReceiverPhoneNumber = receiverphonenumber;
   }
   await address.save();
 };
@@ -109,7 +115,7 @@ const createOneAddress = async (body) => {
       District: district,
       Ward: ward,
       Street: street,
-      ReceiverName: receivername,
+      ReceiverName: receivername || user.FullName,
       ReceiverPhoneNumber: receiverphonenumber,
     });
   } else {

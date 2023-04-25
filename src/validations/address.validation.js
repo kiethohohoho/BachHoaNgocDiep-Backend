@@ -29,11 +29,13 @@ const updateAddressById = {
     .unknown(true),
   body: Joi.object().keys({
     name: Joi.string(),
-    isdefault: Joi.string(),
+    isdefault: Joi.boolean(),
     city: Joi.string(),
     district: Joi.string(),
     ward: Joi.string(),
     street: Joi.string(),
+    receivername: Joi.string(),
+    receiverphonenumber: Joi.string(),
   }),
 };
 
@@ -41,7 +43,7 @@ const createAddress = {
   body: Joi.object()
     .keys({
       name: Joi.string().required(),
-      isdefault: Joi.string().required(),
+      isdefault: Joi.boolean().required(),
       city: Joi.string().required(),
       district: Joi.string().required(),
       ward: Joi.string().required(),
