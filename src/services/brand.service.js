@@ -71,10 +71,14 @@ const saveBrand = async (brand, body) => {
 
 /**
  * Destroy a record
- * @param {Brand} brand - brand record
+ * @param {string} brandId - brandId
  * @returns {Promise<DestroyResult>}
  */
-const destroyBrand = async (brand) => {
+const destroyBrand = async (brandId) => {
+  const brand = await Brand.findByPk(brandId);
+  if (!brand) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Thương hiệu này không tồn tại!');
+  }
   await brand.destroy();
 };
 

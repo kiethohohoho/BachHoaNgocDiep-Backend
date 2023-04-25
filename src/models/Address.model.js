@@ -62,7 +62,7 @@ Address.belongsTo(Account, {
   targetKey: 'Id',
 });
 
-Address.sync({ force: true })
+Address.sync({ force: false })
   .then(() => {
     loggers.info('Address table created successfully');
   })

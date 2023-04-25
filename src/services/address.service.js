@@ -34,7 +34,7 @@ const queryAddressById = async (addressId) => {
   if (!address) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Địa chỉ không tồn tại!');
   }
-  return address.get({ plain: true });
+  return address;
 };
 
 /**
