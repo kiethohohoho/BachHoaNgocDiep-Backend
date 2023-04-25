@@ -107,6 +107,17 @@ const createOneAddress = async (body) => {
   });
 
   if (!address) {
+    if (isdefault) {
+      Address.update(
+        { IsDefault: false },
+        {
+          where: {
+            AccountId: user.Id,
+            IsDefault: true,
+          },
+        }
+      );
+    }
     const newAddress = await Address.create({
       AccountId: user.Id,
       Name: name,
