@@ -68,6 +68,9 @@ const updateImageById = async (req, res) => {
 const deleteImageById = async (req, res) => {
   try {
     const image = await queryImageById(req.params.imageId);
+    if (!image) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Hình ảnh này không tồn tại!');
+    }
     await destroyImage(image);
 
     return res.status(httpStatus.OK).json({ message: 'Xoá thành công!', success: true });

@@ -8,6 +8,7 @@ const {
   queryBrandsByCategoryId,
 } = require('../services/brand.service');
 const catchAsync = require('../utils/catchAsync');
+const ApiError = require('../utils/ApiError');
 
 const getBrands = catchAsync(async (req, res) => {
   try {
@@ -66,6 +67,9 @@ const updateBrandById = async (req, res) => {
 const deleteBrandById = async (req, res) => {
   try {
     const brand = await queryBrandById(req.params.brandId);
+    if (!brand) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Thương hiệu này không tồn tại!');
+    }
     await destroyBrand(brand);
 
     return res.status(httpStatus.OK).json({ message: 'Xoá thành công!', success: true });

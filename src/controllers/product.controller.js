@@ -7,6 +7,7 @@ const {
   destroyProduct,
 } = require('../services/product.service');
 const catchAsync = require('../utils/catchAsync');
+const ApiError = require('../utils/ApiError');
 
 const getProducts = catchAsync(async (req, res) => {
   try {
@@ -52,6 +53,9 @@ const updateProductById = async (req, res) => {
 const deleteProductById = async (req, res) => {
   try {
     const product = await queryProductById(req.params.productId);
+    if (!product) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Sản phẩm này không tồn tại!');
+    }
     await destroyProduct(product);
 
     return res.status(httpStatus.OK).json({ message: 'Xoá thành công!', success: true });
