@@ -43,7 +43,7 @@ const createAddress = {
   body: Joi.object()
     .keys({
       name: Joi.string().required(),
-      isdefault: Joi.boolean().required(),
+      isdefault: Joi.boolean(),
       city: Joi.string().required(),
       district: Joi.string().required(),
       ward: Joi.string().required(),
