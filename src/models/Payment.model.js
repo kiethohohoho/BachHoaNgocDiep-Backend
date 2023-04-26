@@ -44,7 +44,7 @@ Payment.belongsTo(Account, {
   targetKey: 'Id',
 });
 
-Payment.sync({ force: true })
+Payment.sync({ force: false })
   .then(() => {
     loggers.info('Payment table created successfully');
   })

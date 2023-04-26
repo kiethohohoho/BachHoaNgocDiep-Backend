@@ -31,11 +31,11 @@ const getUserPayment = async (id) => {
 
 /**
  * Update profile
- * @param {Object} body - update body
+ * @param {Account} userBody - userBody
  * @returns {Promise<QueryResult>}
  */
-const updateProfile = async (body) => {
-  const { user, email, firstname, lastname, dateofbirth, gender, avatar, phonenumber } = body;
+const updateProfile = async (userBody) => {
+  const { user, email, firstname, lastname, dateofbirth, gender, avatar, phonenumber } = userBody;
 
   if (firstname) {
     user.FirstName = firstname;
