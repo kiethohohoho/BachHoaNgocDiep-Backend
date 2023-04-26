@@ -36,6 +36,9 @@ const updateAddressById = {
     street: Joi.string(),
     receivername: Joi.string(),
     receiverphonenumber: Joi.string(),
+    cityghnid: Joi.number(),
+    districtghnid: Joi.number(),
+    wardghnid: Joi.number(),
   }),
 };
 
@@ -50,6 +53,9 @@ const createAddress = {
       street: Joi.string().required(),
       receivername: Joi.string(),
       receiverphonenumber: Joi.string().required(),
+      cityghnid: Joi.number(),
+      districtghnid: Joi.number(),
+      wardghnid: Joi.number(),
     })
     .unknown(true),
 };

@@ -5,13 +5,9 @@ const register = {
   body: Joi.object()
     .keys({
       email: Joi.string().required().email(),
-      username: Joi.string(),
       password: Joi.string().required().custom(password),
       firstname: Joi.string().required(),
       lastname: Joi.string().required(),
-      dateofbirth: Joi.date(),
-      gender: Joi.boolean(),
-      phonenumber: Joi.string().pattern(/^(03|05|07|08|09)+([0-9]{8})\b/),
     })
     .unknown(true),
 };

@@ -1,5 +1,4 @@
 const { DataTypes } = require('sequelize');
-const bcrypt = require('bcrypt');
 const loggers = require('../config/logger');
 const sequelize = require('../config/database');
 
@@ -48,6 +47,9 @@ const Account = sequelize.define(
       allowNull: false,
       defaultValue: 0,
     },
+    Avatar: {
+      type: DataTypes.STRING,
+    },
     IsAdmin: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
@@ -74,10 +76,6 @@ const Account = sequelize.define(
     paranoid: true,
   }
 );
-
-Account.prototype.isMatchPassword = function (password) {
-  return bcrypt.compareSync(password, this.password);
-};
 
 Account.sync({ force: false })
   .then(() => {

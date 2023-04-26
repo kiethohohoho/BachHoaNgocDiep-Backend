@@ -1,10 +1,19 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
+const validate = require('../../middlewares/validate');
 const userController = require('../../controllers/user.controller');
+const { userValidation } = require('../../validations');
 
 const router = express.Router();
 
-router.route('/profile').get(auth('getProfile'), userController.getUserProfile);
+router
+  .route('/profile')
+  .get(auth('getProfile'), userController.getUserProfile)
+  .patch(
+    auth('updateProfile'),
+    validate(userValidation.updateProfile),
+    userController.updateUserProfile
+  );
 
 module.exports = router;
 
@@ -40,4 +49,49 @@ module.exports = router;
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
+ *
+ *   patch:
+ *     summary: Cập nhật profile
+ *     description: Cập nhật thông tin của user
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               firstname:
+ *                 type: string
+ *                 format: email
+ *               lastname:
+ *                 type: string
+ *               dateofbirth:
+ *                 type: DATE
+ *               gender:
+ *                 type: string
+ *               avatar:
+ *                 type: string
+ *               phonenumber:
+ *                 type: string
+ *             example:
+ *               email: "abcdemo@gmail.com"
+ *               firstname: "Lê"
+ *               lastname: "Tấn Kiệt"
+ *               dateofbirth: 10/02/2001
+ *               gender: true
+ *               avatar: "url ảnh"
+ *               phonenumber: "0347057544"
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             type: object
+ *             properties:
+ *               success: true
  */

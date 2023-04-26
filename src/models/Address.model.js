@@ -1,9 +1,7 @@
 const { DataTypes } = require('sequelize');
-// const Account = require('./Accounts.model');
 const loggers = require('../config/logger');
 const sequelize = require('../config/database');
 const Account = require('./Accounts.model');
-// const config = require('../config/config');
 
 const Address = sequelize.define(
   'Addresses',
@@ -28,11 +26,20 @@ const Address = sequelize.define(
     City: {
       type: DataTypes.STRING,
     },
+    CityGHNId: {
+      type: DataTypes.INTEGER,
+    },
     District: {
       type: DataTypes.STRING,
     },
+    DistrictGHNId: {
+      type: DataTypes.INTEGER,
+    },
     Ward: {
       type: DataTypes.STRING,
+    },
+    WardGHNId: {
+      type: DataTypes.INTEGER,
     },
     Street: {
       type: DataTypes.STRING,

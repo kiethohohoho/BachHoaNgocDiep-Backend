@@ -10,7 +10,7 @@ const logger = require('../config/logger');
  * @returns {Promise<Account>}
  */
 const createAccount = async (accountBody) => {
-  const { password, firstname = '', lastname = '', email } = accountBody;
+  const { email, firstname = '', lastname = '', password } = accountBody;
 
   try {
     // Check if email already exists

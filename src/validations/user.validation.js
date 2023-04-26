@@ -1,4 +1,14 @@
-// const Joi = require('joi');
-// const { password, objectId } = require('./custom.validation');
+const Joi = require('joi');
 
-module.exports = {};
+const updateProfile = {
+  body: Joi.object().keys({
+    email: Joi.string().email(),
+    firstname: Joi.string(),
+    lastname: Joi.string(),
+    dateofbirth: Joi.date(),
+    gender: Joi.boolean(),
+    avatar: Joi.string(),
+    phonenumber: Joi.string().pattern(/^(03|05|07|08|09)+([0-9]{8})\b/),
+  }),
+};
+module.exports = { updateProfile };

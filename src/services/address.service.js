@@ -44,7 +44,19 @@ const queryAddressById = async (addressId) => {
  * @returns {Promise<SaveResult>}
  */
 const saveAddress = async (address, body) => {
-  const { name, isdefault, city, district, ward, street, receivername, receiverphonenumber } = body;
+  const {
+    name,
+    isdefault,
+    city,
+    district,
+    ward,
+    street,
+    receivername,
+    receiverphonenumber,
+    cityghnid,
+    districtghnid,
+    wardghnid,
+  } = body;
   if (name) {
     address.Name = name;
   }
@@ -68,6 +80,15 @@ const saveAddress = async (address, body) => {
   }
   if (receiverphonenumber) {
     address.ReceiverPhoneNumber = receiverphonenumber;
+  }
+  if (cityghnid) {
+    address.CityGHNId = cityghnid;
+  }
+  if (districtghnid) {
+    address.DistrictGHNId = districtghnid;
+  }
+  if (wardghnid) {
+    address.WardGHNId = wardghnid;
   }
   await address.save();
 };
@@ -97,6 +118,9 @@ const createOneAddress = async (body) => {
     receivername = '',
     receiverphonenumber = '',
     user,
+    cityghnid = 0,
+    districtghnid = 0,
+    wardghnid = 0,
   } = body;
 
   const address = await Address.findOne({
@@ -123,8 +147,11 @@ const createOneAddress = async (body) => {
       Name: name,
       IsDefault: isdefault,
       City: city,
+      CityGHNId: cityghnid,
       District: district,
+      DistrictGHNId: districtghnid,
       Ward: ward,
+      WardGHNId: wardghnid,
       Street: street,
       ReceiverName: receivername || user.FullName,
       ReceiverPhoneNumber: receiverphonenumber,
