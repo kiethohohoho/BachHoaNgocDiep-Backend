@@ -271,7 +271,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /reviews/product/:productId:
+ * /reviews/product/{productId}:
  *   get:
  *     summary: Lấy danh sách review theo productId
  *     description: Lấy danh sách review theo productId
