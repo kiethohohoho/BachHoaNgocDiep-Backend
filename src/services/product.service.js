@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
-const { Product, Brand, Category, CategoryGroup, Image } = require('../models');
+const { Product, Brand, Category, CategoryGroup, Image, Review } = require('../models');
 const ApiError = require('../utils/ApiError');
 const paginate = require('../utils/paginate');
 // const logger = require('../config/logger');
@@ -24,10 +24,11 @@ const queryProductById = async (productId) => {
   const product = await Product.findByPk(productId, {
     include: [Brand, Category, CategoryGroup],
   });
+  const count = await Review.count({ where: { ProductId: productId } });
   if (!product) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Sản phẩm không tồn tại!');
   }
-  return product;
+  return { product, count };
 };
 
 /**
