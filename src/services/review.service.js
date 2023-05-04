@@ -3,7 +3,7 @@ const httpStatus = require('http-status');
 const { Review, Account, Product } = require('../models');
 const ApiError = require('../utils/ApiError');
 const paginate = require('../utils/paginate');
-const { queryProductById, saveProduct } = require('./product.service');
+const { queryProductById } = require('./product.service');
 // const logger = require('../config/logger');
 
 /**
@@ -92,8 +92,12 @@ const createOneReview = async (body) => {
     queryProductById(productid),
     Review.count({ where: { ProductId: productid } }),
   ]);
-  await saveProduct(product, { rate: (product.Rate * count + rate) / (count + 1) });
-  return newReview.get({ plain: true });
+
+  return {
+    Review: newReview.get({ plain: true }),
+    Count: (product.Rate * count + rate) / (count + 1),
+    Product: product,
+  };
 };
 
 module.exports = {
