@@ -141,20 +141,20 @@ module.exports = router;
  *           schema:
  *             type: object
  *             required:
- *               - cardnumber
- *               - ownername
- *               - bankname
+ *               - productid
+ *               - content
+ *               - rate
  *             properties:
- *               cardnumber:
+ *               productid:
  *                 type: string
- *               ownername:
+ *               content:
  *                 type: string
- *               bankname:
- *                 type: string
+ *               rate:
+ *                 type: number
  *             example:
- *               cardnumber: "58110001321860"
- *               ownername: "LE TAN KIET"
- *               bankname: "BIDV"
+ *               productid: "productid"
+ *               content: "Sản phẩm tốt!"
+ *               rate: 4
  *     responses:
  *       "201":
  *         description: Tạo review thành công
@@ -222,16 +222,13 @@ module.exports = router;
  *           schema:
  *             type: object
  *             properties:
- *               cardnumber:
+ *               content:
  *                 type: string
- *               ownername:
- *                 type: string
- *               bankname:
- *                 type: string
+ *               rate:
+ *                 type: number
  *             example:
- *               cardnumber: "58110001321860"
- *               ownername: "LE TAN KIET"
- *               bankname: "BIDV"
+ *               content: "Sản phẩm tốt!"
+ *               rate: 4
  *     responses:
  *       "200":
  *         description: OK
@@ -287,7 +284,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: account Id
+ *         description: product Id
  *     responses:
  *       "200":
  *         description: OK
