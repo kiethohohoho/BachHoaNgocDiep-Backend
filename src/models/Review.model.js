@@ -1,10 +1,10 @@
 const { DataTypes } = require('sequelize');
 const loggers = require('../config/logger');
 const sequelize = require('../config/database');
-const { Account } = require('.');
+const { Product, Account } = require('.');
 
-const Payment = sequelize.define(
-  'Payments',
+const Review = sequelize.define(
+  'Reviews',
   {
     Id: {
       type: DataTypes.UUID,
@@ -15,16 +15,21 @@ const Payment = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
     },
-    CardNumber: {
+    ProductId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
+    Content: {
+      type: DataTypes.TEXT('long'),
+      allowNull: false,
+    },
+    Rate: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    OwnerName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    BankName: {
-      type: DataTypes.STRING,
+    Like: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
       allowNull: false,
     },
   },
@@ -39,17 +44,22 @@ const Payment = sequelize.define(
   }
 );
 
-Payment.belongsTo(Account, {
+Review.belongsTo(Product, {
+  foreignKey: 'ProductId',
+  targetKey: 'Id',
+});
+
+Review.belongsTo(Account, {
   foreignKey: 'AccountId',
   targetKey: 'Id',
 });
 
-Payment.sync({ force: false })
+Review.sync({ force: false })
   .then(() => {
-    loggers.info('Payment table created successfully');
+    loggers.info('Review table created successfully');
   })
   .catch((err) => {
-    loggers.error('Error creating Payment table:', err);
+    loggers.error('Error creating Review table:', err);
   });
 
-module.exports = Payment;
+module.exports = Review;
