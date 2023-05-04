@@ -90,6 +90,7 @@ const createReview = catchAsync(async (req, res) => {
       res
         .status(httpStatus.OK)
         .json({ message: 'Tạo review thành công!', success: true, ...createdReview });
+
       const [product, count] = await Promise.all([
         queryProductById(req.body.productid),
         Review.count({ where: { ProductId: req.body.productid } }),

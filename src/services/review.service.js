@@ -36,9 +36,9 @@ const queryReviewById = async (reviewId) => {
  * @returns {Promise<QueryResult>}
  */
 const queryReviewsByProduct = async (body) => {
-  const { userId, productid } = body;
+  const { userId, productId } = body;
   const reviews = await Review.findAll({
-    where: { AccountId: userId, ProductId: productid },
+    where: { AccountId: userId, ProductId: productId },
     include: [Account, Product],
   });
   if (!reviews) {
