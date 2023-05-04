@@ -275,7 +275,7 @@ module.exports = router;
  *   get:
  *     summary: Lấy danh sách review theo productId
  *     description: Lấy danh sách review theo productId
- *     tags: [Users]
+ *     tags: [Reviews]
  *     security:
  *       - bearerAuth: []
  *     parameters:
