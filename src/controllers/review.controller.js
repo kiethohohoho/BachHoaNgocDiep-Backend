@@ -8,8 +8,6 @@ const {
   queryReviewsByProduct,
 } = require('../services/review.service');
 const catchAsync = require('../utils/catchAsync');
-const { queryProductById, saveProduct } = require('../services/product.service');
-const { Review } = require('../models');
 
 const getReviews = catchAsync(async (req, res) => {
   try {
@@ -90,12 +88,6 @@ const createReview = catchAsync(async (req, res) => {
       res
         .status(httpStatus.OK)
         .json({ message: 'Tạo review thành công!', success: true, ...createdReview });
-
-      const [product, count] = await Promise.all([
-        queryProductById(req.body.productid),
-        Review.count({ where: { ProductId: req.body.productid } }),
-      ]);
-      await saveProduct(product, { rate: (product.Rate * count + req.body.rate) / (count + 1) });
     }
   } catch (error) {
     res.status(error.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({

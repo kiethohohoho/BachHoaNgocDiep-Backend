@@ -3,6 +3,7 @@ const httpStatus = require('http-status');
 const { Review, Account, Product } = require('../models');
 const ApiError = require('../utils/ApiError');
 const paginate = require('../utils/paginate');
+const { queryProductById, saveProduct } = require('./product.service');
 // const logger = require('../config/logger');
 
 /**
@@ -39,7 +40,7 @@ const queryReviewsByProduct = async (body) => {
   const { userId, productId } = body;
   const reviews = await Review.findAll({
     where: { AccountId: userId, ProductId: productId },
-    include: [Account, Product],
+    include: [Account],
   });
   if (!reviews) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Review không tồn tại!');
@@ -87,6 +88,11 @@ const createOneReview = async (body) => {
     Content: content,
     Rate: rate,
   });
+  const [product, count] = await Promise.all([
+    queryProductById(productid),
+    Review.count({ where: { ProductId: productid } }),
+  ]);
+  await saveProduct(product, { rate: (product.Rate * count + rate) / (count + 1) });
   return newReview.get({ plain: true });
 };
 
