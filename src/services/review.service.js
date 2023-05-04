@@ -82,20 +82,21 @@ const destroyReview = async (review) => {
 const createOneReview = async (body) => {
   const { userId, productid, content, rate } = body;
 
+  const [product, count] = await Promise.all([
+    queryProductById(productid),
+    Review.count({ where: { ProductId: productid } }),
+  ]);
+
   const newReview = await Review.create({
     AccountId: userId,
     ProductId: productid,
     Content: content,
     Rate: rate,
   });
-  const [product, count] = await Promise.all([
-    queryProductById(productid),
-    Review.count({ where: { ProductId: productid } }),
-  ]);
 
   return {
     Review: newReview.get({ plain: true }),
-    Count: (product.Rate * count + rate) / (count + 1),
+    Rate: (product.Rate * count + rate) / (count + 1),
     Product: product,
   };
 };

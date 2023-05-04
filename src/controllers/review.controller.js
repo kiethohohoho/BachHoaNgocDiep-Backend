@@ -84,13 +84,13 @@ const deleteReviewById = async (req, res) => {
 
 const createReview = catchAsync(async (req, res) => {
   try {
-    const { Review, Count, Product } = await createOneReview({ ...req.body, userId: req.user.Id });
+    const { Review, Rate, Product } = await createOneReview({ ...req.body, userId: req.user.Id });
     if (Review) {
       res
         .status(httpStatus.OK)
-        .json({ message: 'Tạo review thành công!', success: true, ...Review, newRate: Count });
+        .json({ message: 'Tạo review thành công!', success: true, ...Review, newRate: Rate });
 
-      await saveProduct(Product, { rate: Count });
+      await saveProduct(Product, { rate: Rate });
     }
   } catch (error) {
     res.status(error.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
