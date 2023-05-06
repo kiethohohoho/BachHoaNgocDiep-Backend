@@ -7,7 +7,6 @@ const {
   destroyAddress,
 } = require('../services/address.service');
 const catchAsync = require('../utils/catchAsync');
-const ApiError = require('../utils/ApiError');
 
 const getAddresss = catchAsync(async (req, res) => {
   try {
@@ -53,9 +52,6 @@ const updateAddressById = async (req, res) => {
 const deleteAddressById = async (req, res) => {
   try {
     const address = await queryAddressById(req.params.addressId);
-    if (!address) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Địa chỉ này không tồn tại!');
-    }
     await destroyAddress(address);
 
     return res.status(httpStatus.OK).json({ message: 'Xoá thành công!', success: true });

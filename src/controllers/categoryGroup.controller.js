@@ -7,7 +7,6 @@ const {
   destroyCategoryGroup,
 } = require('../services/categoryGroup.service');
 const catchAsync = require('../utils/catchAsync');
-const ApiError = require('../utils/ApiError');
 
 const getCategoryGroups = catchAsync(async (req, res) => {
   try {
@@ -53,9 +52,6 @@ const updateCategoryGroupById = async (req, res) => {
 const deleteCategoryGroupById = async (req, res) => {
   try {
     const categoryGroup = await queryCategoryGroupById(req.params.categoryGroupId);
-    if (!categoryGroup) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Nhóm danh mục này không tồn tại!');
-    }
     await destroyCategoryGroup(categoryGroup);
 
     return res.status(httpStatus.OK).json({ message: 'Xoá thành công!', success: true });

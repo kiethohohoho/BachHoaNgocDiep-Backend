@@ -8,7 +8,6 @@ const {
   queryCartsByCategoryId,
 } = require('../services/cart.service');
 const catchAsync = require('../utils/catchAsync');
-const ApiError = require('../utils/ApiError');
 
 const getCarts = catchAsync(async (req, res) => {
   try {
@@ -72,9 +71,6 @@ const updateCartById = async (req, res) => {
 const deleteCartById = async (req, res) => {
   try {
     const cart = await queryCartById(req.params.cartId);
-    if (!cart) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Giỏ hàng này không tồn tại!');
-    }
     await destroyCart(cart);
 
     return res.status(httpStatus.OK).json({ message: 'Xoá thành công!', success: true });
