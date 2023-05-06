@@ -31,8 +31,13 @@ const paginate = async (model, query, populateOptions = []) => {
       }
     : {};
 
+  // const isNeedConvertToNumber = (value) =>
+  //   value.length === 0 || value.length === 36 || value === 'undefined' || value === 'null';
+
   const _f = _.mapValues(filter, (f) => {
-    const temp = _.mapValues(f, (e) => (e.length === 36 ? e : +e));
+    const temp = _.mapValues(f, (e) => {
+      return +e ? +e : e;
+    });
     return _.mapKeys(temp, (value, key) => Op[key]);
   });
 
@@ -43,6 +48,14 @@ const paginate = async (model, query, populateOptions = []) => {
 
   // Calculate the offset based on the page and limit parameters
   const offset = (page - 1) * limit;
+
+  // console.log({
+  //   where,
+  //   order: _order,
+  //   offset,
+  //   limit,
+  //   include: populateOptions,
+  // });
 
   // Query the database with the where, order, offset, and limit clauses
   const { count, rows } = await model.findAndCountAll({

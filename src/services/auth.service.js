@@ -57,7 +57,6 @@ const refreshAuth = async (refreshToken) => {
     const refreshTokenDoc = await tokenService.verifyToken(refreshToken, tokenTypes.REFRESH);
 
     const user = await accountService.getUserById(refreshTokenDoc.sub);
-    console.log(user);
     if (!user) {
       throw new Error();
     }
