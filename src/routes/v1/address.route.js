@@ -156,6 +156,12 @@ router
  *                 type: string
  *               receiverphonenumber:
  *                 type: string
+ *               cityghnid:
+ *                 type: number
+ *               districtghnid:
+ *                 type: number
+ *               wardghnid:
+ *                 type: number
  *             example:
  *               name: "text"
  *               isdefault: false
@@ -165,6 +171,9 @@ router
  *               street: "text"
  *               receivername: "Lan ABC"
  *               receiverphonenumber: "0123456789"
+ *               cityghnid: 123
+ *               districtghnid: 123
+ *               wardghnid: 123
  *     responses:
  *       "201":
  *         description: Tạo địa chỉ thành công
