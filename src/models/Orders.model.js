@@ -18,33 +18,38 @@ const Order = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    PhoneNumber: {
+    ReceiverName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    Notes: {
-      type: DataTypes.TEXT('long'),
+    ReceiverPhoneNumber: {
+      type: DataTypes.STRING(11),
       allowNull: false,
     },
     TotalAmount: {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    // 1 - 2 - 3 - 4
     StatusCode: {
       type: DataTypes.SMALLINT,
-      allowNull: false,
-    },
-    // 1 - 2 - 3 - 4
-    Status: {
-      type: DataTypes.STRING,
       allowNull: false,
       defaultValue: 1,
     },
     // Đang kiểm tra - Đang chuẩn bị - Đang giao hàng - Đã giao hàng
+    Status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'Đang kiểm tra',
+    },
     DeliveryDate: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: '',
+    },
+    Notes: {
+      type: DataTypes.TEXT('long'),
+      allowNull: false,
     },
   },
   {
