@@ -19,6 +19,16 @@ const getReviewByProduct = {
       productId: Joi.string().required(),
     })
     .unknown(true),
+  query: Joi.object()
+    .keys({
+      search: Joi.string(),
+      filter: Joi.object(),
+      sort: Joi.string(),
+      order: Joi.string(),
+      page: Joi.number().integer().min(1),
+      limit: Joi.number().integer().min(1),
+    })
+    .unknown(true),
 };
 
 const getOrDeleteReviewById = {

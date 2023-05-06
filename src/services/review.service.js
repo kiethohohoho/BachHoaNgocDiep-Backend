@@ -3,7 +3,7 @@ const httpStatus = require('http-status');
 const { Review, Account, Product } = require('../models');
 const ApiError = require('../utils/ApiError');
 const paginate = require('../utils/paginate');
-const { queryProductById } = require('./product.service');
+const { queryProductById, saveProduct } = require('./product.service');
 // const logger = require('../config/logger');
 
 /**
@@ -37,11 +37,17 @@ const queryReviewById = async (reviewId) => {
  * @returns {Promise<QueryResult>}
  */
 const queryReviewsByProduct = async (body) => {
-  const { userId, productId } = body;
-  const reviews = await Review.findAll({
-    where: { AccountId: userId, ProductId: productId },
-    include: [Account],
-  });
+  const { userId, productId, query } = body;
+  const reviews = await paginate(
+    Review,
+    {
+      ...query,
+      AccountId: userId,
+      ProductId: productId,
+    },
+    [{ model: Account }]
+  );
+
   if (!reviews) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Review không tồn tại!');
   }
@@ -82,22 +88,24 @@ const destroyReview = async (review) => {
 const createOneReview = async (body) => {
   const { userId, productid, content, rate } = body;
 
-  const [product, count] = await Promise.all([
-    queryProductById(productid),
-    Review.count({ where: { ProductId: productid } }),
-  ]);
+  const { product, count } = await queryProductById(productid);
 
-  const newReview = await Review.create({
-    AccountId: userId,
-    ProductId: productid,
-    Content: content,
-    Rate: rate,
-  });
+  const newRate = (product.Rate * count + rate) / (count + 1);
+
+  // eslint-disable-next-line no-unused-vars
+  const [newReview, save] = await Promise.all([
+    Review.create({
+      AccountId: userId,
+      ProductId: productid,
+      Content: content,
+      Rate: rate,
+    }),
+    saveProduct(product, { rate: newRate }),
+  ]);
 
   return {
     Review: newReview.get({ plain: true }),
-    Rate: (product.Rate * count + rate) / (count + 1),
-    Product: product,
+    Rate: newRate,
   };
 };
 

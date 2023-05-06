@@ -285,6 +285,40 @@ module.exports = router;
  *         schema:
  *           type: string
  *         description: product Id
+ *       - name: search
+ *         in: query
+ *         schema:
+ *           type: string
+ *       - name: filter
+ *         in: query
+ *         schema:
+ *           type: object
+ *           properties:
+ *             fieldName:
+ *               type: object
+ *               properties:
+ *                 operator:
+ *                   type: string
+ *       - name: sort
+ *         in: query
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *       - name: order
+ *         in: query
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *       - name: page
+ *         in: query
+ *         schema:
+ *           type: number
+ *       - name: limit
+ *         in: query
+ *         schema:
+ *           type: number
  *     responses:
  *       "200":
  *         description: OK

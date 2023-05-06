@@ -24,7 +24,7 @@ const Review = sequelize.define(
       allowNull: false,
     },
     Rate: {
-      type: DataTypes.STRING,
+      type: DataTypes.DECIMAL(10, 3),
       allowNull: false,
     },
     Like: {
