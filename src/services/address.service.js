@@ -123,42 +123,42 @@ const createOneAddress = async (body) => {
     wardghnid = 0,
   } = body;
 
-  const address = await Address.findOne({
-    where: {
-      AccountId: user.Id,
-      Name: name,
-    },
-  });
+  // const address = await Address.findOne({
+  //   where: {
+  //     AccountId: user.Id,
+  //     Name: name,
+  //   },
+  // });
 
-  if (!address) {
-    if (isdefault) {
-      await Address.update(
-        { IsDefault: false },
-        {
-          where: {
-            AccountId: user.Id,
-            IsDefault: true,
-          },
-        }
-      );
-    }
-    const newAddress = await Address.create({
-      AccountId: user.Id,
-      Name: name,
-      IsDefault: isdefault,
-      City: city,
-      CityGHNId: cityghnid,
-      District: district,
-      DistrictGHNId: districtghnid,
-      Ward: ward,
-      WardGHNId: wardghnid,
-      Street: street,
-      ReceiverName: receivername || user.FullName,
-      ReceiverPhoneNumber: receiverphonenumber,
-    });
-    return newAddress.get({ plain: true });
+  // if (!address) {
+  if (isdefault) {
+    await Address.update(
+      { IsDefault: false },
+      {
+        where: {
+          AccountId: user.Id,
+          IsDefault: true,
+        },
+      }
+    );
   }
-  throw new ApiError(httpStatus.BAD_REQUEST, 'Tên này đã tồn tại!');
+  const newAddress = await Address.create({
+    AccountId: user.Id,
+    Name: name,
+    IsDefault: isdefault,
+    City: city,
+    CityGHNId: cityghnid,
+    District: district,
+    DistrictGHNId: districtghnid,
+    Ward: ward,
+    WardGHNId: wardghnid,
+    Street: street,
+    ReceiverName: receivername || user.FullName,
+    ReceiverPhoneNumber: receiverphonenumber,
+  });
+  return newAddress.get({ plain: true });
+  // }
+  // throw new ApiError(httpStatus.BAD_REQUEST, 'Tên này đã tồn tại!');
 };
 
 module.exports = { queryAddresss, queryAddressById, saveAddress, destroyAddress, createOneAddress };
