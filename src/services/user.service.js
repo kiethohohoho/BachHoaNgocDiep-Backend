@@ -35,7 +35,7 @@ const getUserPayment = async (id) => {
  * @returns {Promise<QueryResult>}
  */
 const updateProfile = async (userBody) => {
-  const { user, email, firstname, lastname, dateofbirth, gender, avatar, phonenumber } = userBody;
+  const { user, firstname, lastname, dateofbirth, gender, avatar, phonenumber } = userBody;
 
   if (firstname) {
     user.FirstName = firstname;
@@ -54,10 +54,6 @@ const updateProfile = async (userBody) => {
   }
   if (phonenumber) {
     user.PhoneNumber = phonenumber;
-  }
-  if (email) {
-    user.Email = email;
-    user.UserName = email;
   }
   if (avatar) {
     user.Avatar = avatar;

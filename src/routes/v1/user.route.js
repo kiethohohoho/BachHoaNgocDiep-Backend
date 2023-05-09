@@ -63,8 +63,6 @@ module.exports = router;
  *           schema:
  *             type: object
  *             properties:
- *               email:
- *                 type: string
  *               firstname:
  *                 type: string
  *                 format: email
@@ -79,7 +77,6 @@ module.exports = router;
  *               phonenumber:
  *                 type: string
  *             example:
- *               email: "abcdemo@gmail.com"
  *               firstname: "Lê"
  *               lastname: "Tấn Kiệt"
  *               dateofbirth: 10/02/2001

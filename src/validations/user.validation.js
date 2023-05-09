@@ -2,7 +2,6 @@ const Joi = require('joi');
 
 const updateProfile = {
   body: Joi.object().keys({
-    email: Joi.string().email(),
     firstname: Joi.string(),
     lastname: Joi.string(),
     dateofbirth: Joi.date(),
