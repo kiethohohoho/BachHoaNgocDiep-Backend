@@ -6,6 +6,7 @@ const {
   tokenService,
   emailService,
   smsService,
+  userService,
 } = require('../services');
 // const logger = require('../config/logger');
 
@@ -43,7 +44,15 @@ const login = catchAsync(async (req, res) => {
     const account = await authService.loginUserWithStuffsAndPassword(req.body);
     if (account) {
       const tokens = await tokenService.generateAuthTokens(account.Id);
-      res.status(httpStatus.OK).json({ user: account, tokens, success: true });
+      const [userAddress, userPayment] = await Promise.all([
+        userService.getUserAddress(account.Id),
+        userService.getUserPayment(account.Id),
+      ]);
+      res.status(httpStatus.OK).json({
+        tokens,
+        profile: { general: account, address: userAddress, payment: userPayment },
+        success: true,
+      });
     }
   } catch (err) {
     res
