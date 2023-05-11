@@ -9,22 +9,14 @@ const router = express.Router();
 router
   .route('/')
   .get(validate(brandValidation.getBrands), brandController.getBrands)
-  .post(auth('manageBrands'), validate(brandValidation.createBrand), brandController.createBrand);
+  .post(auth('admin'), validate(brandValidation.createBrand), brandController.createBrand);
 
 router
   .route('/:brandId')
-  .get(
-    auth('getBrands'),
-    validate(brandValidation.getOrDeleteBrandById),
-    brandController.getBrandById
-  )
-  .patch(
-    auth('manageBrands'),
-    validate(brandValidation.updateBrandById),
-    brandController.updateBrandById
-  )
+  .get(auth('user'), validate(brandValidation.getOrDeleteBrandById), brandController.getBrandById)
+  .patch(auth('admin'), validate(brandValidation.updateBrandById), brandController.updateBrandById)
   .delete(
-    auth('manageBrands'),
+    auth('admin'),
     validate(brandValidation.getOrDeleteBrandById),
     brandController.deleteBrandById
   );

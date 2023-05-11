@@ -8,19 +8,15 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(auth('getCarts'), validate(cartValidation.getCarts), cartController.getCarts)
-  .post(auth('manageCarts'), validate(cartValidation.createCart), cartController.createCart);
+  .get(auth('user'), validate(cartValidation.getCarts), cartController.getCarts)
+  .post(auth('user'), validate(cartValidation.createCart), cartController.createCart);
 
 router
   .route('/:cartId')
-  .get(auth('getCarts'), validate(cartValidation.getOrDeleteCartById), cartController.getCartById)
-  .patch(
-    auth('manageCarts'),
-    validate(cartValidation.updateCartById),
-    cartController.updateCartById
-  )
+  .get(auth('user'), validate(cartValidation.getOrDeleteCartById), cartController.getCartById)
+  .patch(auth('admin'), validate(cartValidation.updateCartById), cartController.updateCartById)
   .delete(
-    auth('manageCarts'),
+    auth('admin'),
     validate(cartValidation.getOrDeleteCartById),
     cartController.deleteCartById
   );

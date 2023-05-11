@@ -8,12 +8,8 @@ const router = express.Router();
 
 router
   .route('/profile')
-  .get(auth('getProfile'), userController.getUserProfile)
-  .patch(
-    auth('updateProfile'),
-    validate(userValidation.updateProfile),
-    userController.updateUserProfile
-  );
+  .get(auth('user'), userController.getUserProfile)
+  .patch(auth('user'), validate(userValidation.updateProfile), userController.updateUserProfile);
 
 module.exports = router;
 

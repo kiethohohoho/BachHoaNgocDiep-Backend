@@ -9,22 +9,18 @@ const router = express.Router();
 router
   .route('/')
   .get(validate(productValidation.getProducts), productController.getProducts)
-  .post(
-    auth('manageProducts'),
-    validate(productValidation.createProduct),
-    productController.createProduct
-  );
+  .post(auth('admin'), validate(productValidation.createProduct), productController.createProduct);
 
 router
   .route('/:productId')
   .get(validate(productValidation.getOrDeleteProductById), productController.getProductById)
   .patch(
-    auth('manageProducts'),
+    auth('admin'),
     validate(productValidation.updateProductById),
     productController.updateProductById
   )
   .delete(
-    auth('manageProducts'),
+    auth('admin'),
     validate(productValidation.getOrDeleteProductById),
     productController.deleteProductById
   );

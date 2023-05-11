@@ -10,7 +10,7 @@ router
   .route('/')
   .get(validate(categoryValidation.getCategories), categoryController.getCategories)
   .post(
-    auth('manageCategories'),
+    auth('admin'),
     validate(categoryValidation.createCategory),
     categoryController.createCategory
   );
@@ -18,17 +18,17 @@ router
 router
   .route('/:categoryId')
   .get(
-    auth('getCategories'),
+    auth('user'),
     validate(categoryValidation.getOrDeleteCategoryById),
     categoryController.getCategoryById
   )
   .patch(
-    auth('manageCategories'),
+    auth('admin'),
     validate(categoryValidation.updateCategoryById),
     categoryController.updateCategoryById
   )
   .delete(
-    auth('manageCategories'),
+    auth('admin'),
     validate(categoryValidation.getOrDeleteCategoryById),
     categoryController.deleteCategoryById
   );

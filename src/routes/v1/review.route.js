@@ -8,38 +8,30 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(auth('getReviews'), validate(reviewValidation.getReviews), reviewController.getReviews)
-  .post(
-    auth('manageReviews'),
-    validate(reviewValidation.createReview),
-    reviewController.createReview
-  );
+  .get(auth('admin'), validate(reviewValidation.getReviews), reviewController.getReviews)
+  .post(auth('user'), validate(reviewValidation.createReview), reviewController.createReview);
 
 router
   .route('/:reviewId')
   .get(
-    auth('getReviews'),
+    auth('user'),
     validate(reviewValidation.getOrDeleteReviewById),
     reviewController.getReviewById
   )
   .patch(
-    auth('manageReviews'),
+    auth('user'),
     validate(reviewValidation.updateReviewById),
     reviewController.updateReviewById
   )
   .delete(
-    auth('manageReviews'),
+    auth('user'),
     validate(reviewValidation.getOrDeleteReviewById),
     reviewController.deleteReviewById
   );
 
 router
   .route('/product/:productId')
-  .get(
-    auth('getReviews'),
-    validate(reviewValidation.getReviewByProduct),
-    reviewController.getReviewByProduct
-  );
+  .get(validate(reviewValidation.getReviewByProduct), reviewController.getReviewByProduct);
 
 module.exports = router;
 

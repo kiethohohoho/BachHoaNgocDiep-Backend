@@ -10,9 +10,9 @@ const upload = multer();
 
 router
   .route('/')
-  .get(auth('getImages'), validate(imageValidation.getImages), imageController.getImages)
+  .get(auth('admin'), validate(imageValidation.getImages), imageController.getImages)
   .post(
-    auth('uploadImages'),
+    auth('user'),
     upload.array('image'),
     validate(imageValidation.uploadImage),
     imageController.uploadImage
@@ -20,25 +20,16 @@ router
 
 router
   .route('/:imageId')
-  .get(
-    auth('getImages'),
-    validate(imageValidation.getOrDeleteImageById),
-    imageController.getImagesById
-  )
-  .patch(
-    auth('manageImages'),
-    validate(imageValidation.updateImageById),
-    imageController.updateImageById
-  )
+  .get(auth('user'), validate(imageValidation.getOrDeleteImageById), imageController.getImagesById)
+  .patch(auth('admin'), validate(imageValidation.updateImageById), imageController.updateImageById)
   .delete(
-    auth('manageImages'),
+    auth('admin'),
     validate(imageValidation.getOrDeleteImageById),
     imageController.deleteImageById
   );
 
 router.get(
   '/product/:productId',
-  auth('getImages'),
   validate(imageValidation.getImagesByProductIdy),
   imageController.getImagesByProductId
 );

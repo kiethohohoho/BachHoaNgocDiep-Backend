@@ -13,7 +13,7 @@ router
     categoryGroupController.getCategoryGroups
   )
   .post(
-    auth('manageCategoryGroups'),
+    auth('admin'),
     validate(categoryGroupValidation.createCategoryGroup),
     categoryGroupController.createCategoryGroup
   );
@@ -21,17 +21,17 @@ router
 router
   .route('/:categoryGroupId')
   .get(
-    auth('getCategoryGroups'),
+    auth('user'),
     validate(categoryGroupValidation.getOrDeleteCategoryGroupById),
     categoryGroupController.getCategoryGroupById
   )
   .patch(
-    auth('manageCategoryGroups'),
+    auth('admin'),
     validate(categoryGroupValidation.updateCategoryGroupById),
     categoryGroupController.updateCategoryGroupById
   )
   .delete(
-    auth('manageCategoryGroups'),
+    auth('admin'),
     validate(categoryGroupValidation.getOrDeleteCategoryGroupById),
     categoryGroupController.deleteCategoryGroupById
   );

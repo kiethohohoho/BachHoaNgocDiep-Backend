@@ -8,27 +8,23 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(auth('getPayments'), validate(paymentValidation.getPayments), paymentController.getPayments)
-  .post(
-    auth('managePayments'),
-    validate(paymentValidation.createPayment),
-    paymentController.createPayment
-  );
+  .get(auth('user'), validate(paymentValidation.getPayments), paymentController.getPayments)
+  .post(auth('user'), validate(paymentValidation.createPayment), paymentController.createPayment);
 
 router
   .route('/:paymentId')
   .get(
-    auth('getPayments'),
+    auth('user'),
     validate(paymentValidation.getOrDeletePaymentById),
     paymentController.getPaymentById
   )
   .patch(
-    auth('managePayments'),
+    auth('admin'),
     validate(paymentValidation.updatePaymentById),
     paymentController.updatePaymentById
   )
   .delete(
-    auth('managePayments'),
+    auth('admin'),
     validate(paymentValidation.getOrDeletePaymentById),
     paymentController.deletePaymentById
   );
@@ -36,7 +32,7 @@ router
 router
   .route('/profile')
   .get(
-    auth('getPayments'),
+    auth('user'),
     validate(paymentValidation.getPaymentByProfile),
     paymentController.getPaymentByProfile
   );
