@@ -24,10 +24,10 @@ router.post(
   validate(authValidation.resetPassword),
   authController.resetPassword
 );
-router.post('/send-verification-email', auth(), authController.sendVerificationEmail);
+router.post('/send-verification-email', auth('user'), authController.sendVerificationEmail);
 router.post(
   '/verify-email',
-  auth('verifyEmail'),
+  auth('user'),
   validate(authValidation.verifyEmail),
   authController.verifyEmailAccount
 );

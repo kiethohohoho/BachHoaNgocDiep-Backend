@@ -8,11 +8,7 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(
-    auth('getCategories'),
-    validate(categoryValidation.getCategories),
-    categoryController.getCategories
-  )
+  .get(validate(categoryValidation.getCategories), categoryController.getCategories)
   .post(
     auth('manageCategories'),
     validate(categoryValidation.createCategory),
@@ -40,7 +36,6 @@ router
 router
   .route('/categoryGroup/:categoryGroupId')
   .get(
-    auth('getCategories'),
     validate(categoryValidation.getCategoryByCategoryGroupId),
     categoryController.getCategoryByCategoryGroupId
   );

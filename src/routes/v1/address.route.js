@@ -8,27 +8,23 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(auth('getAddresss'), validate(addressValidation.getAddresss), addressController.getAddresss)
-  .post(
-    auth('manageAddresss'),
-    validate(addressValidation.createAddress),
-    addressController.createAddress
-  );
+  .get(auth('user'), validate(addressValidation.getAddresss), addressController.getAddresss)
+  .post(auth('user'), validate(addressValidation.createAddress), addressController.createAddress);
 
 router
   .route('/:addressId')
   .get(
-    auth('getAddresss'),
+    auth('admin'),
     validate(addressValidation.getOrDeleteAddressById),
     addressController.getAddressById
   )
   .patch(
-    auth('manageAddresss'),
+    auth('admin'),
     validate(addressValidation.updateAddressById),
     addressController.updateAddressById
   )
   .delete(
-    auth('manageAddresss'),
+    auth('user'),
     validate(addressValidation.getOrDeleteAddressById),
     addressController.deleteAddressById
   );

@@ -8,7 +8,7 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(auth('getProducts'), validate(productValidation.getProducts), productController.getProducts)
+  .get(validate(productValidation.getProducts), productController.getProducts)
   .post(
     auth('manageProducts'),
     validate(productValidation.createProduct),
@@ -17,11 +17,7 @@ router
 
 router
   .route('/:productId')
-  .get(
-    auth('getProducts'),
-    validate(productValidation.getOrDeleteProductById),
-    productController.getProductById
-  )
+  .get(validate(productValidation.getOrDeleteProductById), productController.getProductById)
   .patch(
     auth('manageProducts'),
     validate(productValidation.updateProductById),

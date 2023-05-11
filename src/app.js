@@ -1,6 +1,7 @@
 const express = require('express');
 const helmet = require('helmet');
 const xss = require('xss-clean');
+// const customXss = require('./middlewares/customXss');
 // const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
 const cors = require('cors');
@@ -32,6 +33,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // sanitize request data
+// app.use(customXss());
 app.use(xss());
 // app.use(mongoSanitize());
 

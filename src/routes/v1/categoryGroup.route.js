@@ -9,7 +9,6 @@ const router = express.Router();
 router
   .route('/')
   .get(
-    auth('getCategoryGroups'),
     validate(categoryGroupValidation.getCategoryGroups),
     categoryGroupController.getCategoryGroups
   )
