@@ -35,21 +35,21 @@ const updateProductById = {
     description: Joi.string(),
     price: Joi.number(),
     rate: Joi.number().min(0).max(5),
-    quantity: Joi.number().min(0).required(),
+    quantity: Joi.number().min(0),
   }),
 };
 
 const createProduct = {
   body: Joi.object()
     .keys({
-      brandid: Joi.string(),
+      brandid: Joi.string().required(),
       categoryid: Joi.string(),
       categorygroupid: Joi.string(),
-      name: Joi.string(),
+      name: Joi.string().required(),
       description: Joi.string(),
-      price: Joi.number(),
+      price: Joi.number().required(),
       rate: Joi.number().min(0).max(5),
-      quantity: Joi.number().min(0),
+      quantity: Joi.number().min(0).required(),
       images: Joi.array().min(1),
     })
     .unknown(true),

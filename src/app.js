@@ -1,13 +1,13 @@
 const express = require('express');
 const helmet = require('helmet');
 const xss = require('xss-clean');
-// const customXss = require('./middlewares/customXss');
 // const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
 const cors = require('cors');
 const passport = require('passport');
 const _ = require('lodash');
 const httpStatus = require('http-status');
+// const customXss = require('./middlewares/customXss');
 const config = require('./config/config');
 const morgan = require('./config/morgan');
 const { jwtStrategy } = require('./config/passport');
@@ -32,6 +32,12 @@ app.use(express.json());
 // parse urlencoded request body
 app.use(express.urlencoded({ extended: true }));
 
+// Convert json request body property names to camel case
+app.use((req, res, next) => {
+  req.body = _.mapKeys(req.body, (value, key) => key.toLowerCase());
+  next();
+});
+
 // sanitize request data
 // app.use(customXss());
 app.use(xss());
@@ -47,12 +53,6 @@ app.options('*', cors());
 // jwt authentication
 app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
-
-// Convert json request body property names to camel case
-app.use((req, res, next) => {
-  req.body = _.mapKeys(req.body, (value, key) => key.toLowerCase());
-  next();
-});
 
 // limit repeated failed requests to auth endpoints
 if (config.env === 'production') {

@@ -15,6 +15,7 @@ const Product = sequelize.define(
     },
     BrandId: {
       type: DataTypes.UUID,
+      allowNull: false,
     },
     CategoryId: {
       type: DataTypes.UUID,
