@@ -24,11 +24,17 @@ const queryProductById = async (productId) => {
   const product = await Product.findByPk(productId, {
     include: [Brand, Category, CategoryGroup],
   });
-  const count = await Review.count({ where: { ProductId: productId } });
   if (!product) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Sản phẩm không tồn tại!');
   }
-  return { product, count };
+  const [images, count] = await Promise.all([
+    Image.findAll({
+      where: { ProductId: productId },
+    }),
+    Review.count({ where: { ProductId: productId } }),
+  ]);
+  product.Images = images;
+  return { product, images, count };
 };
 
 /**
