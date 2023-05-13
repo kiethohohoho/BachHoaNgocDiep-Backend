@@ -1,13 +1,11 @@
 const express = require('express');
 const helmet = require('helmet');
 const xss = require('xss-clean');
-// const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
 const cors = require('cors');
 const passport = require('passport');
 const _ = require('lodash');
 const httpStatus = require('http-status');
-// const customXss = require('./middlewares/customXss');
 const config = require('./config/config');
 const morgan = require('./config/morgan');
 const { jwtStrategy } = require('./config/passport');
@@ -39,17 +37,7 @@ app.use((req, res, next) => {
 });
 
 // sanitize request data
-// app.use(customXss());
-app.use((req, res, next) => {
-  console.log('before: ', req.body.description);
-  next();
-});
 app.use(xss());
-// app.use(mongoSanitize());
-app.use((req, res, next) => {
-  console.log('after: ', req.body.description);
-  next();
-});
 
 // gzip compression
 app.use(compression());

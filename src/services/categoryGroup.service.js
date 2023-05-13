@@ -3,7 +3,6 @@ const httpStatus = require('http-status');
 const { CategoryGroup, Category } = require('../models');
 const ApiError = require('../utils/ApiError');
 const paginate = require('../utils/paginate');
-// const logger = require('../config/logger');
 
 /**
  * Query for categoryGroups
