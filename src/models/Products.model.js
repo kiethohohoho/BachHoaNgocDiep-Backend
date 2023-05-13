@@ -33,6 +33,10 @@ const Product = sequelize.define(
     ImageURL: {
       type: DataTypes.TEXT('long'),
     },
+    IsBestSeller: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
     Price: {
       type: DataTypes.BIGINT,
       allowNull: false,

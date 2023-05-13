@@ -36,6 +36,7 @@ const updateProductById = {
     price: Joi.number(),
     rate: Joi.number().min(0).max(5),
     quantity: Joi.number().min(0),
+    isbestseller: Joi.boolean,
   }),
 };
 
@@ -50,7 +51,8 @@ const createProduct = {
       price: Joi.number().required(),
       rate: Joi.number().min(0).max(5),
       quantity: Joi.number().min(0).required(),
-      images: Joi.array().min(1),
+      images: Joi.array().min(1).required(),
+      isbestseller: Joi.boolean,
     })
     .unknown(true),
 };

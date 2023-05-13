@@ -2,7 +2,6 @@ const { DataTypes } = require('sequelize');
 const loggers = require('../config/logger');
 // const Address = require('./Address.model');
 const sequelize = require('../config/database');
-const config = require('../config/config');
 
 const CategoryGroup = sequelize.define(
   'CategoryGroups',
@@ -31,24 +30,12 @@ const CategoryGroup = sequelize.define(
   }
 );
 
-if (config.env !== 'production') {
-  // Development or test environment
-  CategoryGroup.sync({ force: false })
-    .then(() => {
-      loggers.info('CategoryGroup table created successfully');
-    })
-    .catch((err) => {
-      loggers.error('Error creating CategoryGroup table:', err);
-    });
-} else {
-  // Production environment
-  CategoryGroup.sync()
-    .then(() => {
-      loggers.info('CategoryGroup table created successfully');
-    })
-    .catch((err) => {
-      loggers.error('Error creating CategoryGroup table:', err);
-    });
-}
+CategoryGroup.sync({ force: false })
+  .then(() => {
+    loggers.info('CategoryGroup table created successfully');
+  })
+  .catch((err) => {
+    loggers.error('Error creating CategoryGroup table:', err);
+  });
 
 module.exports = CategoryGroup;

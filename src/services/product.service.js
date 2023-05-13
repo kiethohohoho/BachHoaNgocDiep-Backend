@@ -38,7 +38,17 @@ const queryProductById = async (productId) => {
  * @returns {Promise<SaveResult>}
  */
 const saveProduct = async (product, body) => {
-  const { brandid, categoryid, categorygroupid, name, description, price, rate, quantity } = body;
+  const {
+    brandid,
+    categoryid,
+    categorygroupid,
+    name,
+    description,
+    price,
+    rate,
+    quantity,
+    isbestseller,
+  } = body;
   if (brandid) {
     product.BrandId = brandid;
   }
@@ -63,6 +73,9 @@ const saveProduct = async (product, body) => {
   if (quantity) {
     product.Quantity = quantity;
   }
+  if (isbestseller) {
+    product.IsBestSeller = isbestseller;
+  }
   await product.save();
 };
 
@@ -81,8 +94,18 @@ const destroyProduct = async (product) => {
  * @returns {Promise<CreateResult>}
  */
 const createOneProduct = async (body) => {
-  const { brandid, categoryid, categorygroupid, name, description, price, rate, quantity, images } =
-    body;
+  const {
+    brandid,
+    categoryid,
+    categorygroupid,
+    name,
+    description,
+    price,
+    rate,
+    quantity,
+    images,
+    isbestseller,
+  } = body;
 
   if (name && brandid) {
     const existingProduct = await Product.findOne({ where: { Name: name, BrandId: brandid } });
@@ -101,6 +124,7 @@ const createOneProduct = async (body) => {
     Price: price,
     Rate: rate || 0,
     Quantity: quantity || 0,
+    IsBestSeller: isbestseller || false,
   });
 
   await Promise.all(

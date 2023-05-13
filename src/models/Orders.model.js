@@ -63,7 +63,7 @@ const Order = sequelize.define(
   }
 );
 
-Order.sync({ force: true })
+Order.sync({ force: false })
   .then(() => {
     loggers.info('Order table created successfully');
   })
