@@ -36,6 +36,7 @@ const updateProductById = {
     price: Joi.number(),
     rate: Joi.number().min(0).max(5),
     quantity: Joi.number().min(0),
+    images: Joi.array(),
     isbestseller: Joi.boolean,
   }),
 };
