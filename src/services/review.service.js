@@ -48,10 +48,39 @@ const queryReviewsByProduct = async (body) => {
     [{ model: Account }]
   );
 
+  const reviewOneStar = await Review.count({ where: { ProductId: productId, Rate: 1 } });
+  const reviewTwoStar = await Review.count({ where: { ProductId: productId, Rate: 2 } });
+  const reviewThreeStar = await Review.count({ where: { ProductId: productId, Rate: 3 } });
+  const reviewFourStar = await Review.count({ where: { ProductId: productId, Rate: 4 } });
+  const reviewFiveStar = await Review.count({ where: { ProductId: productId, Rate: 5 } });
+
+  const ratings = [
+    {
+      name: '1 Star',
+      reviewCount: reviewOneStar,
+    },
+    {
+      name: '2 Star',
+      reviewCount: reviewTwoStar,
+    },
+    {
+      name: '3 Star',
+      reviewCount: reviewThreeStar,
+    },
+    {
+      name: '4 Star',
+      reviewCount: reviewFourStar,
+    },
+    {
+      name: '5 Star',
+      reviewCount: reviewFiveStar,
+    },
+  ];
+
   if (!reviews) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Review không tồn tại!');
   }
-  return reviews;
+  return { reviews, ratings };
 };
 
 /**

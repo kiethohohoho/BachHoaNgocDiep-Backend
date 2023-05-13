@@ -37,12 +37,12 @@ const getReviewById = async (req, res) => {
 
 const getReviewByProduct = async (req, res) => {
   try {
-    const review = await queryReviewsByProduct({
+    const { review, ratings } = await queryReviewsByProduct({
       userId: req.user.Id,
       productId: req.params.productId,
       query: req.query,
     });
-    return res.status(httpStatus.OK).json({ review, success: true });
+    return res.status(httpStatus.OK).json({ review, ratings, success: true });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
       message: 'Lỗi tìm review!',
