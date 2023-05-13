@@ -86,14 +86,14 @@ const destroyBrand = async (brand) => {
 const createOneBrand = async (body) => {
   const { categoryid, categorygroupid, name, description } = body;
 
-  // await Brand.create({
-  //   Id: brandid,
-  //   CategoryId: categoryid,
-  //   CategoryGroupId: categorygroupid,
-  //   Name: 'test',
-  // });
-  // await Category.create({ Id: categoryid, CategoryGroupId: categorygroupid, Name: 'test' });
-  // await CategoryGroup.create({ Id: categorygroupid, Name: 'test' });
+  if (name && categorygroupid && categoryid) {
+    const existBrand = await Brand.findOne({
+      where: { Name: name, CategoryGroupId: categorygroupid, CategoryId: categoryid },
+    });
+    if (existBrand) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Nhãn hiệu này đã tồn tại!');
+    }
+  }
 
   const newBrand = await Brand.create({
     CategoryId: categoryid,

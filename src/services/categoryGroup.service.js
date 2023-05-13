@@ -62,16 +62,17 @@ const destroyCategoryGroup = async (categoryGroup) => {
  * @returns {Promise<CreateResult>}
  */
 const createOneCategoryGroup = async (body) => {
+  // console.log(333333333333333333333333333333333333);
   const { name, description } = body;
 
-  // await CategoryGroup.create({
-  //   Id: categoryGroupid,
-  //   CategoryId: categoryid,
-  //   CategoryGroupId: categorygroupid,
-  //   Name: 'test',
-  // });
-  // await Category.create({ Id: categoryid, CategoryGroupId: categorygroupid, Name: 'test' });
-  // await CategoryGroup.create({ Id: categorygroupid, Name: 'test' });
+  if (name) {
+    const existCategoryGroup = await CategoryGroup.findOne({
+      where: { Name: name },
+    });
+    if (existCategoryGroup) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Nhóm danh mục này đã tồn tại!');
+    }
+  }
 
   const newCategoryGroup = await CategoryGroup.create({
     Name: name,

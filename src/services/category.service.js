@@ -83,6 +83,15 @@ const destroyCategory = async (category) => {
 const createOneCategory = async (body) => {
   const { categorygroupid, name, description } = body;
 
+  if (name && categorygroupid) {
+    const existCategory = await Category.findOne({
+      where: { Name: name, CategoryGroupId: categorygroupid },
+    });
+    if (existCategory) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Danh mục này đã tồn tại!');
+    }
+  }
+
   const newCategory = await Category.create({
     CategoryGroupId: categorygroupid,
     Name: name,
