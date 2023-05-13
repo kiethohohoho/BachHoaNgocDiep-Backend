@@ -53,7 +53,6 @@ const createProduct = {
       rate: Joi.number().min(0).max(5),
       quantity: Joi.number().min(0).required(),
       images: Joi.array().min(1).required(),
-      isbestseller: Joi.boolean,
     })
     .unknown(true),
 };

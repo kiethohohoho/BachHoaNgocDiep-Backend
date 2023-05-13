@@ -12,6 +12,9 @@ const paginate = require('../utils/paginate');
  */
 const queryProducts = async (query) => {
   const products = await paginate(Product, query);
+  // const images = await Image.findAll({
+  //   where: { ProductId: productId },
+  // });
   return products;
 };
 

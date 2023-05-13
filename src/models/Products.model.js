@@ -35,7 +35,6 @@ const Product = sequelize.define(
     },
     IsBestSeller: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false,
     },
     Price: {
       type: DataTypes.BIGINT,
