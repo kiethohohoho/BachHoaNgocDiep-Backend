@@ -62,7 +62,6 @@ const destroyCategoryGroup = async (categoryGroup) => {
  * @returns {Promise<CreateResult>}
  */
 const createOneCategoryGroup = async (body) => {
-  // console.log(333333333333333333333333333333333333);
   const { name, description } = body;
 
   if (name) {

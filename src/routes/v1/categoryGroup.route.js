@@ -14,15 +14,7 @@ router
   )
   .post(
     auth('admin'),
-    // (req, res, next) => {
-    //   console.log(11111111111111111111111111111111111111);
-    //   next();
-    // },
     validate(categoryGroupValidation.createCategoryGroup),
-    // (req, res, next) => {
-    //   console.log(22222222222222222222222222222222222222);
-    //   next();
-    // },
     categoryGroupController.createCategoryGroup
   );
 

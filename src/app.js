@@ -40,8 +40,16 @@ app.use((req, res, next) => {
 
 // sanitize request data
 // app.use(customXss());
+app.use((req, res, next) => {
+  console.log('before: ', req.body.description);
+  next();
+});
 app.use(xss());
 // app.use(mongoSanitize());
+app.use((req, res, next) => {
+  console.log('after: ', req.body.description);
+  next();
+});
 
 // gzip compression
 app.use(compression());
