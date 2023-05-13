@@ -56,6 +56,7 @@ const saveProduct = async (product, body) => {
     price,
     rate,
     quantity,
+    images,
     isbestseller,
   } = body;
   if (brandid) {
@@ -81,6 +82,20 @@ const saveProduct = async (product, body) => {
   }
   if (quantity) {
     product.Quantity = quantity;
+  }
+  if (images) {
+    await Promise.all(
+      images.map((img) =>
+        Image.update(
+          { ProductId: product.Id },
+          {
+            where: {
+              Id: img.Id,
+            },
+          }
+        )
+      )
+    );
   }
   if (isbestseller) {
     product.IsBestSeller = isbestseller;
