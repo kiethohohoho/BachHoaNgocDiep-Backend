@@ -6,6 +6,7 @@ const categoryRoute = require('./category.route');
 const categoryGroupRoute = require('./categoryGroup.route');
 const docsRoute = require('./docs.route');
 const imageRoute = require('./image.route');
+const bannerRoute = require('./banner.route');
 const userRoute = require('./user.route');
 const cartRoute = require('./cart.route');
 const addressRoute = require('./address.route');
@@ -39,6 +40,10 @@ const defaultRoutes = [
   {
     path: '/images',
     route: imageRoute,
+  },
+  {
+    path: '/banners',
+    route: bannerRoute,
   },
   {
     path: '/users',

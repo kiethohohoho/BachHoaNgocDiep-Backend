@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 const loggers = require('../config/logger');
 const sequelize = require('../config/database');
 const Product = require('./Products.model');
+const Banner = require('./Banner.model');
 
 const Image = sequelize.define(
   'Images',
@@ -12,6 +13,9 @@ const Image = sequelize.define(
       primaryKey: true,
     },
     ProductId: {
+      type: DataTypes.UUID,
+    },
+    BannerId: {
       type: DataTypes.UUID,
     },
     CloudinaryPublicId: {
@@ -54,6 +58,11 @@ const Image = sequelize.define(
 
 Image.belongsTo(Product, {
   foreignKey: 'ProductId',
+  targetKey: 'Id',
+});
+
+Image.belongsTo(Banner, {
+  foreignKey: 'BannerId',
   targetKey: 'Id',
 });
 

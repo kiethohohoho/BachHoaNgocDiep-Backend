@@ -8,4 +8,5 @@ module.exports.paymentValidation = require('./payment.validation');
 module.exports.reviewValidation = require('./review.validation');
 module.exports.categoryGroupValidation = require('./categoryGroup.validation');
 module.exports.imageValidation = require('./image.validation');
+module.exports.bannerValidation = require('./banner.validation');
 module.exports.cartValidation = require('./cart.validation');

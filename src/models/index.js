@@ -7,6 +7,7 @@ module.exports.Brand = require('./Brands.model');
 module.exports.Category = require('./Categories.model');
 module.exports.CategoryGroup = require('./CategoryGroups.model');
 module.exports.Image = require('./Image.model');
+module.exports.Banner = require('./Banner.model');
 module.exports.Cart = require('./Carts.model');
 module.exports.Payment = require('./Payment.model');
 module.exports.Review = require('./Review.model');

@@ -1,44 +1,48 @@
 const express = require('express');
 const validate = require('../../middlewares/validate');
-const { productValidation } = require('../../validations');
-const { productController } = require('../../controllers');
+const { bannerValidation } = require('../../validations');
+const { bannerController } = require('../../controllers');
 const auth = require('../../middlewares/auth');
 
 const router = express.Router();
 
 router
   .route('/')
-  .get(validate(productValidation.getProducts), productController.getProducts)
-  .post(auth('admin'), validate(productValidation.createProduct), productController.createProduct);
+  .get(validate(bannerValidation.getBanners), bannerController.getBanners)
+  .post(auth('admin'), validate(bannerValidation.createBanner), bannerController.createBanner);
 
 router
-  .route('/:productId')
-  .get(validate(productValidation.getOrDeleteProductById), productController.getProductById)
+  .route('/:bannerId')
+  .get(
+    auth('user'),
+    validate(bannerValidation.getOrDeleteBannerById),
+    bannerController.getBannerById
+  )
   .patch(
     auth('admin'),
-    validate(productValidation.updateProductById),
-    productController.updateProductById
+    validate(bannerValidation.updateBannerById),
+    bannerController.updateBannerById
   )
   .delete(
     auth('admin'),
-    validate(productValidation.getOrDeleteProductById),
-    productController.deleteProductById
+    validate(bannerValidation.getOrDeleteBannerById),
+    bannerController.deleteBannerById
   );
 
 /**
  * @swagger
  * tags:
- *   name: Products
- *   description: Sản phẩm
+ *   name: Banners
+ *   description: Banner
  */
 
 /**
  * @swagger
- * /products:
+ * /banners:
  *   get:
- *     summary: Lấy danh sách sản phẩm (search, sort, filter, pagination)
- *     description: Cho phép search, sort, multi filter, phân trang /products?search=a&sort=Price,Name&order=asc,desc&filter[Price][gt]=1&filter[Name][eq]=abc&page=1&limit=20.
- *     tags: [Products]
+ *     summary: Lấy danh sách banner (search, sort, filter, pagination)
+ *     description: Cho phép search, sort, multi filter, phân trang /banners?search=a&sort=Price,Name&order=asc,desc&filter[Price][gt]=1&filter[Name][eq]=abc&page=1&limit=20.
+ *     tags: [Banners]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -87,7 +91,7 @@ router
  *                 Data:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Product'
+ *                     $ref: '#/components/schemas/Banner'
  *                 Pagination:
  *                   type: object
  *                   properties:
@@ -111,9 +115,9 @@ router
  *         $ref: '#/components/responses/NotFound'
  *
  *   post:
- *     summary: Tạo mới một sản phẩm
- *     description: Tạo trước Nhóm danh mục, Danh mục và Thương hiệu sản phẩm (nếu cần), upload ảnh cho sản phẩm
- *     tags: [Products]
+ *     summary: Tạo mới một banner
+ *     description: Tạo trước Banner và Danh mục sản phẩm (nếu cần)
+ *     tags: [Banners]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -123,46 +127,28 @@ router
  *           schema:
  *             type: object
  *             required:
- *               - brandid
  *               - name
- *               - price
- *               - quantity
  *             properties:
- *               brandid:
- *                 type: string
- *               categoryid:
- *                 type: string
- *               categorygroupid:
- *                 type: string
- *               name:
+ *               title:
  *                 type: string
  *               description:
  *                 type: string
- *               price:
- *                 type: number
- *                 format: bigint
- *                 min: 0
- *               quantity:
- *                 type: number
- *                 format: integer
- *                 min: 0
+ *               redirecturl:
+ *                 type: string
  *               images:
  *                 type: array
  *             example:
- *               brandid: "1"
- *               categoryid: "1"
- *               categorygroupid: "1"
- *               name: Sữa tiệt trùng ColosBaby
- *               price: 80000
- *               quantity: 36
+ *               title: "Banner 1"
+ *               description: "Test"
+ *               redirecturl: "Link fb"
  *               images: [{}]
  *     responses:
  *       "201":
- *         description: Tạo sản phẩm thành công
+ *         description: Tạo banner thành công
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Product'
+ *                $ref: '#/components/schemas/Banner'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
@@ -175,27 +161,27 @@ router
 
 /**
  * @swagger
- * /products/{productId}:
+ * /banners/{bannerId}:
  *   get:
- *     summary: Lấy thông tin một sản phẩm
- *     description: Bao gồm cả thông tin Nhóm danh mục, Danh mục và Thương hiệu sản phẩm (nếu có)
- *     tags: [Products]
+ *     summary: Lấy thông tin một banner
+ *     description: Bao gồm cả thông tin Banner và Danh mục sản phẩm (nếu có)
+ *     tags: [Banners]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: productId
+ *         name: bannerId
  *         required: true
  *         schema:
  *           type: string
- *         description: Product Id
+ *         description: Banner Id
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Product'
+ *                $ref: '#/components/schemas/Banner'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -204,18 +190,18 @@ router
  *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
- *     summary: Cập nhật một sản phẩm
- *     description: Cập nhật thông tin của một sản phẩm
- *     tags: [Products]
+ *     summary: Cập nhật một banner
+ *     description: Cập nhật thông tin của một banner
+ *     tags: [Banners]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: productId
+ *         name: bannerId
  *         required: true
  *         schema:
  *           type: string
- *         description: Product Id
+ *         description: Banner Id
  *     requestBody:
  *       required: true
  *       content:
@@ -223,33 +209,18 @@ router
  *           schema:
  *             type: object
  *             properties:
- *               brandid:
- *                 type: string
- *               categoryid:
- *                 type: string
- *               categorygroupid:
- *                 type: string
- *               name:
+ *               title:
  *                 type: string
  *               description:
  *                 type: string
- *               price:
- *                 type: number
- *                 format: bigint
- *                 min: 0
- *               quantity:
- *                 type: number
- *                 format: integer
- *                 min: 0
+ *               redirecturl:
+ *                 type: string
  *               images:
  *                 type: array
  *             example:
- *               brandid: "1"
- *               categoryid: "1"
- *               categorygroupid: "1"
- *               name: Sữa tiệt trùng ColosBaby
- *               price: 80000
- *               quantity: 36
+ *               title: "Banner 1"
+ *               description: "Test"
+ *               redirecturl: "Link fb"
  *               images: [{}]
  *     responses:
  *       "200":
@@ -257,7 +228,7 @@ router
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Product'
+ *                $ref: '#/components/schemas/Banner'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
@@ -268,21 +239,45 @@ router
  *         $ref: '#/components/responses/NotFound'
  *
  *   delete:
- *     summary: Xoá một sản phẩm
- *     description: Thao tác này chỉ "xoá mềm" một sản phẩm, vẫn có thể khôi phục sau khi xoá.
- *     tags: [Products]
+ *     summary: Xoá một banner
+ *     description: Thao tác này chỉ "xoá mềm" một banner, vẫn có thể khôi phục sau khi xoá.
+ *     tags: [Banners]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: productId
+ *         name: bannerId
  *         required: true
  *         schema:
  *           type: string
- *         description: Product Id
+ *         description: Banner Id
  *     responses:
  *       "200":
- *         description: No content
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 Data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Banner'
+ *                 Pagination:
+ *                   type: object
+ *                   properties:
+ *                     TotalCount:
+ *                       type: integer
+ *                       example: 1
+ *                     TotalPages:
+ *                       type: integer
+ *                       example: 1
+ *                     CurrentPage:
+ *                       type: integer
+ *                       example: 1
+ *                     Limit:
+ *                       type: integer
+ *                       example: 10
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
