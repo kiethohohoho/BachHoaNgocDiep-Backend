@@ -40,9 +40,12 @@ const queryBannerById = async (bannerId) => {
  * @returns {Promise<SaveResult>}
  */
 const saveBanner = async (banner, body) => {
-  const { title, description, redirecturl, images } = body;
+  const { title, type, description, redirecturl, images } = body;
   if (title) {
     banner.Title = title;
+  }
+  if (type) {
+    banner.Type = type;
   }
   if (description) {
     banner.Description = description;
@@ -82,7 +85,7 @@ const destroyBanner = async (banner) => {
  * @returns {Promise<CreateResult>}
  */
 const createOneBanner = async (body) => {
-  const { title, description, redirecturl, images } = body;
+  const { title, type, description, redirecturl, images } = body;
 
   if (title) {
     const existBanner = await Banner.findOne({
@@ -95,6 +98,7 @@ const createOneBanner = async (body) => {
 
   const newBanner = await Banner.create({
     Title: title,
+    Type: type,
     Description: description,
     ImageURL: images[0].OriginalImageUrl,
     RedirectUrl: redirecturl,

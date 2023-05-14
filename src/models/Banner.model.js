@@ -14,6 +14,10 @@ const Banner = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    Type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     Description: {
       type: DataTypes.TEXT('long'),
     },

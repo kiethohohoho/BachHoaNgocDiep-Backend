@@ -28,7 +28,7 @@ const register = catchAsync(async (req, res) => {
     // ]);
     await emailService.sendEmail(
       account.Email,
-      'Xác thực email đăng ký toàn khoản Bách Hoá Ngọc Diệp',
+      'Xác thực email đăng ký toàn khoản | Bách Hoá Ngọc Diệp',
       `<h3>Mã xác thực của bạn là:</h3> ${account.OTPPhoneVerified}`
     );
     res.status(httpStatus.CREATED).json({ user: account, access, refresh, success: true });
@@ -72,9 +72,24 @@ const refreshTokens = catchAsync(async (req, res) => {
 });
 
 const forgotPassword = catchAsync(async (req, res) => {
-  const resetPasswordToken = await tokenService.generateResetPasswordToken(req.body.email);
-  await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken);
-  res.status(httpStatus.NO_CONTENT).send();
+  try {
+    const account = await accountService.getUserByEmail(req.body.email);
+    await accountService.changeOTPPhoneVerified(account);
+    await emailService.sendEmail(
+      account.Email,
+      'Xác thực email quên mật khẩu | Bách Hoá Ngọc Diệp',
+      `<h3>Mã xác thực của bạn là:</h3> ${account.OTPPhoneVerified}`
+    );
+    res
+      .status(httpStatus.CREATED)
+      .json({ message: `Đã gửi mã xác thực đến email ${account.Email}`, success: true });
+  } catch (err) {
+    res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
+      message: 'Có lỗi xảy ra với email của bạn!',
+      detail: err.message || err,
+      success: false,
+    });
+  }
 });
 
 const resetPassword = catchAsync(async (req, res) => {

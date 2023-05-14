@@ -29,6 +29,7 @@ const updateBannerById = {
     .unknown(true),
   body: Joi.object().keys({
     title: Joi.string(),
+    type: Joi.string(),
     description: Joi.string(),
     redirecturl: Joi.string(),
     images: Joi.array(),
@@ -39,6 +40,7 @@ const createBanner = {
   body: Joi.object()
     .keys({
       title: Joi.string().required(),
+      type: Joi.string().required(),
       description: Joi.string(),
       redirecturl: Joi.string().required(),
       images: Joi.array().min(1).required(),

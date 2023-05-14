@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
 const bcrypt = require('bcrypt');
 const { Account, User } = require('../models');
@@ -93,14 +94,24 @@ const getAccountById = async (id) => {
  * @returns {Promise<Account>}
  */
 const getUserByEmail = async (email = '') => {
-  const account = await Account.findOne({
-    where: { Email: email },
-    // attributes: { exclude: ['UserName', 'Password'] },
-  });
+  const account = await Account.findOne({ where: { Email: email } });
   if (!account) {
-    throw new ApiError(httpStatus.BAD_REQUEST, `Không tìm thấy email ${email}`);
+    throw new ApiError(httpStatus.BAD_REQUEST, `Email ${email} không tồn tại!`);
   }
   return account;
+};
+
+/**
+ * Change OTPPhoneVerified
+ * @param {Account} account
+ * @returns {Promise<SaveResult>}
+ */
+const changeOTPPhoneVerified = async (account) => {
+  if (!account) {
+    return;
+  }
+  account.OTPPhoneVerified = `${Math.floor(100000 + Math.random() * 900000)}`;
+  await account.save();
 };
 
 /**
@@ -142,6 +153,7 @@ module.exports = {
   getUserById,
   getAccountById,
   getUserByEmail,
+  changeOTPPhoneVerified,
   updateAccountById,
   deleteUserById,
 };
