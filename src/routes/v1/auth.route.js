@@ -64,6 +64,8 @@ module.exports = router;
  *                 type: string
  *               lastname:
  *                 type: string
+ *               phonenumber:
+ *                 type: string
  *               email:
  *                 type: string
  *                 format: mail
@@ -76,6 +78,7 @@ module.exports = router;
  *             example:
  *               firstname: Le
  *               lastname: Kiet
+ *               phonenumber: "0397516328"
  *               email: "tkiet.le.1002@gmail.com"
  *               password: tkiet.le.1002
  *     responses:

@@ -14,23 +14,19 @@ const register = catchAsync(async (req, res) => {
   try {
     const account = await accountService.createAccount(req.body);
     const { access, refresh } = await tokenService.generateAuthTokens(account.Id);
-    // await Promise.all([
-    //   smsService.sendOtpSms(account.PhoneNumber, Math.floor(100000 + Math.random() * 900000)),
-    //   emailService.sendEmail(
-    //     account.Email,
-    //     'Xác thực email đăng ký toàn khoản Bách Hoá Ngọc Diệp',
-    //     `<p>Hãy click vào link này để xác thực email của bạn:</p><p><a href="${
-    //       config.env !== 'production' ? 'http://localhost:3000' : 'https://be.bachhoangocdiep.com'
-    //     }/v1/auth/verify-email/${access.token}">${
-    //       config.env !== 'production' ? 'http://localhost:3000' : 'https://be.bachhoangocdiep.com'
-    //     }/v1/auth/verify-email/${access.token}</a></p>`
-    //   ),
-    // ]);
-    await emailService.sendEmail(
-      account.Email,
-      'Xác thực email đăng ký toàn khoản | Bách Hoá Ngọc Diệp',
-      `<h3>Mã xác thực của bạn là:</h3> ${account.OTPPhoneVerified}`
-    );
+    await Promise.all([
+      smsService.sendOtpSms(account.PhoneNumber, account.OTPPhoneVerified),
+      emailService.sendEmail(
+        account.Email,
+        'Xác thực email đăng ký toàn khoản | Bách Hoá Ngọc Diệp',
+        `<h3>Mã xác thực của bạn là:</h3> ${account.OTPPhoneVerified}`
+      ),
+    ]);
+    // await emailService.sendEmail(
+    //   account.Email,
+    //   'Xác thực email đăng ký toàn khoản | Bách Hoá Ngọc Diệp',
+    //   `<h3>Mã xác thực của bạn là:</h3> ${account.OTPPhoneVerified}`
+    // );
     res.status(httpStatus.CREATED).json({ user: account, access, refresh, success: true });
   } catch (err) {
     res
@@ -75,11 +71,19 @@ const forgotPassword = catchAsync(async (req, res) => {
   try {
     const account = await accountService.getUserByEmail(req.body.email);
     await accountService.changeOTPPhoneVerified(account);
-    await emailService.sendEmail(
-      account.Email,
-      'Xác thực email quên mật khẩu | Bách Hoá Ngọc Diệp',
-      `<h3>Mã xác thực của bạn là:</h3> ${account.OTPPhoneVerified}`
-    );
+    await Promise.all([
+      smsService.sendOtpSms(account.PhoneNumber, account.OTPPhoneVerified),
+      emailService.sendEmail(
+        account.Email,
+        'Xác thực email quên mật khẩu | Bách Hoá Ngọc Diệp',
+        `<h3>Mã xác thực của bạn là:</h3> ${account.OTPPhoneVerified}`
+      ),
+    ]);
+    // await emailService.sendEmail(
+    //   account.Email,
+    //   'Xác thực email quên mật khẩu | Bách Hoá Ngọc Diệp',
+    //   `<h3>Mã xác thực của bạn là:</h3> ${account.OTPPhoneVerified}`
+    // );
     res
       .status(httpStatus.OK)
       .json({ message: `Đã gửi mã xác thực đến email ${account.Email}`, success: true });
@@ -93,8 +97,8 @@ const forgotPassword = catchAsync(async (req, res) => {
 });
 
 const resetPassword = catchAsync(async (req, res) => {
-  await authService.resetPassword(req.query.code, req.body.password);
-  res.status(httpStatus.NO_CONTENT).send();
+  await authService.resetPassword(req.body.email, req.body.code, req.body.newpassword);
+  res.status(httpStatus.OK).json({ success: true, message: 'Đổi mật khẩu thành công' });
 });
 
 const sendVerificationEmail = catchAsync(async (req, res) => {

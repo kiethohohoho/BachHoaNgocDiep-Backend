@@ -15,7 +15,7 @@ const password = (value, helpers) => {
   return value;
 };
 
-const emailCode = (value, helpers) => {
+const OTP = (value, helpers) => {
   if (value.length < 6) {
     return helpers.message('Mã xác thực phải có ít nhất 6 ký tự!');
   }
@@ -25,5 +25,5 @@ const emailCode = (value, helpers) => {
 module.exports = {
   objectId,
   password,
-  emailCode,
+  OTP,
 };

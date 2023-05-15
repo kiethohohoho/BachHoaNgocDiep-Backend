@@ -11,25 +11,24 @@ const logger = require('../config/logger');
  * @returns {Promise<Account>}
  */
 const createAccount = async (accountBody) => {
-  const { email, firstname = '', lastname = '', password } = accountBody;
+  const { email, phonenumber, firstname = '', lastname = '', password } = accountBody;
 
   try {
     // Check if email already exists
     if (email) {
-      const emailExist = await Account.findOne({
-        where: { Email: email },
-        attributes: { exclude: ['UserName', 'Password'] },
-      });
+      const emailExist = await Account.findOne({ where: { Email: email } });
       if (emailExist) {
         throw new ApiError(httpStatus.BAD_REQUEST, 'Email này đã tồn tại!');
       }
     }
 
     // Check if phone number already exists
-    // const phoneExist = await Account.findOne({ where: { PhoneNumber: phonenumber } });
-    // if (phoneExist) {
-    //   throw new ApiError(httpStatus.BAD_REQUEST, 'Số điện thoại này đã tồn tại!');
-    // }
+    if (phonenumber) {
+      const phoneExist = await Account.findOne({ where: { PhoneNumber: phonenumber } });
+      if (phoneExist) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Số điện thoại này đã tồn tại!');
+      }
+    }
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -39,6 +38,7 @@ const createAccount = async (accountBody) => {
       FirstName: firstname,
       LastName: lastname,
       FullName: `${firstname} ${lastname}`,
+      PhoneNumber: phonenumber,
       Email: email,
       UserName: email,
       Password: hashedPassword,

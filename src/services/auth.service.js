@@ -69,22 +69,19 @@ const refreshAuth = async (refreshToken) => {
 
 /**
  * Reset password
- * @param {string} resetPasswordToken
- * @param {string} newPassword
+ * @param {string} email
+ * @param {string} code
+ * @param {string} newpassword
  * @returns {Promise}
  */
-const resetPassword = async (resetPasswordToken, newPassword) => {
+const resetPassword = async (email, code, newpassword) => {
   try {
-    const resetPasswordTokenDoc = await tokenService.verifyToken(
-      resetPasswordToken,
-      tokenTypes.RESET_PASSWORD
-    );
-    const user = await accountService.getUserById(resetPasswordTokenDoc.user);
-    if (!user) {
-      throw new Error();
+    const account = await accountService.getUserByEmail(email);
+    const isMatchOtp = code === account.OTPPhoneVerified;
+    if (isMatchOtp) {
+      account.Password = await bcrypt.hash(newpassword, 10);
+      await account.save();
     }
-    await accountService.updateUserById(user.id, { password: newPassword });
-    await Token.deleteMany({ user: user.id, type: tokenTypes.RESET_PASSWORD });
   } catch (error) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Password reset failed');
   }
