@@ -131,6 +131,8 @@ router
  *             properties:
  *               title:
  *                 type: string
+ *               type:
+ *                 type: string
  *               description:
  *                 type: string
  *               redirecturl:
@@ -139,6 +141,7 @@ router
  *                 type: array
  *             example:
  *               title: "Banner 1"
+ *               type: "type"
  *               description: "Test"
  *               redirecturl: "Link fb"
  *               images: [{}]
@@ -211,6 +214,8 @@ router
  *             properties:
  *               title:
  *                 type: string
+ *               type:
+ *                 type: string
  *               description:
  *                 type: string
  *               redirecturl:
@@ -219,6 +224,7 @@ router
  *                 type: array
  *             example:
  *               title: "Banner 1"
+ *               type: "type"
  *               description: "Test"
  *               redirecturl: "Link fb"
  *               images: [{}]
