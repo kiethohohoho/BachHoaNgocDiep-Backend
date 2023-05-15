@@ -29,8 +29,8 @@ const queryBannerById = async (bannerId) => {
   const images = await Image.findAll({
     where: { BannerId: bannerId },
   });
-  banner.Images = images;
-  return banner;
+  // banner.Images = images;
+  return { ...banner.get({ plain: true }), Images: images };
 };
 
 /**
