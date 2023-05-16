@@ -24,7 +24,12 @@ router.post(
   validate(authValidation.resetPassword),
   authController.resetPassword
 );
-router.post('/send-verification-email', auth('user'), authController.sendVerificationEmail);
+router.post(
+  '/change-password',
+  auth('user'),
+  validate(authValidation.changePassword),
+  authController.changePassword
+);
 router.post(
   '/verify-email',
   auth('user'),
@@ -274,13 +279,41 @@ module.exports = router;
 
 /**
  * @swagger
- * /auth/send-verification-email:
+ * /auth/change-password:
  *   post:
  *     summary: Send verification email
  *     description: An email will be sent to verify email.
  *     tags: [Auth]
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - oldpassword
+ *               - newpassword
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               oldpassword:
+ *                 type: string
+ *                 format: password
+ *                 minLength: 6
+ *                 description: At least one number and one letter
+ *               newpassword:
+ *                 type: string
+ *                 format: password
+ *                 minLength: 6
+ *                 description: At least one number and one letter
+ *             example:
+ *               email: admin@gmail.com
+ *               oldpassword: "oldpassword"
+ *               newpassword: "newpassword"
  *     responses:
  *       "204":
  *         description: No content

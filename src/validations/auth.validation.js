@@ -59,6 +59,16 @@ const resetPassword = {
     .unknown(true),
 };
 
+const changePassword = {
+  body: Joi.object()
+    .keys({
+      email: Joi.string().required().email(),
+      oldpassword: Joi.string().required().custom(password),
+      newpassword: Joi.string().required().custom(password),
+    })
+    .unknown(true),
+};
+
 const verifyEmail = {
   body: Joi.object()
     .keys({
@@ -82,6 +92,7 @@ module.exports = {
   refreshTokens,
   forgotPassword,
   resetPassword,
+  changePassword,
   verifyEmail,
   otp,
 };

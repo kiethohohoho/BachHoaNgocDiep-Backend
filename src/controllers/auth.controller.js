@@ -101,10 +101,16 @@ const resetPassword = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json({ success: true, message: 'Đổi mật khẩu thành công' });
 });
 
-const sendVerificationEmail = catchAsync(async (req, res) => {
-  const verifyEmailToken = await tokenService.generateVerifyEmailToken(req.user);
-  await emailService.sendVerificationEmail(req.user.email, verifyEmailToken);
-  res.status(httpStatus.NO_CONTENT).send();
+const changePassword = catchAsync(async (req, res) => {
+  try {
+    const { email, oldpassword, newpassword } = req.body;
+    await authService.changePassword(email, oldpassword, newpassword);
+    res.status(httpStatus.OK).json({ success: true, message: 'Đổi mật khẩu thành công' });
+  } catch (err) {
+    res
+      .status(err.statusCode || httpStatus.UNAUTHORIZED)
+      .json({ message: 'Đổi mật khẩu thất bại!', detail: err.message || err });
+  }
 });
 
 const verifyEmailAccount = catchAsync(async (req, res) => {
@@ -148,7 +154,7 @@ module.exports = {
   refreshTokens,
   forgotPassword,
   resetPassword,
-  sendVerificationEmail,
+  changePassword,
   verifyEmailAccount,
   verifyOtp,
 };

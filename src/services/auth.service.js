@@ -88,6 +88,25 @@ const resetPassword = async (email, code, newpassword) => {
 };
 
 /**
+ * Reset password
+ * @param {string} email
+ * @param {string} oldpassword
+ * @param {string} newpassword
+ * @returns {Promise}
+ */
+const changePassword = async (email, oldpassword, newpassword) => {
+  const account = await accountService.getUserByEmail(email);
+  if (account) {
+    if (bcrypt.compareSync(oldpassword, account.Password)) {
+      account.Password = await bcrypt.hash(newpassword, 10);
+      await account.save();
+    } else {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Sai mật khẩu!');
+    }
+  }
+};
+
+/**
  * Verify email
  * @param {string} token
  * @param {string} code
@@ -128,5 +147,6 @@ module.exports = {
   logout,
   refreshAuth,
   resetPassword,
+  changePassword,
   verifyEmail,
 };
