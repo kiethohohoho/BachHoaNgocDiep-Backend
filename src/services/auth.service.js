@@ -75,15 +75,13 @@ const refreshAuth = async (refreshToken) => {
  * @returns {Promise}
  */
 const resetPassword = async (email, code, newpassword) => {
-  try {
-    const account = await accountService.getUserByEmail(email);
-    const isMatchOtp = code === account.OTPPhoneVerified;
-    if (isMatchOtp) {
-      account.Password = await bcrypt.hash(newpassword, 10);
-      await account.save();
-    }
-  } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Password reset failed');
+  const account = await accountService.getUserByEmail(email);
+  const isMatchOtp = code === account.OTPPhoneVerified;
+  if (isMatchOtp) {
+    account.Password = await bcrypt.hash(newpassword, 10);
+    await account.save();
+  } else {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Sai OTP');
   }
 };
 

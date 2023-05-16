@@ -256,13 +256,20 @@ module.exports = router;
  *             required:
  *               - password
  *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               code:
+ *                 type: string
  *               password:
  *                 type: string
  *                 format: password
  *                 minLength: 8
  *                 description: At least one number and one letter
  *             example:
- *               password: password1
+ *               email: email
+ *               code: code
+ *               newpassword: password
  *     responses:
  *       "204":
  *         description: No content

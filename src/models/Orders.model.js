@@ -14,6 +14,21 @@ const Order = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
     },
+    ShopBankNumber: {
+      type: DataTypes.STRING,
+    },
+    UserBankNumber: {
+      type: DataTypes.STRING,
+    },
+    ShopBankName: {
+      type: DataTypes.STRING,
+    },
+    UserBankName: {
+      type: DataTypes.STRING,
+    },
+    TransferContent: {
+      type: DataTypes.STRING,
+    },
     FullAddress: {
       type: DataTypes.STRING,
       allowNull: false,

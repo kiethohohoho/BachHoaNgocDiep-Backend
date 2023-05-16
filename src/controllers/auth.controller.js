@@ -97,8 +97,14 @@ const forgotPassword = catchAsync(async (req, res) => {
 });
 
 const resetPassword = catchAsync(async (req, res) => {
-  await authService.resetPassword(req.body.email, req.body.code, req.body.newpassword);
-  res.status(httpStatus.OK).json({ success: true, message: 'Đổi mật khẩu thành công' });
+  try {
+    await authService.resetPassword(req.body.email, req.body.code, req.body.newpassword);
+    res.status(httpStatus.OK).json({ success: true, message: 'Đổi mật khẩu thành công' });
+  } catch (err) {
+    res
+      .status(err.statusCode || httpStatus.UNAUTHORIZED)
+      .json({ message: 'Đổi mật khẩu thất bại!', detail: err.message || err });
+  }
 });
 
 const changePassword = catchAsync(async (req, res) => {
