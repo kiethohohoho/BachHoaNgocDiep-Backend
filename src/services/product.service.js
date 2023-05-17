@@ -84,6 +84,7 @@ const saveProduct = async (product, body) => {
     product.Quantity = quantity;
   }
   if (images) {
+    product.ImageURL = images[0].OriginalImageUrl;
     await Promise.all(
       images.map((img) =>
         Image.update(
