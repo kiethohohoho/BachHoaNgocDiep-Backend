@@ -95,10 +95,10 @@ const getAccountById = async (id) => {
  */
 const getUserByEmail = async (email = '') => {
   const account = await Account.findOne({ where: { Email: email } });
-  if (!account) {
-    throw new ApiError(httpStatus.BAD_REQUEST, `Email ${email} không tồn tại!`);
+  if (account) {
+    return account;
   }
-  return account;
+  throw new ApiError(httpStatus.BAD_REQUEST, `Email ${email} không tồn tại!`);
 };
 
 /**

@@ -26,6 +26,10 @@ const register = catchAsync(async (req, res) => {
     ]);
     res.status(httpStatus.CREATED).json({ user: account, access, refresh, success: true });
   } catch (err) {
+    const account = await accountService.getUserByEmail(req.body.email);
+    if (account) {
+      await account.destroy();
+    }
     res
       .status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR)
       .json({ message: 'Lỗi đăng ký tài khoản!', detail: err.message || err, success: false });
