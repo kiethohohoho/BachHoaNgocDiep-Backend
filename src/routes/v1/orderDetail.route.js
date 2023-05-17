@@ -1,43 +1,43 @@
 const express = require('express');
 const validate = require('../../middlewares/validate');
-const { categoryValidation } = require('../../validations');
-const { categoryController } = require('../../controllers');
+const { orderDetailValidation } = require('../../validations');
+const { orderDetailController } = require('../../controllers');
 const auth = require('../../middlewares/auth');
 
 const router = express.Router();
 
 router
   .route('/')
-  .get(validate(categoryValidation.getCategories), categoryController.getCategories)
+  .get(validate(orderDetailValidation.getOrderDetails), orderDetailController.getOrderDetails)
   .post(
     auth('admin'),
-    validate(categoryValidation.createCategory),
-    categoryController.createCategory
+    validate(orderDetailValidation.createOrderDetail),
+    orderDetailController.createOrderDetail
   );
 
 router
-  .route('/:categoryId')
+  .route('/:orderDetailId')
   .get(
     auth('user'),
-    validate(categoryValidation.getOrDeleteCategoryById),
-    categoryController.getCategoryById
+    validate(orderDetailValidation.getOrDeleteOrderDetailById),
+    orderDetailController.getOrderDetailById
   )
   .patch(
     auth('admin'),
-    validate(categoryValidation.updateCategoryById),
-    categoryController.updateCategoryById
+    validate(orderDetailValidation.updateOrderDetailById),
+    orderDetailController.updateOrderDetailById
   )
   .delete(
     auth('admin'),
-    validate(categoryValidation.getOrDeleteCategoryById),
-    categoryController.deleteCategoryById
+    validate(orderDetailValidation.getOrDeleteOrderDetailById),
+    orderDetailController.deleteOrderDetailById
   );
 
 router
-  .route('/categoryGroup/:categoryGroupId')
+  .route('/order/:orderId')
   .get(
-    validate(categoryValidation.getCategoryByCategoryGroupId),
-    categoryController.getCategoryByCategoryGroupId
+    validate(orderDetailValidation.getOrderDetailByOrderId),
+    orderDetailController.getOrderDetailByOrderId
   );
 
 module.exports = router;
@@ -45,17 +45,17 @@ module.exports = router;
 /**
  * @swagger
  * tags:
- *   name: Categories
+ *   name: OrderDetails
  *   description: Danh mục
  */
 
 /**
  * @swagger
- * /categories:
+ * /orderDetails:
  *   get:
  *     summary: Lấy danh sách danh mục (search, sort, filter, pagination)
- *     description: Cho phép search, sort, multi filter, phân trang /categories?search=a&sort=Price,Name&order=asc,desc&filter[Price][gt]=1&filter[Name][eq]=abc&page=1&limit=20.
- *     tags: [Categories]
+ *     description: Cho phép search, sort, multi filter, phân trang /orderDetails?search=a&sort=Price,Name&order=asc,desc&filter[Price][gt]=1&filter[Name][eq]=abc&page=1&limit=20.
+ *     tags: [OrderDetails]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -104,7 +104,7 @@ module.exports = router;
  *                 Data:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Category'
+ *                     $ref: '#/components/schemas/OrderDetail'
  *                 Pagination:
  *                   type: object
  *                   properties:
@@ -130,7 +130,7 @@ module.exports = router;
  *   post:
  *     summary: Tạo mới một danh mục
  *     description: Tạo trước Nhóm danh mục và Danh mục sản phẩm (nếu cần)
- *     tags: [Categories]
+ *     tags: [OrderDetails]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -142,14 +142,14 @@ module.exports = router;
  *             required:
  *               - name
  *             properties:
- *               categorygroupid:
+ *               orderId:
  *                 type: string
  *               name:
  *                 type: string
  *               description:
  *                 type: string
  *             example:
- *               categorygroupid: "1"
+ *               orderId: "1"
  *               name: Sữa tiệt trùng ColosBaby
  *               description: Sữa tiệt trùng ColosBaby
  *     responses:
@@ -158,7 +158,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Category'
+ *               $ref: '#/components/schemas/OrderDetail'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
@@ -171,27 +171,27 @@ module.exports = router;
 
 /**
  * @swagger
- * /categories/{categoryId}:
+ * /orderDetails/{orderId}:
  *   get:
  *     summary: Lấy thông tin một danh mục theo Id
  *     description: Lấy thông tin một danh mục theo Id
- *     tags: [Categories]
+ *     tags: [OrderDetails]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: categoryId
+ *         name: orderId
  *         required: true
  *         schema:
  *           type: string
- *         description: category Id
+ *         description: orderDetail Id
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Category'
+ *               $ref: '#/components/schemas/OrderDetail'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -202,16 +202,16 @@ module.exports = router;
  *   patch:
  *     summary: Cập nhật một danh mục
  *     description: Cập nhật thông tin của một danh mục
- *     tags: [Categories]
+ *     tags: [OrderDetails]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: categoryId
+ *         name: orderId
  *         required: true
  *         schema:
  *           type: string
- *         description: Category Id
+ *         description: OrderDetail Id
  *     requestBody:
  *       required: true
  *       content:
@@ -219,14 +219,14 @@ module.exports = router;
  *           schema:
  *             type: object
  *             properties:
- *               categorygroupid:
+ *               orderId:
  *                 type: string
  *               name:
  *                 type: string
  *               description:
  *                 type: string
  *             example:
- *               categorygroupid: "1"
+ *               orderId: "1"
  *               name: Sữa tiệt trùng ColosBaby
  *               description: Sữa tiệt trùng ColosBaby
  *     responses:
@@ -235,7 +235,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Category'
+ *               $ref: '#/components/schemas/OrderDetail'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
@@ -248,16 +248,16 @@ module.exports = router;
  *   delete:
  *     summary: Xoá một danh mục
  *     description: Thao tác này chỉ "xoá mềm" một danh mục, vẫn có thể khôi phục sau khi xoá.
- *     tags: [Categories]
+ *     tags: [OrderDetails]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: categoryId
+ *         name: orderId
  *         required: true
  *         schema:
  *           type: string
- *         description: Category Id
+ *         description: OrderDetail Id
  *     responses:
  *       "200":
  *         description: No content
@@ -271,20 +271,20 @@ module.exports = router;
 
 /**
  * @swagger
- * /categories/categoryGroup/:categoryGroupId:
+ * /orderDetails/order/:orderId:
  *   get:
- *     summary: Lấy danh sách danh mục theo categoryGroupId
- *     description: Lấy danh sách danh mục theo categoryGroupId
- *     tags: [Categories]
+ *     summary: Lấy danh sách danh mục theo orderId
+ *     description: Lấy danh sách danh mục theo orderId
+ *     tags: [OrderDetails]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: categoryGroupId
+ *         name: orderId
  *         required: true
  *         schema:
  *           type: string
- *         description: categoryGroup Id
+ *         description: orderDetail Id
  *     responses:
  *       "200":
  *         description: OK
@@ -296,7 +296,7 @@ module.exports = router;
  *                 Data:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Category'
+ *                     $ref: '#/components/schemas/OrderDetail'
  *                 Pagination:
  *                   type: object
  *                   properties:
