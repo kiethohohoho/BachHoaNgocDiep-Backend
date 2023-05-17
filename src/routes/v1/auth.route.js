@@ -268,6 +268,7 @@ module.exports = router;
  *   post:
  *     summary: Nhập OTP, email và lấy mật khẩu mới.
  *     description: Nhập OTP,email và lấy mật khẩu mới.
+ *     tags: [Auth]
  *     requestBody:
  *       required: true
  *       content:
@@ -309,8 +310,8 @@ module.exports = router;
  * @swagger
  * /auth/change-password:
  *   post:
- *     summary: Send verification email
- *     description: An email will be sent to verify email.
+ *     summary: Dùng để đổi mật khẩu
+ *     description: Cần đăng nhập, nhập mật khẩu cũ và mật khẩu mới
  *     tags: [Auth]
  *     security:
  *       - bearerAuth: []
@@ -321,13 +322,9 @@ module.exports = router;
  *           schema:
  *             type: object
  *             required:
- *               - email
  *               - oldpassword
  *               - newpassword
  *             properties:
- *               email:
- *                 type: string
- *                 format: email
  *               oldpassword:
  *                 type: string
  *                 format: password
@@ -339,7 +336,6 @@ module.exports = router;
  *                 minLength: 6
  *                 description: At least one number and one letter
  *             example:
- *               email: admin@gmail.com
  *               oldpassword: "oldpassword"
  *               newpassword: "newpassword"
  *     responses:

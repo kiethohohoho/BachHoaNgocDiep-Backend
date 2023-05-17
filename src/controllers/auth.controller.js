@@ -100,8 +100,8 @@ const resetPassword = catchAsync(async (req, res) => {
 
 const changePassword = catchAsync(async (req, res) => {
   try {
-    const { email, oldpassword, newpassword } = req.body;
-    await authService.changePassword(email, oldpassword, newpassword);
+    const { oldpassword, newpassword } = req.body;
+    await authService.changePassword(req.user.Email, oldpassword, newpassword);
     res.status(httpStatus.OK).json({ success: true, message: 'Đổi mật khẩu thành công' });
   } catch (err) {
     res
