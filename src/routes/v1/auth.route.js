@@ -7,6 +7,12 @@ const auth = require('../../middlewares/auth');
 const router = express.Router();
 
 router.post('/register', validate(authValidation.register), authController.register);
+router.post(
+  '/verify-register',
+  auth('user'),
+  validate(authValidation.verifyEmail),
+  authController.verifyEmailAccount
+);
 router.post('/login', validate(authValidation.login), authController.login);
 router.post('/logout', validate(authValidation.logout), authController.logout);
 router.post(
@@ -30,13 +36,6 @@ router.post(
   validate(authValidation.changePassword),
   authController.changePassword
 );
-router.post(
-  '/verify-email',
-  auth('user'),
-  validate(authValidation.verifyEmail),
-  authController.verifyEmailAccount
-);
-router.get('/verify-otp/:otp', validate(authValidation.otp), auth(), authController.verifyOtp);
 
 module.exports = router;
 
@@ -98,6 +97,34 @@ module.exports = router;
  *                   $ref: '#/components/schemas/User'
  *                 tokens:
  *                   $ref: '#/components/schemas/AuthTokens'
+ */
+
+/**
+ * @swagger
+ * /auth/verify-register:
+ *   post:
+ *     summary: Xác thực OTP gửi sau bước Đăng ký
+ *     description: Xác thực OTP gửi sau bước Đăng ký
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - code
+ *             properties:
+ *               code:
+ *                 type: string
+ *                 minLength: 6
+ *             example:
+ *               code: "123456"
+ *     responses:
+ *       "200":
+ *         description: No content
  */
 
 /**
@@ -180,7 +207,8 @@ module.exports = router;
  * @swagger
  * /auth/refresh-tokens:
  *   post:
- *     summary: Refresh tokens
+ *     summary: Dùng để lấy lại access-token và refresh-token mới khi access-token hết hạn.
+ *     description: Dùng để lấy lại access-token và refresh-token mới khi access-token hết hạn.
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -210,8 +238,8 @@ module.exports = router;
  * @swagger
  * /auth/forgot-password:
  *   post:
- *     summary: Quên mật khẩu
- *     description: An email will be sent to reset password.
+ *     summary: Dùng khi quên mật khẩu, gửi OTP qua Email và SMS.
+ *     description: Dùng khi quên mật khẩu, gửi OTP qua Email và SMS.
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -238,15 +266,8 @@ module.exports = router;
  * @swagger
  * /auth/reset-password:
  *   post:
- *     summary: Đổi mật khẩu
- *     tags: [Auth]
- *     parameters:
- *       - in: query
- *         name: token
- *         required: true
- *         schema:
- *           type: string
- *         description: The reset password token
+ *     summary: Nhập OTP, email và lấy mật khẩu mới.
+ *     description: Nhập OTP,email và lấy mật khẩu mới.
  *     requestBody:
  *       required: true
  *       content:
@@ -326,31 +347,4 @@ module.exports = router;
  *         description: No content
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
- */
-
-/**
- * @swagger
- * /auth/verify-email:
- *   post:
- *     summary: verify email
- *     tags: [Auth]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - code
- *             properties:
- *               code:
- *                 type: string
- *                 minLength: 6
- *             example:
- *               code: "123456"
- *     responses:
- *       "200":
- *         description: No content
  */
