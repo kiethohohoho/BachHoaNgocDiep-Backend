@@ -38,7 +38,7 @@ const createAccount = async (accountBody) => {
       FirstName: firstname,
       LastName: lastname,
       FullName: `${firstname} ${lastname}`,
-      PhoneNumber: phonenumber,
+      ...(phonenumber && { PhoneNumber: phonenumber }),
       Email: email,
       UserName: email,
       Password: hashedPassword,
