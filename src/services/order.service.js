@@ -58,23 +58,24 @@ const destroyOrder = async (order) => {
 /**
  * Create one order
  * @param {Object} body - Request body
+ * @param {Object} user - user
  * @returns {Promise<CreateResult>}
  */
-const createOneOrder = async (body) => {
-  const { name, description } = body;
-
-  if (name) {
-    const existOrder = await Order.findOne({
-      where: { Name: name },
-    });
-    if (existOrder) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Nhóm danh mục này đã tồn tại!');
-    }
-  }
+const createOneOrder = async (body, user) => {
+  const { address, shippingcost, data, notes } = body;
+  const VAT = (data.TotalPrice * 1) / 100;
+  const TotalAmount = data.TotalPrice + VAT + shippingcost;
 
   const newOrder = await Order.create({
-    Name: name,
-    Description: description,
+    AccountId: user.Id,
+    FullAddress: address.FullAddress,
+    ReceiverName: address.ReceiverName,
+    ReceiverPhoneNumber: address.ReceiverPhoneNumber,
+    SubAmount: data.TotalPrice,
+    ShippingCost: shippingcost,
+    VAT: 1,
+    TotalAmount,
+    Notes: notes,
   });
   return newOrder;
 };

@@ -50,32 +50,30 @@ const Order = sequelize.define(
       type: DataTypes.BIGINT,
     },
     VAT: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.SMALLINT,
+      defaultValue: 1,
     },
     TotalAmount: {
       type: DataTypes.BIGINT,
       allowNull: false,
     },
-    // 1 - 2 - 3 - 4
+    // 1 - 2 - 3 - 4 - 5
     StatusCode: {
       type: DataTypes.SMALLINT,
       allowNull: false,
       defaultValue: 1,
     },
-    // Đang kiểm tra - Đang chuẩn bị - Đang giao hàng - Đã giao hàng
+    // Đang chờ duyệt - Đã duyệt - Đang giao hàng - Hoàn thành - Hủy
     Status: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 'Đang kiểm tra',
+      defaultValue: 'Đang chờ duyệt',
     },
     DeliveryDate: {
       type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: '',
     },
     Notes: {
       type: DataTypes.TEXT('long'),
-      allowNull: false,
     },
   },
   {

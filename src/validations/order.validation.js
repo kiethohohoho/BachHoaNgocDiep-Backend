@@ -36,8 +36,10 @@ const updateOrderById = {
 const createOrder = {
   body: Joi.object()
     .keys({
-      name: Joi.string(),
-      description: Joi.string(),
+      data: Joi.array().required(),
+      shippingcost: Joi.object().required(),
+      address: Joi.object().required(),
+      notes: Joi.string(),
     })
     .unknown(true),
 };

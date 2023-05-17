@@ -14,7 +14,7 @@ const getOrders = catchAsync(async (req, res) => {
     res.status(httpStatus.OK).json({ Orders, success: true });
   } catch (error) {
     res.status(error.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
-      message: 'Lỗi lấy danh sách nhóm danh mục!',
+      message: 'Lỗi lấy danh sách đơn hàng!',
       detail: error.message || error,
       success: false,
     });
@@ -27,7 +27,7 @@ const getOrderById = async (req, res) => {
     return res.status(httpStatus.OK).json({ order, success: true });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
-      message: 'Lỗi tìm nhóm danh mục!',
+      message: 'Lỗi tìm đơn hàng!',
       detail: err.message || err,
       success: false,
     });
@@ -42,7 +42,7 @@ const updateOrderById = async (req, res) => {
     return res.status(httpStatus.OK).json({ message: 'Cập nhật thành công!', success: true });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
-      message: 'Lỗi tìm nhóm danh mục!',
+      message: 'Lỗi tìm đơn hàng!',
       detail: err.message || err,
       success: false,
     });
@@ -57,7 +57,7 @@ const deleteOrderById = async (req, res) => {
     return res.status(httpStatus.OK).json({ message: 'Xoá thành công!', success: true });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
-      message: 'Lỗi xoá nhóm danh mục!',
+      message: 'Lỗi xoá đơn hàng!',
       detail: err.message || err,
       success: false,
     });
@@ -66,15 +66,15 @@ const deleteOrderById = async (req, res) => {
 
 const createOrder = catchAsync(async (req, res) => {
   try {
-    const createdOrder = await createOneOrder(req.body);
+    const createdOrder = await createOneOrder(req.body, req.user);
     if (createdOrder) {
       res
         .status(httpStatus.OK)
-        .json({ message: 'Tạo nhóm danh mục thành công!', success: true, ...createdOrder });
+        .json({ message: 'Tạo đơn hàng thành công!', success: true, ...createdOrder });
     }
   } catch (error) {
     res.status(error.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
-      message: 'Lỗi tạo nhóm danh mục!',
+      message: 'Lỗi tạo đơn hàng!',
       detail: error.message || error,
       success: false,
     });

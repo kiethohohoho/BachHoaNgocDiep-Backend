@@ -25,14 +25,14 @@ router
  * @swagger
  * tags:
  *   name: Orders
- *   description: Nhóm danh mục
+ *   description: Đơn hàng
  */
 
 /**
  * @swagger
  * /orders:
  *   get:
- *     summary: Lấy danh sách nhóm danh mục (search, sort, filter, pagination)
+ *     summary: Lấy danh sách Đơn hàng (search, sort, filter, pagination)
  *     description: Cho phép search, sort, multi filter, phân trang /orders?search=a&sort=Price,Name&order=asc,desc&filter[Price][gt]=1&filter[Name][eq]=abc&page=1&limit=20.
  *     tags: [Orders]
  *     security:
@@ -107,8 +107,8 @@ router
  *         $ref: '#/components/responses/NotFound'
  *
  *   post:
- *     summary: Tạo mới một nhóm danh mục
- *     description: Tạo trước Nhóm danh mục và Danh mục sản phẩm (nếu cần)
+ *     summary: Tạo đơn hàng
+ *     description: Tạo trước Đơn hàng
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
@@ -119,18 +119,26 @@ router
  *           schema:
  *             type: object
  *             required:
- *               - name
+ *               - data
+ *               - shippingcost
+ *               - address
  *             properties:
- *               name:
- *                 type: string
- *               description:
+ *               data:
+ *                 type: array
+ *               shippingcost:
+ *                 type: number
+ *               address:
+ *                 type: object
+ *               notes:
  *                 type: string
  *             example:
- *               name: Sữa tiệt trùng ColosBaby
- *               description: Sữa tiệt trùng ColosBaby
+ *               data: []
+ *               shippingcost: 0
+ *               address: {}
+ *               notes: "notes"
  *     responses:
  *       "201":
- *         description: Tạo nhóm danh mục thành công
+ *         description: Tạo Đơn hàng thành công
  *         content:
  *           application/json:
  *             schema:
@@ -149,8 +157,8 @@ router
  * @swagger
  * /orders/{orderId}:
  *   get:
- *     summary: Lấy thông tin một nhóm danh mục
- *     description: Bao gồm cả thông tin Nhóm danh mục và Danh mục sản phẩm (nếu có)
+ *     summary: Lấy thông tin một Đơn hàng
+ *     description: Bao gồm cả thông tin Đơn hàng và Danh mục sản phẩm (nếu có)
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
@@ -176,8 +184,8 @@ router
  *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
- *     summary: Cập nhật một nhóm danh mục
- *     description: Cập nhật thông tin của một nhóm danh mục
+ *     summary: Cập nhật một Đơn hàng
+ *     description: Cập nhật thông tin của một Đơn hàng
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
@@ -219,8 +227,8 @@ router
  *         $ref: '#/components/responses/NotFound'
  *
  *   delete:
- *     summary: Xoá một nhóm danh mục
- *     description: Thao tác này chỉ "xoá mềm" một nhóm danh mục, vẫn có thể khôi phục sau khi xoá.
+ *     summary: Xoá một Đơn hàng
+ *     description: Thao tác này chỉ "xoá mềm" một Đơn hàng, vẫn có thể khôi phục sau khi xoá.
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
