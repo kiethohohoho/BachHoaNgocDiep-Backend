@@ -46,9 +46,11 @@ const login = catchAsync(async (req, res) => {
       });
     }
   } catch (err) {
-    res
-      .status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR)
-      .json({ message: 'Lỗi đăng nhập tài khoản!', detail: err.message || err, success: false });
+    res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: 'Lỗi đăng nhập tài khoản!',
+      detail: err.message || err,
+    });
   }
 });
 
@@ -94,7 +96,7 @@ const resetPassword = catchAsync(async (req, res) => {
   } catch (err) {
     res
       .status(err.statusCode || httpStatus.UNAUTHORIZED)
-      .json({ message: 'Đổi mật khẩu thất bại!', detail: err.message || err });
+      .json({ success: false, message: 'Đổi mật khẩu thất bại!', detail: err.message || err });
   }
 });
 
@@ -106,7 +108,7 @@ const changePassword = catchAsync(async (req, res) => {
   } catch (err) {
     res
       .status(err.statusCode || httpStatus.UNAUTHORIZED)
-      .json({ message: 'Đổi mật khẩu thất bại!', detail: err.message || err });
+      .json({ success: false, message: 'Đổi mật khẩu thất bại!', detail: err.message || err });
   }
 });
 
