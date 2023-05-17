@@ -8,7 +8,7 @@ const {
   smsService,
   userService,
 } = require('../services');
-// const logger = require('../config/logger');
+const mailBody = require('../config/mailBody');
 
 const register = catchAsync(async (req, res) => {
   try {
@@ -18,15 +18,10 @@ const register = catchAsync(async (req, res) => {
       smsService.sendOtpSms(account.PhoneNumber, account.OTPPhoneVerified),
       emailService.sendEmail(
         account.Email,
-        'Xác thực email đăng ký toàn khoản | Bách Hoá Ngọc Diệp',
-        `<h3>Mã xác thực của bạn là:</h3> ${account.OTPPhoneVerified}`
+        'Xác thực đăng ký tài khoản | Bách Hoá Ngọc Diệp',
+        mailBody(account.OTPPhoneVerified, account.Name, 'Đăng ký')
       ),
     ]);
-    // await emailService.sendEmail(
-    //   account.Email,
-    //   'Xác thực email đăng ký toàn khoản | Bách Hoá Ngọc Diệp',
-    //   `<h3>Mã xác thực của bạn là:</h3> ${account.OTPPhoneVerified}`
-    // );
     res.status(httpStatus.CREATED).json({ user: account, access, refresh, success: true });
   } catch (err) {
     res
@@ -75,15 +70,11 @@ const forgotPassword = catchAsync(async (req, res) => {
       smsService.sendOtpSms(account.PhoneNumber, account.OTPPhoneVerified),
       emailService.sendEmail(
         account.Email,
-        'Xác thực email quên mật khẩu | Bách Hoá Ngọc Diệp',
-        `<h3>Mã xác thực của bạn là:</h3> ${account.OTPPhoneVerified}`
+        'Xác thực mã OTP quên mật khẩu | Bách Hoá Ngọc Diệp',
+        mailBody(account.OTPPhoneVerified, account.Name, 'Quên mật khẩu')
       ),
     ]);
-    // await emailService.sendEmail(
-    //   account.Email,
-    //   'Xác thực email quên mật khẩu | Bách Hoá Ngọc Diệp',
-    //   `<h3>Mã xác thực của bạn là:</h3> ${account.OTPPhoneVerified}`
-    // );
+
     res
       .status(httpStatus.OK)
       .json({ message: `Đã gửi mã xác thực đến email ${account.Email}`, success: true });

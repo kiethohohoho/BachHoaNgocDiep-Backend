@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const loggers = require('../config/logger');
 const sequelize = require('../config/database');
+const Account = require('./Accounts.model');
 
 const Order = sequelize.define(
   'Orders',
@@ -41,8 +42,18 @@ const Order = sequelize.define(
       type: DataTypes.STRING(11),
       allowNull: false,
     },
+    SubAmount: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+    },
+    ShippingCost: {
+      type: DataTypes.BIGINT,
+    },
+    VAT: {
+      type: DataTypes.BIGINT,
+    },
     TotalAmount: {
-      type: DataTypes.STRING,
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
     // 1 - 2 - 3 - 4
@@ -77,6 +88,11 @@ const Order = sequelize.define(
     paranoid: true,
   }
 );
+
+Order.belongsTo(Account, {
+  foreignKey: 'AccountId',
+  targetKey: 'Id',
+});
 
 Order.sync({ force: false })
   .then(() => {
