@@ -19,7 +19,7 @@ const register = catchAsync(async (req, res) => {
       emailService.sendEmail(
         account.Email,
         'Xác thực đăng ký tài khoản | Bách Hoá Ngọc Diệp',
-        mailBody(account.OTPPhoneVerified, account.Name, 'Đăng ký')
+        mailBody(account.OTPPhoneVerified, account.FullName, 'Đăng ký')
       ),
     ]);
     res.status(httpStatus.CREATED).json({ user: account, access, refresh, success: true });
@@ -71,7 +71,7 @@ const forgotPassword = catchAsync(async (req, res) => {
       emailService.sendEmail(
         account.Email,
         'Xác thực mã OTP quên mật khẩu | Bách Hoá Ngọc Diệp',
-        mailBody(account.OTPPhoneVerified, account.Name, 'Quên mật khẩu')
+        mailBody(account.OTPPhoneVerified, account.FullName, 'Quên mật khẩu')
       ),
     ]);
 

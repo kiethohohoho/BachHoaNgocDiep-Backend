@@ -15,7 +15,7 @@ const client = twilio(config.twilio.accountSID, config.twilio.authToken);
 const sendOtpSms = async (phoneNumber, otp) => {
   try {
     await client.messages.create({
-      body: `Mã OTP của bạn là ${otp}. Sử dụng mã này để xác thực số điện thoại của bạn với shop Bách hoá Ngọc Diệp. Không chia sẻ mã này cho bất cứ ai!`,
+      body: `Mã OTP của bạn là ${otp}. Sử dụng mã OTP này để xác thực với Bách Hoá Ngọc Diệp và không chia sẻ mã này cho bất cứ ai!`,
       from: config.twilio.sender,
       to: `+84${phoneNumber.slice(1)}`,
     });
