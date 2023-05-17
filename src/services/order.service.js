@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
-const { Order, Category } = require('../models');
+const { Order, Category, Product, Cart, OrderDetails } = require('../models');
 const ApiError = require('../utils/ApiError');
 const paginate = require('../utils/paginate');
 
@@ -66,18 +66,47 @@ const createOneOrder = async (body, user) => {
   const VAT = (data.TotalPrice * 1) / 100;
   const TotalAmount = data.TotalPrice + VAT + shippingcost;
 
-  const newOrder = await Order.create({
-    AccountId: user.Id,
-    FullAddress: address.FullAddress,
-    ReceiverName: address.ReceiverName,
-    ReceiverPhoneNumber: address.ReceiverPhoneNumber,
-    SubAmount: data.TotalPrice,
-    ShippingCost: shippingcost,
-    VAT: 1,
-    TotalAmount,
-    Notes: notes,
-  });
-  return newOrder;
+  const [newOrder, carts] = await Promise.all([
+    Order.create({
+      AccountId: user.Id,
+      FullAddress: address.FullAddress,
+      ReceiverName: address.ReceiverName,
+      ReceiverPhoneNumber: address.ReceiverPhoneNumber,
+      SubAmount: data.TotalPrice,
+      ShippingCost: shippingcost,
+      VAT: 1,
+      TotalAmount,
+      Notes: notes,
+    }),
+    Cart.findAll({ where: { AccountId: user.Id } }),
+  ]);
+  if (newOrder) {
+    await Promise.all([
+      ...data.map((prd) =>
+        Product.update(
+          { Quantity: prd.Product.Quantity - 1 },
+          {
+            where: {
+              Id: prd.Id,
+            },
+          }
+        )
+      ),
+      ...data.map((prd) =>
+        OrderDetails.create({
+          OrderId: newOrder.Id,
+          ProductId: prd.Product.Id,
+          ProductName: prd.Product.Quantity,
+          ProductImageURL: prd.Product.ImageURL,
+          ProductPrice: prd.Product.Price,
+          BuyingQuantity: prd.Quantity,
+          Amount: prd.Product.Price * prd.Quantity,
+        })
+      ),
+      ...carts.map((cart) => cart.destroy()),
+    ]);
+    return newOrder;
+  }
 };
 
 module.exports = {

@@ -33,10 +33,8 @@ const Cart = sequelize.define(
     timestamps: {
       CreatedAt: 'created_date',
       UpdatedAt: 'updated_at',
-      DeletedAt: 'deleted_at',
     },
     underscored: false,
-    paranoid: true,
   }
 );
 

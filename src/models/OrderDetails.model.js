@@ -20,22 +20,9 @@ const OrderDetail = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    BrandName: {
-      type: DataTypes.UUID,
-      allowNull: false,
-    },
-    CategoryName: {
-      type: DataTypes.UUID,
-    },
-    CategoryGroupName: {
-      type: DataTypes.UUID,
-    },
     ProductName: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    ProductDescription: {
-      type: DataTypes.TEXT('long'),
     },
     ProductImageURL: {
       type: DataTypes.TEXT('long'),

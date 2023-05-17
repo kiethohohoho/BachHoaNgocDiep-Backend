@@ -153,7 +153,7 @@ module.exports = router;
  *                 description: At least one number and one letter
  *             example:
  *               email: admin@gmail.com
- *               password: admin2001@gmail.com
+ *               password: demo123456
  *     responses:
  *       "200":
  *         description: OK
