@@ -5,6 +5,7 @@ const sequelize = require('../config/database');
 
 const paginate = async (model, query, populateOptions = []) => {
   const { search = '', filter = {}, sort = '', order = '', page = 1, limit = 10 } = query;
+
   const orderField = order.split(',');
   const sortField = sort.split(',');
 
@@ -49,6 +50,14 @@ const paginate = async (model, query, populateOptions = []) => {
   // Calculate the offset based on the page and limit parameters
   const offset = (page - 1) * limit;
 
+  // console.log({
+  //   where,
+  //   order: _order,
+  //   offset,
+  //   limit,
+  //   include: populateOptions,
+  // });
+
   // Query the database with the where, order, offset, and limit clauses
   const { count, rows } = await model.findAndCountAll({
     where,
@@ -59,9 +68,10 @@ const paginate = async (model, query, populateOptions = []) => {
   });
   // Calculate the total number of pages based on the count and limit parameters
   const TotalPages = Math.ceil(count / limit);
+
   const responseRows = rows.map((a) => ({
     ...a.get({ plain: true }),
-    Description: he.decode(a.get({ plain: true }).Description),
+    ...(a.Description && { Description: he.decode(a.get({ plain: true }).Description) }),
   }));
 
   // Return the paginated results along with the total count and number of pages
