@@ -15,7 +15,9 @@ const register = catchAsync(async (req, res) => {
     const account = await accountService.createAccount(req.body);
     const { access, refresh } = await tokenService.generateAuthTokens(account.Id);
     await Promise.all([
-      smsService.sendOtpSms(account.PhoneNumber, account.OTPPhoneVerified),
+      ...(req.body.phonenumber && [
+        smsService.sendOtpSms(account.PhoneNumber, account.OTPPhoneVerified),
+      ]),
       emailService.sendEmail(
         account.Email,
         'Xác thực đăng ký tài khoản | Bách Hoá Ngọc Diệp',
