@@ -10,7 +10,7 @@ const catchAsync = require('../utils/catchAsync');
 
 const getOrders = catchAsync(async (req, res) => {
   try {
-    const Orders = await queryOrders(req.query);
+    const Orders = await queryOrders({ ...req.query, user: req.user });
     res.status(httpStatus.OK).json({ Orders, success: true });
   } catch (error) {
     res.status(error.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({

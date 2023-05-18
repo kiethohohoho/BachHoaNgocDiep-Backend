@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
-const { Order, Category, Product, Cart, OrderDetails } = require('../models');
+const { Order, Product, Cart, OrderDetails, Account } = require('../models');
 const ApiError = require('../utils/ApiError');
 const paginate = require('../utils/paginate');
 
@@ -10,7 +10,14 @@ const paginate = require('../utils/paginate');
  * @returns {Promise<QueryResult>}
  */
 const queryOrders = async (query) => {
-  const orders = await paginate(Order, query);
+  const orders = await paginate(Order, {
+    ...query,
+    filter: {
+      AccountId: {
+        eq: query.user.Id,
+      },
+    },
+  });
   return orders;
 };
 
@@ -21,10 +28,10 @@ const queryOrders = async (query) => {
  */
 const queryOrderById = async (orderId) => {
   const order = await Order.findByPk(orderId, {
-    include: [Category, Order],
+    include: [Account],
   });
   if (!order) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Nhóm danh mục không tồn tại!');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Đơn hàng không tồn tại!');
   }
   return order;
 };
@@ -36,12 +43,35 @@ const queryOrderById = async (orderId) => {
  * @returns {Promise<SaveResult>}
  */
 const saveOrder = async (order, body) => {
-  const { name, description } = body;
-  if (name) {
-    order.Name = name;
-  }
-  if (description) {
-    order.Description = description;
+  const { statuscode } = body;
+  switch (statuscode) {
+    case 1:
+      order.StatusCode = 1;
+      order.Status = 'Đang chờ duyệt';
+      break;
+
+    case 2:
+      order.StatusCode = 2;
+      order.Status = 'Đã duyệt';
+      break;
+
+    case 3:
+      order.StatusCode = 3;
+      order.Status = 'Đang giao hàng';
+      break;
+
+    case 4:
+      order.StatusCode = 4;
+      order.Status = 'Hoàn thành';
+      break;
+
+    case 5:
+      order.StatusCode = 5;
+      order.Status = 'Hủy';
+      break;
+
+    default:
+      break;
   }
   await order.save();
 };
@@ -63,15 +93,16 @@ const destroyOrder = async (order) => {
  */
 const createOneOrder = async (body, user) => {
   const { address, shippingcost, data, notes } = body;
+  const { City, District, Ward, Street, ReceiverName, ReceiverPhoneNumber } = address;
   const VAT = (data.TotalPrice * 1) / 100;
   const TotalAmount = data.TotalPrice + VAT + shippingcost;
 
   const [newOrder, carts] = await Promise.all([
     Order.create({
       AccountId: user.Id,
-      FullAddress: address.FullAddress,
-      ReceiverName: address.ReceiverName,
-      ReceiverPhoneNumber: address.ReceiverPhoneNumber,
+      FullAddress: `${(Street, Ward, District, City)}`,
+      ReceiverName,
+      ReceiverPhoneNumber,
       SubAmount: data.TotalPrice,
       ShippingCost: shippingcost,
       VAT: 1,
@@ -84,7 +115,7 @@ const createOneOrder = async (body, user) => {
     await Promise.all([
       ...data.map((prd) =>
         Product.update(
-          { Quantity: prd.Product.Quantity - 1 },
+          { Quantity: prd.Product.Quantity - prd.Quantity },
           {
             where: {
               Id: prd.Id,

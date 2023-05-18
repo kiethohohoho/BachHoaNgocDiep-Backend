@@ -28,8 +28,7 @@ const updateOrderById = {
     })
     .unknown(true),
   body: Joi.object().keys({
-    name: Joi.string(),
-    description: Joi.string(),
+    statuscode: Joi.string().required(),
   }),
 };
 
