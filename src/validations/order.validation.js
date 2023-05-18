@@ -28,7 +28,7 @@ const updateOrderById = {
     })
     .unknown(true),
   body: Joi.object().keys({
-    statuscode: Joi.string().required(),
+    statuscode: Joi.number().required(),
   }),
 };
 

@@ -184,8 +184,8 @@ router
  *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
- *     summary: Cập nhật một Đơn hàng
- *     description: Cập nhật thông tin của một Đơn hàng
+ *     summary: Cập nhật trạng thái đơn hàng
+ *     description: Đang chờ duyệt (1) - Đã duyệt (2) - Đang giao hàng (3) - Hoàn thành (4) - Hủy (5)
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
@@ -203,13 +203,10 @@ router
  *           schema:
  *             type: object
  *             properties:
- *               name:
- *                 type: string
- *               description:
- *                 type: string
+ *               statuscode:
+ *                 type: number
  *             example:
- *               name: Sữa tiệt trùng ColosBaby
- *               description: Sữa tiệt trùng ColosBaby
+ *               statuscode: 2
  *     responses:
  *       "200":
  *         description: OK
