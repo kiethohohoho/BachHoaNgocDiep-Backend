@@ -9,7 +9,7 @@ const Price = sequelize.define('user', {
     primaryKey: true,
   },
   ProductID: {
-    type: DataTypes.STRING,
+    type: DataTypes.UUID,
     allowNull: false,
   },
   Price: {

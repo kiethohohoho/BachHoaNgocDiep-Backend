@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
-const { Order, Product, Cart, OrderDetails, Account } = require('../models');
+const { Order, Product, Cart, OrderDetail, Account } = require('../models');
 const ApiError = require('../utils/ApiError');
 const paginate = require('../utils/paginate');
 
@@ -125,9 +125,10 @@ const createOneOrder = async (body, user) => {
         )
       ),
       ...data.map((prd) =>
-        OrderDetails.create({
+        OrderDetail.create({
           OrderId: newOrder.Id,
           ProductId: prd.Product.Id,
+          AccountId: user.Id,
           ProductName: prd.Product.Quantity,
           ProductImageURL: prd.Product.ImageURL,
           ProductPrice: prd.Product.Price,

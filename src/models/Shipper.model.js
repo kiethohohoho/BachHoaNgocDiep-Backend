@@ -11,7 +11,7 @@ const Shipper = sequelize.define(
       primaryKey: true,
     },
     addressId: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     tenantId: {

@@ -3,6 +3,7 @@ const loggers = require('../config/logger');
 const sequelize = require('../config/database');
 const Product = require('./Products.model');
 const Order = require('./Orders.model');
+const Account = require('./Accounts.model');
 
 const OrderDetail = sequelize.define(
   'OrderDetails',
@@ -13,11 +14,15 @@ const OrderDetail = sequelize.define(
       primaryKey: true,
     },
     OrderId: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     ProductId: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
+    AccountId: {
+      type: DataTypes.UUID,
       allowNull: false,
     },
     ProductName: {
@@ -57,6 +62,11 @@ OrderDetail.belongsTo(Order, {
 
 OrderDetail.belongsTo(Product, {
   foreignKey: 'ProductId',
+  targetKey: 'Id',
+});
+
+OrderDetail.belongsTo(Account, {
+  foreignKey: 'AccountId',
   targetKey: 'Id',
 });
 
