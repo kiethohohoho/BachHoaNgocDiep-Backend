@@ -57,6 +57,10 @@ const Order = sequelize.define(
       type: DataTypes.BIGINT,
       allowNull: false,
     },
+    PaidType: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
     // 1 - 2 - 3 - 4 - 5
     StatusCode: {
       type: DataTypes.SMALLINT,

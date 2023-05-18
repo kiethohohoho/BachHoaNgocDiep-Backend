@@ -92,7 +92,7 @@ const destroyOrder = async (order) => {
  * @returns {Promise<CreateResult>}
  */
 const createOneOrder = async (body, user) => {
-  const { address, shippingcost, data, notes } = body;
+  const { address, shippingcost, data, paidtype, notes } = body;
   const { City, District, Ward, Street, ReceiverName, ReceiverPhoneNumber } = address;
   const VAT = (data.TotalPrice * 1) / 100;
   const TotalAmount = data.TotalPrice + VAT + shippingcost;
@@ -107,6 +107,7 @@ const createOneOrder = async (body, user) => {
       ShippingCost: shippingcost,
       VAT: 1,
       TotalAmount,
+      PaidType: paidtype,
       Notes: notes,
     }),
     Cart.findAll({ where: { AccountId: user.Id } }),

@@ -108,7 +108,7 @@ router
  *
  *   post:
  *     summary: Tạo đơn hàng
- *     description: Tạo trước Đơn hàng
+ *     description: Tạo trước Đơn hàng, paidtype true là chuyển khoản, false là tiền mặt
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
@@ -129,12 +129,15 @@ router
  *                 type: number
  *               address:
  *                 type: object
+ *               paidtype:
+ *                 type: boolean
  *               notes:
  *                 type: string
  *             example:
  *               data: []
  *               shippingcost: 0
  *               address: {}
+ *               paidtype: true
  *               notes: "notes"
  *     responses:
  *       "201":
