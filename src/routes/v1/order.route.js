@@ -136,7 +136,14 @@ router
  *             example:
  *               data: []
  *               shippingcost: 0
- *               address: {}
+ *               address: {
+ *                 City: "",
+ *                 District: "",
+ *                 Ward: "",
+ *                 Street: "",
+ *                 ReceiverName: "",
+ *                 ReceiverPhoneNumber: ""
+ *               }
  *               paidtype: true
  *               notes: "notes"
  *     responses:
