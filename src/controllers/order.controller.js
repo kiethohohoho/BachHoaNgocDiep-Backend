@@ -23,8 +23,8 @@ const getOrders = catchAsync(async (req, res) => {
 
 const getOrderById = async (req, res) => {
   try {
-    const order = await queryOrderById(req.params.orderId);
-    return res.status(httpStatus.OK).json({ order, success: true });
+    const { order, products } = await queryOrderById(req.params.orderId);
+    return res.status(httpStatus.OK).json({ success: true, order, products });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
       message: 'Lỗi tìm đơn hàng!',
@@ -36,7 +36,7 @@ const getOrderById = async (req, res) => {
 
 const updateOrderById = async (req, res) => {
   try {
-    const order = await queryOrderById(req.params.orderId);
+    const { order } = await queryOrderById(req.params.orderId);
     await saveOrder(order, req.body);
 
     return res.status(httpStatus.OK).json({ message: 'Cập nhật thành công!', success: true });
@@ -51,7 +51,7 @@ const updateOrderById = async (req, res) => {
 
 const deleteOrderById = async (req, res) => {
   try {
-    const order = await queryOrderById(req.params.orderId);
+    const { order } = await queryOrderById(req.params.orderId);
     await destroyOrder(order);
 
     return res.status(httpStatus.OK).json({ message: 'Xoá thành công!', success: true });

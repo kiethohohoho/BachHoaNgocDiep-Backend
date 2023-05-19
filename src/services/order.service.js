@@ -32,13 +32,16 @@ const queryOrders = async (query) => {
  * @returns {Promise<QueryResult>}
  */
 const queryOrderById = async (orderId) => {
-  const order = await Order.findByPk(orderId, {
-    include: [Account],
-  });
+  const [order, products] = await Promise.all([
+    Order.findByPk(orderId, {
+      include: [Account],
+    }),
+    OrderDetail.findAll({ where: { OrderId: orderId }, include: [Product] }),
+  ]);
   if (!order) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Đơn hàng không tồn tại!');
   }
-  return order;
+  return { order, products: products.map((a) => a.Product) };
 };
 
 /**

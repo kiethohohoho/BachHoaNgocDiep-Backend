@@ -50,14 +50,6 @@ const paginate = async (model, query, populateOptions = []) => {
   // Calculate the offset based on the page and limit parameters
   const offset = (page - 1) * limit;
 
-  // console.log({
-  //   where,
-  //   order: _order,
-  //   offset,
-  //   limit,
-  //   include: populateOptions,
-  // });
-
   // Query the database with the where, order, offset, and limit clauses
   const { count, rows } = await model.findAndCountAll({
     where,
