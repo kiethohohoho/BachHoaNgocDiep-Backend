@@ -116,7 +116,7 @@ const createOneOrder = async (body, user) => {
     await Promise.all([
       ...data.map((prd) =>
         Product.update(
-          { Quantity: prd.Product.Quantity - prd.Quantity },
+          { Quantity: prd.Product.Quantity * 1 - prd.Quantity * 1 },
           {
             where: {
               Id: prd.Id,
