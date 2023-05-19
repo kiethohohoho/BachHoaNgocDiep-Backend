@@ -134,7 +134,7 @@ const createOneOrder = async (body, user) => {
           OrderId: newOrder.Id,
           ProductId: prd.Product.Id,
           AccountId: user.Id,
-          ProductName: prd.Product.Quantity,
+          ProductName: prd.Product.Name,
           ProductImageURL: prd.Product.ImageURL,
           ProductPrice: prd.Product.Price,
           BuyingQuantity: prd.Quantity,
