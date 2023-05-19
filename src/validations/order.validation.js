@@ -36,7 +36,7 @@ const createOrder = {
   body: Joi.object()
     .keys({
       data: Joi.array().required(),
-      totalprice: Joi.number.require(),
+      totalprice: Joi.number().required(),
       shippingcost: Joi.number().required(),
       address: Joi.object().required(),
       paidtype: Joi.string().required(),
