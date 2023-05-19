@@ -119,7 +119,7 @@ const createOneOrder = async (body, user) => {
           { Quantity: prd.Product.Quantity * 1 - prd.Quantity * 1 },
           {
             where: {
-              Id: prd.Id,
+              Id: prd.Product.Id,
             },
           }
         )
