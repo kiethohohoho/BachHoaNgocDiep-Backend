@@ -105,7 +105,7 @@ const createOneOrder = async (body, user) => {
   const [newOrder, carts] = await Promise.all([
     Order.create({
       AccountId: user.Id,
-      FullAddress: `${Street}, ${Ward}, ${District}, ${City})}`,
+      FullAddress: `${Street}, ${Ward}, ${District}, ${City}`,
       ReceiverName,
       ReceiverPhoneNumber,
       SubAmount: totalprice,
