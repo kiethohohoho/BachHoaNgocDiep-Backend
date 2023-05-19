@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
-const { Review, Account, Product } = require('../models');
+const { Review, Account, Product, OrderDetail } = require('../models');
 const ApiError = require('../utils/ApiError');
 const paginate = require('../utils/paginate');
 const { queryProductById, saveProduct } = require('./product.service');
@@ -37,56 +37,74 @@ const queryReviewById = async (reviewId) => {
  * @returns {Promise<QueryResult>}
  */
 const queryReviewsByProduct = async (body) => {
-  const { userId, productId, query } = body;
-  const reviews = await paginate(
-    Review,
-    {
-      ...query,
-      filter: {
-        AccountId: {
-          eq: userId,
-        },
-        ProductId: {
-          eq: productId,
+  const {
+    // userId,
+    productId,
+    query,
+  } = body;
+
+  const [
+    reviews,
+    usersWhoBought,
+    reviewOneStar,
+    reviewTwoStar,
+    reviewThreeStar,
+    reviewFourStar,
+    reviewFiveStar,
+  ] = await Promise.all([
+    paginate(
+      Review,
+      {
+        ...query,
+        filter: {
+          // AccountId: {
+          //   eq: userId,
+          // },
+          ProductId: {
+            eq: productId,
+          },
         },
       },
-    },
-    [{ model: Account }]
-  );
-
-  const reviewOneStar = await Review.count({ where: { ProductId: productId, Rate: 1 } });
-  const reviewTwoStar = await Review.count({ where: { ProductId: productId, Rate: 2 } });
-  const reviewThreeStar = await Review.count({ where: { ProductId: productId, Rate: 3 } });
-  const reviewFourStar = await Review.count({ where: { ProductId: productId, Rate: 4 } });
-  const reviewFiveStar = await Review.count({ where: { ProductId: productId, Rate: 5 } });
-
+      [{ model: Account }]
+    ),
+    OrderDetail.findAll({ where: { ProductId: productId } }),
+    Review.count({ where: { ProductId: productId, Rate: 1 } }),
+    Review.count({ where: { ProductId: productId, Rate: 2 } }),
+    Review.count({ where: { ProductId: productId, Rate: 3 } }),
+    Review.count({ where: { ProductId: productId, Rate: 4 } }),
+    Review.count({ where: { ProductId: productId, Rate: 5 } }),
+  ]);
+  if (!reviews) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Review không tồn tại!');
+  }
+  const customReviews = reviews.map((review) => ({
+    ...review,
+    IsPurchased: usersWhoBought.includes(review.ProductId),
+  }));
   const ratings = [
     {
       name: '1 Star',
       reviewCount: reviewOneStar,
     },
     {
-      name: '2 Star',
+      name: '2 Stars',
       reviewCount: reviewTwoStar,
     },
     {
-      name: '3 Star',
+      name: '3 Stars',
       reviewCount: reviewThreeStar,
     },
     {
-      name: '4 Star',
+      name: '4 Stars',
       reviewCount: reviewFourStar,
     },
     {
-      name: '5 Star',
+      name: '5 Stars',
       reviewCount: reviewFiveStar,
     },
   ];
 
-  if (!reviews) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Review không tồn tại!');
-  }
-  return { reviews, ratings };
+  return { reviews: customReviews, ratings };
 };
 
 /**
