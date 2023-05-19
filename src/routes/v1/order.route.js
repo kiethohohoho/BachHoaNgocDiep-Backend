@@ -130,7 +130,7 @@ router
  *               address:
  *                 type: object
  *               paidtype:
- *                 type: boolean
+ *                 type: string
  *               notes:
  *                 type: string
  *             example:
@@ -144,7 +144,7 @@ router
  *                 ReceiverName: "",
  *                 ReceiverPhoneNumber: ""
  *               }
- *               paidtype: true
+ *               paidtype: "paidtype"
  *               notes: "notes"
  *     responses:
  *       "201":

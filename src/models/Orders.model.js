@@ -58,7 +58,7 @@ const Order = sequelize.define(
       allowNull: false,
     },
     PaidType: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     // 1 - 2 - 3 - 4 - 5

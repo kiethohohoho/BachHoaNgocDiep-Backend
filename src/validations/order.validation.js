@@ -38,7 +38,7 @@ const createOrder = {
       data: Joi.array().required(),
       shippingcost: Joi.object().required(),
       address: Joi.object().required(),
-      paidtype: Joi.boolean().required(),
+      paidtype: Joi.string().required(),
       notes: Joi.string(),
     })
     .unknown(true),
