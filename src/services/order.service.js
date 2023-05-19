@@ -104,10 +104,12 @@ const createOneOrder = async (body, user) => {
   const { City, District, Ward, Street, ReceiverName, ReceiverPhoneNumber } = address;
   const VAT = (totalprice * 1) / 100;
   const TotalAmount = totalprice + VAT + shippingcost;
+  const count = await Order.count();
 
   const [newOrder, carts] = await Promise.all([
     Order.create({
       AccountId: user.Id,
+      InvoiceNumber: `INV-${Date.now()}-${count}`,
       FullAddress: `${Street}, ${Ward}, ${District}, ${City}`,
       ReceiverName,
       ReceiverPhoneNumber,

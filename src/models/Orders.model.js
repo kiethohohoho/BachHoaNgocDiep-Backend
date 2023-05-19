@@ -15,6 +15,10 @@ const Order = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
     },
+    InvoiceNumber: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     ShopBankNumber: {
       type: DataTypes.STRING,
     },
