@@ -10,14 +10,19 @@ const paginate = require('../utils/paginate');
  * @returns {Promise<QueryResult>}
  */
 const queryOrders = async (query) => {
-  const orders = await paginate(Order, {
-    ...query,
-    filter: {
-      AccountId: {
-        eq: query.user.Id,
-      },
-    },
-  });
+  const orders = await paginate(
+    Order,
+    query.user.IsAdmin
+      ? query
+      : {
+          ...query,
+          filter: {
+            AccountId: {
+              eq: query.user.Id,
+            },
+          },
+        }
+  );
   return orders;
 };
 

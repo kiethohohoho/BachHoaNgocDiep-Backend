@@ -42,8 +42,14 @@ const queryReviewsByProduct = async (body) => {
     Review,
     {
       ...query,
-      AccountId: userId,
-      ProductId: productId,
+      filter: {
+        AccountId: {
+          eq: userId,
+        },
+        ProductId: {
+          eq: productId,
+        },
+      },
     },
     [{ model: Account }]
   );
