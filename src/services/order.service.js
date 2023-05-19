@@ -92,10 +92,10 @@ const destroyOrder = async (order) => {
  * @returns {Promise<CreateResult>}
  */
 const createOneOrder = async (body, user) => {
-  const { address, shippingcost, data, paidtype, notes } = body;
+  const { address, totalprice, shippingcost, data, paidtype, notes } = body;
   const { City, District, Ward, Street, ReceiverName, ReceiverPhoneNumber } = address;
-  const VAT = (data.TotalPrice * 1) / 100;
-  const TotalAmount = data.TotalPrice + VAT + shippingcost;
+  const VAT = (totalprice * 1) / 100;
+  const TotalAmount = totalprice + VAT + shippingcost;
 
   const [newOrder, carts] = await Promise.all([
     Order.create({
@@ -103,7 +103,7 @@ const createOneOrder = async (body, user) => {
       FullAddress: `${(Street, Ward, District, City)}`,
       ReceiverName,
       ReceiverPhoneNumber,
-      SubAmount: data.TotalPrice,
+      SubAmount: totalprice,
       ShippingCost: shippingcost,
       VAT: 1,
       TotalAmount,
@@ -133,7 +133,7 @@ const createOneOrder = async (body, user) => {
           ProductImageURL: prd.Product.ImageURL,
           ProductPrice: prd.Product.Price,
           BuyingQuantity: prd.Quantity,
-          Amount: prd.Product.Price * prd.Quantity,
+          Amount: prd.SubTotal,
         })
       ),
       ...carts.map((cart) => cart.destroy()),

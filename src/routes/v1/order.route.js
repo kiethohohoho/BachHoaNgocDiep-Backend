@@ -125,6 +125,8 @@ router
  *             properties:
  *               data:
  *                 type: array
+ *               totalprice:
+ *                 type: number
  *               shippingcost:
  *                 type: number
  *               address:
@@ -135,6 +137,7 @@ router
  *                 type: string
  *             example:
  *               data: []
+ *               totalprice: 0
  *               shippingcost: 0
  *               address: {
  *                 City: "",
