@@ -2,6 +2,7 @@ const { Op } = require('sequelize');
 const _ = require('lodash');
 const he = require('he');
 const sequelize = require('../config/database');
+const typeOf = require('./typeof');
 
 const paginate = async (model, query, populateOptions = []) => {
   const { search = '', filter = {}, sort = '', order = '', page = 1, limit = 10 } = query;
@@ -32,14 +33,16 @@ const paginate = async (model, query, populateOptions = []) => {
       }
     : {};
 
-  // const isNeedConvertToNumber = (value) =>
-  //   value.length === 0 || value.length === 36 || value === 'undefined' || value === 'null';
-
+  let flag = false;
   const _f = _.mapValues(filter, (f) => {
+    flag = false;
     const temp = _.mapValues(f, (e) => {
+      if (typeOf(e) === 'Array') {
+        flag = true;
+      }
       return +e ? +e : e;
     });
-    return _.mapKeys(temp, (value, key) => Op[key]);
+    return _.mapKeys(temp, (value, key) => Op[flag ? 'in' : key]);
   });
 
   const where = {
