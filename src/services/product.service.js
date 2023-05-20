@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
+const he = require('he');
 const { Product, Brand, Category, CategoryGroup, Image, Review } = require('../models');
 const ApiError = require('../utils/ApiError');
 const paginate = require('../utils/paginate');
-// const logger = require('../config/logger');
 
 /**
  * Query for products
@@ -24,20 +24,22 @@ const queryProducts = async (query) => {
  * @returns {Promise<QueryResult>}
  */
 const queryProductById = async (productId) => {
-  const product = await Product.findByPk(productId, {
-    include: [Brand, Category, CategoryGroup],
-  });
-  if (!product) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Sản phẩm không tồn tại!');
-  }
-  const [images, count] = await Promise.all([
+  const [product, images, count] = await Promise.all([
+    Product.findByPk(productId, {
+      include: [Brand, Category, CategoryGroup],
+    }),
     Image.findAll({
       where: { ProductId: productId },
     }),
     Review.count({ where: { ProductId: productId } }),
   ]);
-  product.Images = images;
-  return { product, images, count };
+  if (!product) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Sản phẩm không tồn tại!');
+  }
+  const clonedProduct = JSON.parse(JSON.stringify(product));
+  clonedProduct.Description = he.decode(clonedProduct.Description);
+  clonedProduct.Images = images;
+  return { product: clonedProduct, count };
 };
 
 /**

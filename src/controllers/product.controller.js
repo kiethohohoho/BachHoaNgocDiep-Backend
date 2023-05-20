@@ -24,7 +24,7 @@ const getProducts = catchAsync(async (req, res) => {
 const getProductById = async (req, res) => {
   try {
     const { product, count } = await queryProductById(req.params.productId);
-    return res.status(httpStatus.OK).json({ product, success: true, totalReview: count });
+    return res.status(httpStatus.OK).json({ success: true, totalReview: count, product });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
       message: 'Lỗi tìm sản phẩm!',
