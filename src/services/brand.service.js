@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
+const he = require('he');
 const { Brand, Category, CategoryGroup } = require('../models');
 const ApiError = require('../utils/ApiError');
 const paginate = require('../utils/paginate');
-// const logger = require('../config/logger');
 
 /**
  * Query for brands
@@ -27,7 +27,9 @@ const queryBrandById = async (brandId) => {
   if (!brand) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Thương hiệu không tồn tại!');
   }
-  return brand;
+  const clonedBrand = JSON.parse(JSON.stringify(brand));
+  clonedBrand.Description = he.decode(clonedBrand.Description);
+  return clonedBrand;
 };
 
 /**

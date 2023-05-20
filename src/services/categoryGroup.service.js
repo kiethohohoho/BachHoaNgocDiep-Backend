@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
+const he = require('he');
 const { CategoryGroup, Category } = require('../models');
 const ApiError = require('../utils/ApiError');
 const paginate = require('../utils/paginate');
@@ -26,7 +27,9 @@ const queryCategoryGroupById = async (categoryGroupId) => {
   if (!categoryGroup) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Nhóm danh mục không tồn tại!');
   }
-  return categoryGroup;
+  const clonedCategoryGroup = JSON.parse(JSON.stringify(categoryGroup));
+  clonedCategoryGroup.Description = he.decode(clonedCategoryGroup.Description);
+  return clonedCategoryGroup;
 };
 
 /**
