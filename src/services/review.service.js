@@ -74,10 +74,10 @@ const queryReviewsByProduct = async (body) => {
     Review.count({ where: { ProductId: productId, Rate: 4 } }),
     Review.count({ where: { ProductId: productId, Rate: 5 } }),
   ]);
-  if (!reviews) {
+  if (!reviews.Data) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Đã có lỗi xảy ra!');
   }
-  const customReviews = reviews.map((review) => ({
+  const customReviews = reviews.Data.map((review) => ({
     ...review,
     IsPurchased: usersWhoBought.map((obj) => obj.AccountId).includes(review.AccountId),
   }));

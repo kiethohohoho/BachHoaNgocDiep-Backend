@@ -31,7 +31,11 @@ router
 
 router
   .route('/product/:productId')
-  .get(validate(reviewValidation.getReviewByProduct), reviewController.getReviewByProduct);
+  .get(
+    auth('user'),
+    validate(reviewValidation.getReviewByProduct),
+    reviewController.getReviewByProduct
+  );
 
 module.exports = router;
 
