@@ -23,8 +23,8 @@ const getOrders = catchAsync(async (req, res) => {
 
 const getOrderById = async (req, res) => {
   try {
-    const { order, products } = await queryOrderById(req.params.orderId);
-    return res.status(httpStatus.OK).json({ success: true, order, products });
+    const { order, carts } = await queryOrderById(req.params.orderId);
+    return res.status(httpStatus.OK).json({ success: true, order, carts });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
       message: 'Lỗi tìm đơn hàng!',

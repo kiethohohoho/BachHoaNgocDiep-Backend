@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
-const { Order, Product, Cart, OrderDetail, Account } = require('../models');
+const he = require('he');
+const { Order, Product, Cart, OrderDetail } = require('../models');
 const ApiError = require('../utils/ApiError');
 const paginate = require('../utils/paginate');
 
@@ -32,16 +33,26 @@ const queryOrders = async (query) => {
  * @returns {Promise<QueryResult>}
  */
 const queryOrderById = async (orderId) => {
-  const [order, products] = await Promise.all([
-    Order.findByPk(orderId, {
-      include: [Account],
-    }),
+  const [order, carts] = await Promise.all([
+    Order.findByPk(orderId),
     OrderDetail.findAll({ where: { OrderId: orderId }, include: [Product] }),
   ]);
   if (!order) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Đơn hàng không tồn tại!');
   }
-  return { order, products: products.map((a) => a.Product) };
+  const customCarts = carts.map((cart) => {
+    // Clone the objects and remove circular references
+    const clonedCart = JSON.parse(JSON.stringify(cart));
+    const clonedProduct = JSON.parse(JSON.stringify(cart.Product));
+    // Decode the description
+    clonedProduct.Description = he.decode(clonedProduct.Description);
+    clonedCart.Product = clonedProduct;
+    return clonedCart;
+  });
+  return {
+    order,
+    carts: customCarts,
+  };
 };
 
 /**
