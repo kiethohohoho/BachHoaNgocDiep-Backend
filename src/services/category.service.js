@@ -92,14 +92,13 @@ const createOneCategory = async (body) => {
     if (existCategory) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Danh mục này đã tồn tại!');
     }
+    const newCategory = await Category.create({
+      CategoryGroupId: categorygroupid,
+      Name: name,
+      Description: description,
+    });
+    return newCategory;
   }
-
-  const newCategory = await Category.create({
-    CategoryGroupId: categorygroupid,
-    Name: name,
-    Description: description,
-  });
-  return newCategory;
 };
 
 module.exports = {

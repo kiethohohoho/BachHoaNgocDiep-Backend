@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
 const he = require('he');
-const { CategoryGroup, Category } = require('../models');
+const { CategoryGroup } = require('../models');
 const ApiError = require('../utils/ApiError');
 const paginate = require('../utils/paginate');
 

@@ -130,7 +130,6 @@ const createOneProduct = async (body) => {
     name,
     description,
     price,
-    rate,
     quantity,
     images,
     isbestseller,
@@ -151,7 +150,6 @@ const createOneProduct = async (body) => {
     Description: description,
     ImageURL: images[0].OriginalImageUrl,
     Price: price,
-    Rate: rate || 0,
     Quantity: quantity || 0,
     IsBestSeller: isbestseller || false,
   });

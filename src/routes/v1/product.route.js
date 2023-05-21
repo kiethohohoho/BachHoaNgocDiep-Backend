@@ -143,11 +143,6 @@ router
  *                 type: number
  *                 format: bigint
  *                 min: 0
- *               rate:
- *                 type: number
- *                 format: float
- *                 min: 0
- *                 max: 5
  *               quantity:
  *                 type: number
  *                 format: integer
@@ -162,7 +157,6 @@ router
  *               name: Sữa tiệt trùng ColosBaby
  *               description: 80000
  *               price: 10000
- *               rate: 5
  *               quantity: 5
  *               images: [{}]
  *               isbestseller: false
