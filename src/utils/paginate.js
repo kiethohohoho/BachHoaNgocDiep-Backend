@@ -5,7 +5,14 @@ const sequelize = require('../config/database');
 const typeOf = require('./typeof');
 
 const paginate = async (model, query, populateOptions = []) => {
-  const { search = '', filter = {}, sort = '', order = '', page = 1, limit = 10 } = query;
+  const {
+    search = '',
+    filter = {},
+    sort = 'createdAt',
+    order = 'desc',
+    page = 1,
+    limit = 10,
+  } = query;
 
   const orderField = order.split(',');
   const sortField = sort.split(',');
