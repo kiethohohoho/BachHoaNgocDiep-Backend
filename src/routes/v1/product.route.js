@@ -127,6 +127,7 @@ router
  *               - name
  *               - price
  *               - quantity
+ *               - images
  *             properties:
  *               brandid:
  *                 type: string
@@ -142,20 +143,29 @@ router
  *                 type: number
  *                 format: bigint
  *                 min: 0
+ *               rate:
+ *                 type: number
+ *                 format: float
+ *                 min: 0
+ *                 max: 5
  *               quantity:
  *                 type: number
  *                 format: integer
- *                 min: 0
  *               images:
  *                 type: array
+ *               isbestseller:
+ *                 type: boolean
  *             example:
  *               brandid: "1"
  *               categoryid: "1"
  *               categorygroupid: "1"
  *               name: Sữa tiệt trùng ColosBaby
- *               price: 80000
- *               quantity: 36
+ *               description: 80000
+ *               price: 10000
+ *               rate: 5
+ *               quantity: 5
  *               images: [{}]
+ *               isbestseller: false
  *     responses:
  *       "201":
  *         description: Tạo sản phẩm thành công
