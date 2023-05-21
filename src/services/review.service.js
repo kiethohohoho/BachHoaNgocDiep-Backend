@@ -141,7 +141,7 @@ const destroyReview = async (review) => {
 const createOneReview = async (body) => {
   const { userId, productid, content, rate } = body;
 
-  const { product, count } = await queryProductById(productid);
+  const { originalProduct: product, count } = await queryProductById(productid);
 
   const newRate = (product.Rate * count + rate) / (count + 1);
 

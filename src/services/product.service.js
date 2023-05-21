@@ -39,7 +39,7 @@ const queryProductById = async (productId) => {
   const clonedProduct = JSON.parse(JSON.stringify(product));
   clonedProduct.Description = he.decode(clonedProduct.Description);
   clonedProduct.Images = images;
-  return { product: clonedProduct, count };
+  return { product: clonedProduct, count, originalProduct: product };
 };
 
 /**
