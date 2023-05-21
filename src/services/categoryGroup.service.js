@@ -22,7 +22,7 @@ const queryCategoryGroups = async (query) => {
  */
 const queryCategoryGroupById = async (categoryGroupId) => {
   const categoryGroup = await CategoryGroup.findByPk(categoryGroupId, {
-    include: [Category, CategoryGroup],
+    include: [CategoryGroup],
   });
   if (!categoryGroup) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Nhóm danh mục không tồn tại!');
