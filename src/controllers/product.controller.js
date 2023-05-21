@@ -36,7 +36,7 @@ const getProductById = async (req, res) => {
 
 const updateProductById = async (req, res) => {
   try {
-    const { product } = await queryProductById(req.params.productId);
+    const { originalProduct: product } = await queryProductById(req.params.productId);
     await saveProduct(product, req.body);
 
     return res.status(httpStatus.OK).json({ message: 'Cập nhật thành công!', success: true });
@@ -51,7 +51,7 @@ const updateProductById = async (req, res) => {
 
 const deleteProductById = async (req, res) => {
   try {
-    const { product } = await queryProductById(req.params.productId);
+    const { originalProduct: product } = await queryProductById(req.params.productId);
     await destroyProduct(product);
 
     return res.status(httpStatus.OK).json({ message: 'Xoá thành công!', success: true });

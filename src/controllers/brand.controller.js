@@ -24,7 +24,7 @@ const getBrands = catchAsync(async (req, res) => {
 
 const getBrandById = async (req, res) => {
   try {
-    const brand = await queryBrandById(req.params.brandId);
+    const { brand } = await queryBrandById(req.params.brandId);
     return res.status(httpStatus.OK).json({ brand, success: true });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
@@ -50,7 +50,7 @@ const getBrandsByCategoryId = async (req, res) => {
 
 const updateBrandById = async (req, res) => {
   try {
-    const brand = await queryBrandById(req.params.brandId);
+    const { originalBrand: brand } = await queryBrandById(req.params.brandId);
     await saveBrand(brand, req.body);
 
     return res.status(httpStatus.OK).json({ message: 'Cập nhật thành công!', success: true });
@@ -65,7 +65,7 @@ const updateBrandById = async (req, res) => {
 
 const deleteBrandById = async (req, res) => {
   try {
-    const brand = await queryBrandById(req.params.brandId);
+    const { originalBrand: brand } = await queryBrandById(req.params.brandId);
     await destroyBrand(brand);
 
     return res.status(httpStatus.OK).json({ message: 'Xoá thành công!', success: true });

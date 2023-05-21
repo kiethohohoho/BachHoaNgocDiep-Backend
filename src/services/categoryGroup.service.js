@@ -29,7 +29,7 @@ const queryCategoryGroupById = async (categoryGroupId) => {
   }
   const clonedCategoryGroup = JSON.parse(JSON.stringify(categoryGroup));
   clonedCategoryGroup.Description = he.decode(clonedCategoryGroup.Description);
-  return clonedCategoryGroup;
+  return { categoryGroup: clonedCategoryGroup, originalCategoryGroup: categoryGroup };
 };
 
 /**

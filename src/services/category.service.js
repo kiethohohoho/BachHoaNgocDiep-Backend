@@ -29,7 +29,7 @@ const queryCategoryById = async (categoryId) => {
   }
   const clonedCategory = JSON.parse(JSON.stringify(category));
   clonedCategory.Description = he.decode(clonedCategory.Description);
-  return clonedCategory;
+  return { category: clonedCategory, originalCategory: category };
 };
 
 /**

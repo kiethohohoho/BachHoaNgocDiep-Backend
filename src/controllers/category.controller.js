@@ -24,7 +24,7 @@ const getCategories = catchAsync(async (req, res) => {
 
 const getCategoryById = async (req, res) => {
   try {
-    const category = await queryCategoryById(req.params.categoryId);
+    const { category } = await queryCategoryById(req.params.categoryId);
     return res.status(httpStatus.OK).json({ category, success: true });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
@@ -50,7 +50,7 @@ const getCategoryByCategoryGroupId = async (req, res) => {
 
 const updateCategoryById = async (req, res) => {
   try {
-    const category = await queryCategoryById(req.params.categoryId);
+    const { originalCategory: category } = await queryCategoryById(req.params.categoryId);
     await saveCategory(category, req.body);
 
     return res.status(httpStatus.OK).json({ message: 'Cập nhật thành công!', success: true });
@@ -65,7 +65,7 @@ const updateCategoryById = async (req, res) => {
 
 const deleteCategoryById = async (req, res) => {
   try {
-    const category = await queryCategoryById(req.params.categoryId);
+    const { originalCategory: category } = await queryCategoryById(req.params.categoryId);
     await destroyCategory(category);
 
     return res.status(httpStatus.OK).json({ message: 'Xoá thành công!', success: true });

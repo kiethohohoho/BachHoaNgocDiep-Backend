@@ -23,7 +23,7 @@ const getCategoryGroups = catchAsync(async (req, res) => {
 
 const getCategoryGroupById = async (req, res) => {
   try {
-    const categoryGroup = await queryCategoryGroupById(req.params.categoryGroupId);
+    const { categoryGroup } = await queryCategoryGroupById(req.params.categoryGroupId);
     return res.status(httpStatus.OK).json({ categoryGroup, success: true });
   } catch (err) {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
@@ -36,7 +36,9 @@ const getCategoryGroupById = async (req, res) => {
 
 const updateCategoryGroupById = async (req, res) => {
   try {
-    const categoryGroup = await queryCategoryGroupById(req.params.categoryGroupId);
+    const { originalCategoryGroup: categoryGroup } = await queryCategoryGroupById(
+      req.params.categoryGroupId
+    );
     await saveCategoryGroup(categoryGroup, req.body);
 
     return res.status(httpStatus.OK).json({ message: 'Cập nhật thành công!', success: true });
@@ -51,7 +53,9 @@ const updateCategoryGroupById = async (req, res) => {
 
 const deleteCategoryGroupById = async (req, res) => {
   try {
-    const categoryGroup = await queryCategoryGroupById(req.params.categoryGroupId);
+    const { originalCategoryGroup: categoryGroup } = await queryCategoryGroupById(
+      req.params.categoryGroupId
+    );
     await destroyCategoryGroup(categoryGroup);
 
     return res.status(httpStatus.OK).json({ message: 'Xoá thành công!', success: true });

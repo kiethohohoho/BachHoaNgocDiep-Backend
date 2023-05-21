@@ -29,7 +29,7 @@ const queryBrandById = async (brandId) => {
   }
   const clonedBrand = JSON.parse(JSON.stringify(brand));
   clonedBrand.Description = he.decode(clonedBrand.Description);
-  return clonedBrand;
+  return { brand: clonedBrand, originalBrand: brand };
 };
 
 /**
