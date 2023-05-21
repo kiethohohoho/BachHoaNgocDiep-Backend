@@ -21,9 +21,7 @@ const queryCategoryGroups = async (query) => {
  * @returns {Promise<QueryResult>}
  */
 const queryCategoryGroupById = async (categoryGroupId) => {
-  const categoryGroup = await CategoryGroup.findByPk(categoryGroupId, {
-    include: [CategoryGroup],
-  });
+  const categoryGroup = await CategoryGroup.findByPk(categoryGroupId);
   if (!categoryGroup) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Nhóm danh mục không tồn tại!');
   }
