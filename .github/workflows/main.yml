@@ -8,7 +8,7 @@ on:
         required: true
         default: 'Manual build from GitHub UI'
   push:
-    branches: [ main ]
+    branches: [ dev ]
   pull_request:
     branches: [ main ]
 
