@@ -6,6 +6,9 @@ const { userValidation } = require('../../validations');
 
 const router = express.Router();
 
+router.route('/').get(auth('admin'), validate(userValidation.getUsers), userController.getUsers);
+// .patch(auth('user'), validate(userValidation.updateProfile), userController.updateUserProfile);
+
 router
   .route('/profile')
   .get(auth('user'), userController.getUserProfile)
@@ -18,6 +21,85 @@ module.exports = router;
  * tags:
  *   name: Users
  *   description: User management and retrieval
+ */
+
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Lấy danh sách user (search, sort, filter, pagination)
+ *     description: Cho phép search, sort, multi filter, phân trang /users?search=a&sort=Price,Name&order=asc,desc&filter[Price][gt]=1&filter[Name][eq]=abc&page=1&limit=20.
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: search
+ *         in: query
+ *         schema:
+ *           type: string
+ *       - name: filter
+ *         in: query
+ *         schema:
+ *           type: object
+ *           properties:
+ *             fieldName:
+ *               type: object
+ *               properties:
+ *                 operator:
+ *                   type: string
+ *       - name: sort
+ *         in: query
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *       - name: order
+ *         in: query
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *       - name: page
+ *         in: query
+ *         schema:
+ *           type: number
+ *       - name: limit
+ *         in: query
+ *         schema:
+ *           type: number
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 Data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Banner'
+ *                 Pagination:
+ *                   type: object
+ *                   properties:
+ *                     TotalCount:
+ *                       type: integer
+ *                       example: 1
+ *                     TotalPages:
+ *                       type: integer
+ *                       example: 1
+ *                     CurrentPage:
+ *                       type: integer
+ *                       example: 1
+ *                     Limit:
+ *                       type: integer
+ *                       example: 10
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
+ *       "403":
+ *         $ref: '#/components/responses/Forbidden'
+ *       "404":
+ *         $ref: '#/components/responses/NotFound'
  */
 
 /**

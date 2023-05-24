@@ -65,7 +65,7 @@ const createAccount = async (accountBody) => {
  * @returns {Promise<QueryResult>}
  */
 const queryUsers = async (filter, options) => {
-  const users = await User.paginate(filter, options);
+  const users = await Account.paginate(filter, options);
   return users;
 };
 

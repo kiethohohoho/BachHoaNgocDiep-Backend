@@ -1,4 +1,15 @@
-const { Address, Payment } = require('../models');
+const { Address, Payment, Account } = require('../models');
+const paginate = require('../utils/paginate');
+
+/**
+ * Query for users
+ * @param {Object} query - Request query
+ * @returns {Promise<QueryResult>}
+ */
+const queryUsers = async (query) => {
+  const users = await paginate(Account, query);
+  return users;
+};
 
 /**
  * Get user address
@@ -62,6 +73,7 @@ const updateProfile = async (userBody) => {
 };
 
 module.exports = {
+  queryUsers,
   getUserAddress,
   getUserPayment,
   updateProfile,

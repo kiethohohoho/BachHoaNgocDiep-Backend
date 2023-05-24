@@ -1,6 +1,20 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { userService } = require('../services');
+const { queryUsers } = require('../services/user.service');
+
+const getUsers = catchAsync(async (req, res) => {
+  try {
+    const users = await queryUsers(req.query);
+    res.status(httpStatus.OK).json({ users, success: true });
+  } catch (error) {
+    res.status(error.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
+      message: 'Lỗi lấy danh sách user!',
+      detail: error.message || error,
+      success: false,
+    });
+  }
+});
 
 const getUserProfile = catchAsync(async (req, res) => {
   const [userAddress, userPayment] = await Promise.all([
@@ -23,6 +37,7 @@ const updateUserProfile = catchAsync(async (req, res) => {
 });
 
 module.exports = {
+  getUsers,
   getUserProfile,
   updateUserProfile,
 };
