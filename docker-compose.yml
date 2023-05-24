@@ -17,7 +17,6 @@ services:
       - node-network
 
   node-app:
-    build: .
     image: node-app
     container_name: node-app
     ports:

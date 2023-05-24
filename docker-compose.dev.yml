@@ -2,6 +2,7 @@ version: '3'
 
 services:
   node-app:
+    build: .
     container_name: node-app-dev
     command: yarn dev -L
     volumes:

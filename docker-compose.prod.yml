@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   node-app:
+    image: tankietcute/node-app-prod:latest
     container_name: node-app-prod
     restart: always
     command: yarn start
