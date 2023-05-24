@@ -38,7 +38,6 @@ const getReviewById = async (req, res) => {
 const getReviewByProduct = async (req, res) => {
   try {
     const { reviews, ratings } = await queryReviewsByProduct({
-      userId: req.user.Id,
       productId: req.params.productId,
       query: req.query,
     });

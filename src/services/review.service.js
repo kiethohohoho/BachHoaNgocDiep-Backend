@@ -37,11 +37,7 @@ const queryReviewById = async (reviewId) => {
  * @returns {Promise<QueryResult>}
  */
 const queryReviewsByProduct = async (body) => {
-  const {
-    // userId,
-    productId,
-    query,
-  } = body;
+  const { productId, query } = body;
 
   const [
     reviews,
