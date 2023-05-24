@@ -28,7 +28,7 @@ app.use(helmet());
 app.use(express.json({ limit: '10mb' }));
 
 // parse urlencoded request body
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Convert json request body property names to camel case
 app.use((req, res, next) => {
