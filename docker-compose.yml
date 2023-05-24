@@ -12,7 +12,7 @@ services:
       - '1433:1433'
     restart: always
     volumes:
-      - ./data:/var/opt/mssql/data
+      - db-data:/var/opt/mssql/data
     networks:
       - node-network
 
@@ -29,3 +29,6 @@ services:
 networks:
   node-network:
     driver: bridge
+
+volumes:
+  db-data:
