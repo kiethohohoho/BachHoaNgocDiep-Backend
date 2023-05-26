@@ -36,7 +36,26 @@ const getSaleProductToday = catchAsync(async (req, res) => {
   }
 });
 
+const getAmountByPaidType = catchAsync(async (req, res) => {
+  try {
+    const { amountByCash, amountByTransfer } = await analystService.getAmountByPaidType();
+    res.status(httpStatus.OK).json({
+      success: true,
+      amountByCash,
+      amountByTransfer,
+      total: amountByCash + amountByTransfer,
+    });
+  } catch (error) {
+    res.status(error.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
+      message: 'Lỗi lấy danh sách giỏ hàng!',
+      detail: error.message || error,
+      success: false,
+    });
+  }
+});
+
 module.exports = {
   getRevenue,
   getSaleProductToday,
+  getAmountByPaidType,
 };

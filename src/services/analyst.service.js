@@ -77,7 +77,41 @@ const getSaleProductToday = async () => {
   return { revenueToday, revenueYesterday };
 };
 
+/**
+ * Get Order Today
+ * @returns {Promise<QueryResult>}
+ */
+const getAmountByPaidType = async () => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const [amountByCash, amountByTransfer] = await Promise.all([
+    Order.sum('TotalAmount', {
+      where: {
+        PaidType: {
+          [Op.eq]: 'cash',
+        },
+        createdAt: {
+          [Op.gte]: today,
+        },
+      },
+    }),
+    Order.sum('TotalAmount', {
+      where: {
+        PaidType: {
+          [Op.eq]: 'transfer',
+        },
+        createdAt: {
+          [Op.gte]: today,
+        },
+      },
+    }),
+  ]);
+
+  return { amountByCash, amountByTransfer };
+};
+
 module.exports = {
   getRevenue,
   getSaleProductToday,
+  getAmountByPaidType,
 };
