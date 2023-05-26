@@ -37,7 +37,7 @@ const OrderDetail = sequelize.define(
       allowNull: false,
     },
     BuyingQuantity: {
-      type: DataTypes.STRING,
+      type: DataTypes.SMALLINT,
       allowNull: false,
     },
     Amount: {

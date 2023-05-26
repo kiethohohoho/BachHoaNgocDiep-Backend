@@ -47,7 +47,6 @@ const getRevenue = async () => {
 
 /**
  * Get Sale Product Today
-//  * @param {string} period - period: 'day' | 'week' | 'mounth'
  * @returns {Promise<QueryResult>}
  */
 const getSaleProductToday = async () => {
@@ -69,6 +68,7 @@ const getSaleProductToday = async () => {
       where: {
         createdAt: {
           [Op.gte]: yesterday,
+          [Op.lt]: today,
         },
       },
     }),
