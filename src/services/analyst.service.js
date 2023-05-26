@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 // const httpStatus = require('http-status');
-const { Op } = require('sequelize');
-const { Order, OrderDetail } = require('../models');
+const { Op, fn, col } = require('sequelize');
+const { Order, OrderDetail, Product } = require('../models');
 // const ApiError = require('../utils/ApiError');
 
 /**
@@ -110,8 +110,37 @@ const getAmountByPaidType = async () => {
   return { amountByCash, amountByTransfer };
 };
 
+/**
+ * Get Order Today
+ * @returns {Promise<QueryResult>}
+ */
+const getThreeBestSellingProducts = async () => {
+  const [allProductsCount, bestSellingProducts] = await Promise.all([
+    OrderDetail.count(),
+    OrderDetail.findAll({
+      attributes: [
+        'OrderDetails.Id',
+        'ProductId',
+        [fn('SUM', col('BuyingQuantity')), 'TotalSales'],
+      ],
+      limit: 3,
+      include: [
+        {
+          model: Product,
+          attributes: ['Name'],
+        },
+      ],
+      group: ['ProductId', 'Product.Name', 'OrderDetails.Id', 'Product.Id'],
+      order: [['TotalSales', 'DESC']],
+    }),
+  ]);
+
+  return { allProductsCount, bestSellingProducts };
+};
+
 module.exports = {
   getRevenue,
   getSaleProductToday,
   getAmountByPaidType,
+  getThreeBestSellingProducts,
 };

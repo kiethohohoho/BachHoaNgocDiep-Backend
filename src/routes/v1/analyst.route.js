@@ -12,6 +12,12 @@ router.get('/saleproducttoday', auth('admin'), analystController.getSaleProductT
 
 router.get('/amountByPaidType', auth('admin'), analystController.getAmountByPaidType);
 
+router.get(
+  '/threebestsellingproducts',
+  auth('admin'),
+  analystController.getThreeBestSellingProducts
+);
+
 module.exports = router;
 
 /**
@@ -82,7 +88,35 @@ module.exports = router;
  * /analyst/amountByPaidType:
  *   get:
  *     summary: Số lượng đơn hàng bán được trong hôm nay
- *     description: So sánh với ngày hôm trước
+ *     description: Phân loại cash và transfer
+ *     tags: [Analyst]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
+ *       "403":
+ *         $ref: '#/components/responses/Forbidden'
+ *       "404":
+ *         $ref: '#/components/responses/NotFound'
+ */
+
+/**
+ * @swagger
+ * /analyst/threebestsellingproducts:
+ *   get:
+ *     summary: 3 sản phẩm bán chạy nhất
+ *     description: 3 sản phẩm bán chạy nhất
  *     tags: [Analyst]
  *     security:
  *       - bearerAuth: []
