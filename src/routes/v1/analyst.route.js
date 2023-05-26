@@ -39,6 +39,9 @@ module.exports = router;
  *             schema:
  *               type: object
  *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
