@@ -12,3 +12,4 @@ module.exports.orderDetailValidation = require('./orderDetail.validation');
 module.exports.imageValidation = require('./image.validation');
 module.exports.bannerValidation = require('./banner.validation');
 module.exports.cartValidation = require('./cart.validation');
+module.exports.analystValidation = require('./analyst.validation');

@@ -10,4 +10,5 @@ module.exports.orderController = require('./order.controller');
 module.exports.bannerController = require('./banner.controller');
 module.exports.imageController = require('./image.controller');
 module.exports.cartController = require('./cart.controller');
+module.exports.analystController = require('./analyst.controller');
 module.exports.addressController = require('./address.controller');

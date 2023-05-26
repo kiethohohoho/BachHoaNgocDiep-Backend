@@ -13,6 +13,7 @@ const addressRoute = require('./address.route');
 const paymentRoute = require('./payment.route');
 const reviewRoute = require('./review.route');
 const orderRoute = require('./order.route');
+const analystRoute = require('./analyst.route');
 
 const router = express.Router();
 
@@ -68,6 +69,10 @@ const defaultRoutes = [
   {
     path: '/orders',
     route: orderRoute,
+  },
+  {
+    path: '/analyst',
+    route: analystRoute,
   },
 ];
 
