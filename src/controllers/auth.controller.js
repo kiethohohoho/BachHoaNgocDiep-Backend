@@ -55,8 +55,8 @@ const login = catchAsync(async (req, res) => {
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: 'Lỗi đăng nhập tài khoản!',
-      isRedirectToVerifyPage: err.message === 'Tài khoản chưa xác thực',
       detail: err.message || err,
+      isRedirectToVerifyPage: err.message === 'Tài khoản chưa xác thực',
     });
   }
 });
