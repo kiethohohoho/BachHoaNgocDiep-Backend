@@ -123,7 +123,7 @@ const getThreeBestSellingProducts = async () => {
     sequelize.query(rawQuery),
   ]);
 
-  return { allProductsCount, bestSellingProducts };
+  return { allProductsCount, bestSellingProducts: bestSellingProducts[0] };
 };
 
 module.exports = {
