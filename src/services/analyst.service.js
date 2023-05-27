@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
 // const httpStatus = require('http-status');
-const { Op, fn, col } = require('sequelize');
-const { Order, OrderDetail, Product } = require('../models');
+const { Op } = require('sequelize');
+const sequelize = require('../config/database');
+const { Order, OrderDetail } = require('../models');
 // const ApiError = require('../utils/ApiError');
 
 /**
@@ -115,24 +116,11 @@ const getAmountByPaidType = async () => {
  * @returns {Promise<QueryResult>}
  */
 const getThreeBestSellingProducts = async () => {
+  const rawQuery =
+    'SELECT TOP (3) ProductId, SUM(BuyingQuantity) AS Total, Name FROM OrderDetails JOIN Products ON Products.Id = OrderDetails.ProductId GROUP BY ProductId, Name ORDER BY Total DESC';
   const [allProductsCount, bestSellingProducts] = await Promise.all([
     OrderDetail.count(),
-    OrderDetail.findAll({
-      attributes: [
-        'OrderDetails.Id',
-        'ProductId',
-        [fn('SUM', col('BuyingQuantity')), 'TotalSales'],
-      ],
-      limit: 3,
-      include: [
-        {
-          model: Product,
-          attributes: ['Name'],
-        },
-      ],
-      group: ['ProductId', 'Product.Name', 'OrderDetails.Id', 'Product.Id'],
-      order: [['TotalSales', 'DESC']],
-    }),
+    sequelize.query(rawQuery),
   ]);
 
   return { allProductsCount, bestSellingProducts };
