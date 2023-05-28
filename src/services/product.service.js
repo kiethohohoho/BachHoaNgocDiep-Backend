@@ -103,7 +103,7 @@ const saveProduct = async (product, body) => {
     );
   }
   if (isbestseller) {
-    product.IsBestSeller = isbestseller;
+    product.IsBestSeller = true;
   }
   await product.save();
 };
