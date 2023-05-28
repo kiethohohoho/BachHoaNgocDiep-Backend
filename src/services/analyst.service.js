@@ -91,9 +91,9 @@ const getAmountByPaidType = async () => {
         PaidType: {
           [Op.eq]: 'cash',
         },
-        createdAt: {
-          [Op.gte]: today,
-        },
+        // createdAt: {
+        //   [Op.gte]: today,
+        // },
       },
     }),
     Order.sum('TotalAmount', {
@@ -101,9 +101,9 @@ const getAmountByPaidType = async () => {
         PaidType: {
           [Op.eq]: 'transfer',
         },
-        createdAt: {
-          [Op.gte]: today,
-        },
+        // createdAt: {
+        //   [Op.gte]: today,
+        // },
       },
     }),
   ]);
