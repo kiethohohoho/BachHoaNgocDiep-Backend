@@ -11,7 +11,7 @@ const paginate = async (model, query, populateOptions = []) => {
     sort = 'createdAt',
     order = 'asc',
     page = 1,
-    limit = 15,
+    limit = 25,
   } = query;
 
   const orderField = order.split(',');
