@@ -105,6 +105,9 @@ const saveProduct = async (product, body) => {
   if (isbestseller) {
     product.IsBestSeller = true;
   }
+  if (!isbestseller) {
+    product.IsBestSeller = false;
+  }
   await product.save();
 };
 
